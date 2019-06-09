@@ -121,7 +121,6 @@ time_t time()
 	return systemclock.tv_sec;
 }
 
-#if 0
 /*
  * The caller must disable/enable interrupts
  */
@@ -130,4 +129,3 @@ void utime(long *tv_sec, long *tv_usec)
 	*tv_sec = systemclock.tv_sec;
 	*tv_usec = systemclock.tv_usec;
 }
-#endif
