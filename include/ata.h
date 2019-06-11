@@ -2,6 +2,10 @@
 #define __ATA_H
 
 #include <stdint.h>
+#include <part.h>
+
+/* Partitions per drive */
+#define PARTS			4
 
 #define ATA_CONTROLLERS		2
 #define ATA_DRIVES		4
@@ -62,6 +66,9 @@
 #define ATA_DRV_HD		1
 #define ATA_DRV_CDROM		2
 
+/* ATA drive flags */
+#define ATA_FLAG_FOUND		0x01
+
 /* Parameters returned by read drive parameters command */
 struct ata_param {
 	/* Drive information */
@@ -94,15 +101,14 @@ struct ata_controller {
 };
 
 struct ata_drive {
+	uchar_t flags;
 	struct ata_controller *atac;	/* Controller */
 	int drive;		/* Drive number */
 	int type;		/* Drive type */
 	struct ata_param param;	/* Drive parameter block */
 
 	/* Partition information */
-#if 0
 	struct part parttab[PARTS];
-#endif
 
 	/* Geometry */
 	uint_t blks;		/* Number of blocks on drive */
@@ -131,8 +137,8 @@ typedef struct ata_partition *atap_t;
 int ata_init();
 int ata_get_boot_device(uchar_t drv, char *device);
 int ata_ioctl(void *dev, int cmd, void *args);
+int ata_read(void *dev, uchar_t * b, int *len);
 #if 0
-int ata_read(void *dev, buf_t * b);
 int ata_write(void *dev, buf_t * b);
 #endif
 

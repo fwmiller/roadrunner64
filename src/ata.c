@@ -27,13 +27,53 @@
 #include <errno.h>
 #include <i8259.h>
 #include <io.h>
+#include <ioctl.h>
+#include <part.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include <time.h>
 
 #define SECTOR_SIZE	512
 
+#define ATA_OUTB(ATAC, PORT, VAL)					\
+{									\
+    int i;								\
+    uchar_t status;							\
+									\
+    for (i = 0; i < 1000000; i++) {					\
+	status = inb((ATAC)->iobase + ATA_ALT_STATUS);			\
+	if (!(status & ATA_STAT_BSY) && !(status & ATA_STAT_DRQ)) {	\
+	    outb((ATAC)->iobase + (PORT), (VAL));			\
+	    break;							\
+	}								\
+    }									\
+}
+
+#define ATA_WAIT(ATAC, CMD, MASK, TIMEOUT)				\
+{									\
+    int i;								\
+    uchar_t status;							\
+									\
+    for (i = 0; i < 1000000; i++) {					\
+	status = inb((ATAC)->iobase + ATA_ALT_STATUS);			\
+	if (!(status & ATA_STAT_BSY)) {					\
+	    if (status & ATA_STAT_ERR)					\
+		switch (CMD) {						\
+		case ATA_CMD_READ:					\
+		    return EDEVREAD;					\
+		case ATA_CMD_WRITE:					\
+		    return EDEVWRITE;					\
+		default:						\
+		    return ENOSYS;					\
+		}							\
+	    if ((status & (MASK)) == (MASK))				\
+		break;							\
+	}								\
+    }									\
+}
+
+#if 0
 #define ATA_OUTB(ATAC, PORT, VAL)					\
 {									\
     time_t start;							\
@@ -57,35 +97,33 @@
     time_t start;							\
     uchar_t status;							\
     int i;
-									\
-    for (start = time();;) {						\
-	kprintf(".");							\
-	status = inb((ATAC)->iobase + ATA_ALT_STATUS);			\
-	if (!(status & ATA_STAT_BSY)) {					\
-	    if (status & ATA_STAT_ERR)					\
-		switch (CMD) {						\
-		case ATA_CMD_READ:					\
-		    return EDEVREAD;					\
-		case ATA_CMD_WRITE:					\
-		    return EDEVWRITE;					\
-		default:						\
-		    return ENOSYS;					\
-		}							\
-	    if ((status & (MASK)) == (MASK))				\
-		break;							\
-	}								\
-	if (time() - start >= (TIMEOUT))				\
-	    return ETIMEDOUT;						\
-    }									\
+
+for (start = time();;) {
+	status = inb((ATAC)->iobase + ATA_ALT_STATUS);
+	if (!(status & ATA_STAT_BSY)) {
+		if (status & ATA_STAT_ERR)
+			switch (CMD) {
+			case ATA_CMD_READ:
+				return EDEVREAD;
+			case ATA_CMD_WRITE:
+				return EDEVWRITE;
+			default:
+				return ENOSYS;
+			}
+		if ((status & (MASK)) == (MASK))
+			break;
+	}
+	if (time() - start >= (TIMEOUT))
+		return ETIMEDOUT;
 }
+}
+#endif
 
 static struct ata_controller atactab[ATA_CONTROLLERS];
 static struct ata_drive atadtab[ATA_DRIVES];
 
-#if 0
 static struct ata_partition ataptab[PARTS * ATA_DRIVES];
 static int nextpart = 0;
-#endif
 
 void kprintf(const char *fmt, ...);
 
@@ -103,7 +141,7 @@ static inline void ata_reset(atac_t atac)
 	 */
 	DELAY(5000);
 #endif
-	for (i = 0; i < 5000; i++);
+	for (i = 0; i < 5000; i++) ;
 
 	/* Clear software reset */
 	outb(atac->iobase + ATA_CONTROL, 0);
@@ -127,24 +165,16 @@ static void ata_convert_string(ushort_t * s, int words)
 
 static int ata_identify(atad_t atad, char *drvstr)
 {
-	kprintf("ata_identify: issue identify command\n");
-
 	/* Issue identify command */
 	ATA_OUTB(atad->atac, ATA_DRVHD, 0xa0 | (atad->drive << 4));
 	ATA_OUTB(atad->atac, ATA_COMMAND, ATA_CMD_IDENTIFY);
 
-	kprintf("ata_identify: wait for data read\n");
-
 	/* Wait for data ready */
 	ATA_WAIT(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ, ATA_TIMEOUT_DRQ);
-
-	kprintf("ata_identify: read parameter data\n");
 
 	/* Read parameter data */
 	insw(atad->atac->iobase + ATA_DATA,
 	     (void *)&(atad->param), SECTOR_SIZE / 2);
-
-	kprintf("ata_identify: check for ata device\n");
 
 	/* Check for ATA device */
 	if (atad->param.config & 0x8000) {
@@ -161,12 +191,16 @@ static int ata_identify(atad_t atad, char *drvstr)
 	atad->blks = atad->tracks * atad->heads * atad->sectorspertrack;
 	atad->size = (atad->blks * SECTOR_SIZE) / 1048576;
 
+	if (atad->blks == 0)
+		return EFAIL;
+
 	ata_convert_string(atad->param.model, 20);
 	kprintf("%s: ATA hard disk\n", drvstr);
 	kprintf("%s: %s\n", drvstr, atad->param.model);
 	kprintf("%s: %u blks (%d Mbytes) %u trks %u hds %u sec/trk\n",
 		drvstr, atad->blks, atad->size,
 		atad->tracks, atad->heads, atad->sectorspertrack);
+	atad->flags = ATA_FLAG_FOUND;
 
 	return 0;
 }
@@ -199,7 +233,6 @@ static int atapi_identify(atad_t atad, char *drvstr)
 	return 0;
 }
 
-#if 0
 static int ata_seek(atad_t atad, seek_t seekargs)
 {
 	if (seekargs->whence != SEEK_SET)
@@ -212,7 +245,7 @@ static int ata_seek(atad_t atad, seek_t seekargs)
 	return 0;
 }
 
-static int ata_read_mbr(atap_t atap, buf_t * b)
+static int ata_read_mbr(atap_t atap, uchar_t * b, int *len)
 {
 	struct seek seekargs;
 	int result;
@@ -223,7 +256,7 @@ static int ata_read_mbr(atap_t atap, buf_t * b)
 	if (result < 0)
 		return result;
 
-	result = ata_read(atap, b);
+	result = ata_read(atap, b, len);
 	if (result < 0)
 		return result;
 
@@ -232,26 +265,22 @@ static int ata_read_mbr(atap_t atap, buf_t * b)
 
 static int ata_read_parttab(atad_t atad)
 {
-	buf_t b;
+	uchar_t b[SECTOR_SIZE];
 	struct ata_partition atap;
-	int result;
+	int len, result;
 
-	b = bget(SECTOR_SIZE);
-	blen(b) = SECTOR_SIZE;
+	memset(b, 0, SECTOR_SIZE);
 	atap.atad = atad;
 	atap.sectors = 0;
 	atap.offset = 0;
-	result = ata_read_mbr(&atap, &b);
-	if (result < 0) {
-		brel(b);
+	len = SECTOR_SIZE;
+	result = ata_read_mbr(&atap, b, &len);
+	if (result < 0)
 		return result;
-	}
-	read_parttab((uchar_t *) bstart(b), atad->parttab);
 
-	brel(b);
+	read_parttab(b, atad->parttab);
 	return 0;
 }
-#endif
 
 int ata_init()
 {
@@ -282,17 +311,10 @@ int ata_init()
 		atad->drive = drive % 2;
 
 		/* Check for an ATA hard drive */
-		sprintf(s, "ata%d\n", drive);
-#if _DEBUG
-		kprintf("%s", s);
-#endif
+		memset(s, 0, 8);
+		sprintf(s, "ata%d", drive);
 		result = ata_identify(atad, s);
-#if _DEBUG
-		kprintf("%s identified\n", s);
-#endif
-#if 0
-
-		if (result == 0) {
+		if (result == 0 && atad->blks > 0) {
 			int part;
 
 			/* Read the partition table */
@@ -303,13 +325,14 @@ int ata_init()
 
 			for (part = 0; part < PARTS; part++) {
 				atap_t atap;
+#if 0
 				struct hd hd;
-
+#endif
 				atap = &(ataptab[nextpart++]);
 				atap->atad = atad;
 				atap->sectors = atad->parttab[part].size;
 				atap->offset = atad->parttab[part].off;
-
+#if 0
 				hd.ioctl = ata_ioctl;
 				hd.read = ata_read;
 				hd.write = ata_write;
@@ -319,18 +342,15 @@ int ata_init()
 					kprintf
 					    ("ata_init: allocate hd failed (%s)\n",
 					     strerror(result));
+#endif
 			}
+			dump_parttab(ataptab);
 			continue;
 		}
-		if (result < 0) {
-			kprintf("ata_init: atapi_identify()\n");
-
-			/* Check for an ATAPI device */
-			result = atapi_identify(&(atadtab[drive]), s);
-			if (result == 0)
-				atadtab[drive].type = ATA_DRV_CDROM;
-		}
-#endif
+		/* Check for an ATAPI device */
+		result = atapi_identify(&(atadtab[drive]), s);
+		if (result == 0)
+			atadtab[drive].type = ATA_DRV_CDROM;
 	}
 	return 0;
 }
@@ -515,6 +535,7 @@ int ata_ioctl(void *dev, int cmd, void *args)
 	return ENOTTY;
 }
 
+#endif
 static inline void ata_eoi(atac_t atac)
 {
 	/* Clear drive interrupt */
@@ -528,17 +549,21 @@ static inline void ata_eoi(atac_t atac)
 	outb(I8259_MSTR_CTRL, I8259_EOI_CAS);
 }
 
-int ata_read(void *dev, buf_t * b)
+int ata_read(void *dev, uchar_t * b, int *len)
 {
 	atap_t atap = (atap_t) dev;
 	atad_t atad = atap->atad;
 	ushort_t *buf;
 	int i, nsectors;
 
-	if (b == NULL || *b == NULL || blen(*b) % SECTOR_SIZE != 0)
+	if (dev == NULL ||
+	    b == NULL || len == NULL || (*len) % SECTOR_SIZE != 0)
 		return EINVAL;
 
-	nsectors = blen(*b) / SECTOR_SIZE;
+	nsectors = *len / SECTOR_SIZE;
+#if _DEBUG
+	kprintf("ata_read: nsectors = %d\n", nsectors);
+#endif
 
 	/* Select drive */
 	ATA_OUTB(atad->atac, ATA_DRVHD,
@@ -560,14 +585,18 @@ int ata_read(void *dev, buf_t * b)
 			 ATA_TIMEOUT_DRQ);
 
 		/* Read sector data */
-		buf = (ushort_t *) (bstart(*b) + i * SECTOR_SIZE);
+		buf = (ushort_t *) (b + i * SECTOR_SIZE);
 		insw(atad->atac->iobase + ATA_DATA, buf, SECTOR_SIZE / 2);
 
 		ata_eoi(atad->atac);
 	}
+
+	bufdump(b, *len);
+
 	return 0;
 }
 
+#if 0
 int ata_write(void *dev, buf_t * b)
 {
 	atap_t atap = (atap_t) dev;

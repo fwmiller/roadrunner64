@@ -64,53 +64,12 @@
 #define outl(port, data)						\
     asm volatile ("outl %%eax,%%dx" : : "a" (data), "d" (port))
 
-static inline void insb(ushort_t port, uchar_t * dst, int bytes)
-{
-	int i;
-
-	for (i = 0; i < bytes; i++)
-		dst[i] = inb(port);
-}
-
-static inline void insw(ushort_t port, ushort_t * dst, int words)
-{
-	int i;
-
-	for (i = 0; i < words; i++)
-		((ushort_t *) dst)[i] = inw(port);
-}
-
-static inline void insl(ushort_t port, ulong_t * dst, int dwords)
-{
-	int i;
-
-	for (i = 0; i < dwords; i++)
-		((uint_t *) dst)[i] = inl(port);
-}
-
-static inline void outsb(ushort_t port, uchar_t * src, int bytes)
-{
-	int i;
-
-	for (i = 0; i < bytes; i++)
-		outb(port, src[i]);
-}
-
-static inline void outsw(ushort_t port, ushort_t * src, int words)
-{
-	int i;
-
-	for (i = 0; i < words; i++)
-		outw(port, ((ushort_t *) src)[i]);
-}
-
-static inline void outsl(ushort_t port, ulong_t * src, int dwords)
-{
-	int i;
-
-	for (i = 0; i < dwords; i++)
-		outl(port, ((uint_t *) src)[i]);
-}
+void insb(ushort_t port, uchar_t * dst, int bytes);
+void insw(ushort_t port, ushort_t * dst, int words);
+void insl(ushort_t port, ulong_t * dst, int dwords);
+void outsb(ushort_t port, uchar_t * src, int bytes);
+void outsw(ushort_t port, ushort_t * src, int words);
+void outsl(ushort_t port, ulong_t * src, int dwords);
 
 int bcd2int(uchar_t v);
 

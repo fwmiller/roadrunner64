@@ -182,3 +182,26 @@ int sprintf(char *s, const char *fmt, ...)
 	print(s, &pos, fmt, args);
 	return 0;
 }
+
+#define LEN     8
+
+void bufdump(char *buf, int size)
+{
+	uchar_t *line;
+	int i, j, lines;
+
+	lines = (size + LEN - 1) / LEN;
+	for (i = 0; i < lines; i++) {
+		line = (uchar_t *) buf + i * LEN;
+		kprintf("%08x  ", (uint_t) buf + i * LEN);
+		for (j = 0; j < LEN; j++)
+			kprintf("%02x ", line[j]);
+		kprintf(" ");
+		for (j = 0; j < LEN; j++)
+			if (isprint(line[j]))
+				kprintf("%c", (char)line[j]);
+			else
+				kprintf(".");
+		kprintf("\n");
+	}
+}

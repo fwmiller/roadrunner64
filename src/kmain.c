@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 #define PROMPT	"> "
 
 void kprintf(const char *fmt, ...);
@@ -9,6 +11,11 @@ void kmain()
 	unsigned char ch;
 
 	kprintf("Roadrunner\n");
+
+	kprintf("sizeof(uchar_t) = %d\n", sizeof(uchar_t));
+	kprintf("sizeof(ushort_t) = %d\n", sizeof(ushort_t));
+	kprintf("sizeof(uint_t) = %d\n", sizeof(uint_t));
+	kprintf("sizeof(ulong_t) = %d\n", sizeof(ulong_t));
 
 	ata_init();
 

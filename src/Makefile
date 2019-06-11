@@ -11,7 +11,7 @@ LDFLAGS = -nostdlib -Wl,-n,-T,link.ld -no-pie
 
 RM = rm -fr
 
-OBJS = boot.o mb2.o asm.o ata.o kmain.o print.o string.o tsc.o time.o uart.o
+OBJS = boot.o mb2.o ata.o io.o kmain.o part.o print.o string.o time.o uart.o
 KERNEL = kmain.elf
 
 INDENT_RULES = -nbad -bap -nbc -bbo -hnl -br -brs -c33 -cd33 -ncdb -ce -ci4 -cli0 -d0 -di1 -nfc1 -i8 -ip0 -l80 -lp -npcs -nprs -npsl -sai -saf -saw -ncs -nsc -sob -nfca -cp33 -ss -ts8 -il1
