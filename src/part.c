@@ -41,20 +41,43 @@ void read_parttab(uchar_t * mbr, part_t parttab)
 
 	for (i = 0, p = parttab, partent = PART_ENT_1;
 	     i < PARTS; i++, p++, partent += PART_ENT_SIZE) {
+
+		kprintf("read_parttab: mbr + partent = 0x%08x\n",
+			mbr + partent);
+		bufdump(mbr + partent, PART_ENT_SIZE);
+
 		p->active = (uchar_t) loadbyte(mbr + partent + PART_OFF_BOOT);
+		kprintf("read_parttab: active = 0x%02x\n", p->active);
+
 		p->sys = (uchar_t) loadbyte(mbr + partent + PART_OFF_SYS);
 		soff = mbr + partent + PART_OFF_START;
 		eoff = mbr + partent + PART_OFF_END;
+
 		p->st = (uint_t) loadbyte(soff + 2) |
 		    (((uint_t) loadbyte(soff + 1) & 0xc0) << 2);
+		kprintf("read_parttab: start track = %u\n", p->st);
+
 		p->sh = (uint_t) loadbyte(soff);
+		kprintf("read_parttab: start head = %u\n", p->sh);
+
 		p->ss = (uint_t) loadbyte(soff + 1) & 0x3f;
+		kprintf("read_parttab: start sector = %u\n", p->ss);
+
 		p->et = (uint_t) loadbyte(eoff + 2) |
 		    (((uint_t) loadbyte(eoff + 1) & 0xc0) << 2);
+		kprintf("read_parttab: end sector = %u\n", p->et);
+
 		p->eh = (uint_t) loadbyte(eoff);
+		kprintf("read_parttab: end head = %u\n", p->eh);
+
 		p->es = (uint_t) loadbyte(eoff + 1) & 0x3f;
+		kprintf("read_parttab: end sector = %u\n", p->es);
+
 		p->off = (uint_t) loaddword(mbr + partent + PART_OFF_OFF);
 		p->size = (uint_t) loaddword(mbr + partent + PART_OFF_SIZE);
+
+		kprintf("read_parttab: offset = %u\n", p->off);
+		kprintf("read_parttab: size = %u\n", p->size);
 	}
 }
 

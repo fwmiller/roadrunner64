@@ -80,7 +80,7 @@ static inline uchar_t loadcmosbyte(uchar_t field)
 }
 
 uchar_t loadbyte(uchar_t * ptr);
-uint_t loadword(uchar_t * ptr);
+ushort_t loadword(uchar_t * ptr);
 uint_t loaddword(uchar_t * ptr);
 
 void storebyte(uchar_t val, uchar_t * ptr);
