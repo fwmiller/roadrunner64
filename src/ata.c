@@ -344,7 +344,7 @@ int ata_init()
 					     strerror(result));
 #endif
 			}
-			dump_parttab(ataptab);
+			dump_parttab(atad->parttab);
 			continue;
 		}
 		/* Check for an ATAPI device */
@@ -561,9 +561,6 @@ int ata_read(void *dev, uchar_t * b, int *len)
 		return EINVAL;
 
 	nsectors = *len / SECTOR_SIZE;
-#if _DEBUG
-	kprintf("ata_read: nsectors = %d\n", nsectors);
-#endif
 
 	/* Select drive */
 	ATA_OUTB(atad->atac, ATA_DRVHD,
@@ -590,9 +587,6 @@ int ata_read(void *dev, uchar_t * b, int *len)
 
 		ata_eoi(atad->atac);
 	}
-
-	bufdump(b, *len);
-
 	return 0;
 }
 

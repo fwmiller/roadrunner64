@@ -55,12 +55,12 @@ int bcd2int(uchar_t v)
 
 uchar_t loadbyte(uchar_t * ptr)
 {
-	return (uchar_t) *ptr;
+	return (uchar_t) * ptr;
 }
 
 ushort_t loadword(uchar_t * ptr)
 {
-	return (short) * ptr | (ushort_t) (*(ptr + 1) << 8);
+	return (short)*ptr | (ushort_t) (*(ptr + 1) << 8);
 }
 
 uint_t loaddword(uchar_t * ptr)

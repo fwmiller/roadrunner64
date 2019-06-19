@@ -41,43 +41,20 @@ void read_parttab(uchar_t * mbr, part_t parttab)
 
 	for (i = 0, p = parttab, partent = PART_ENT_1;
 	     i < PARTS; i++, p++, partent += PART_ENT_SIZE) {
-
-		kprintf("read_parttab: mbr + partent = 0x%08x\n",
-			mbr + partent);
-		bufdump(mbr + partent, PART_ENT_SIZE);
-
 		p->active = (uchar_t) loadbyte(mbr + partent + PART_OFF_BOOT);
-		kprintf("read_parttab: active = 0x%02x\n", p->active);
-
 		p->sys = (uchar_t) loadbyte(mbr + partent + PART_OFF_SYS);
 		soff = mbr + partent + PART_OFF_START;
 		eoff = mbr + partent + PART_OFF_END;
-
 		p->st = (uint_t) loadbyte(soff + 2) |
 		    (((uint_t) loadbyte(soff + 1) & 0xc0) << 2);
-		kprintf("read_parttab: start track = %u\n", p->st);
-
 		p->sh = (uint_t) loadbyte(soff);
-		kprintf("read_parttab: start head = %u\n", p->sh);
-
 		p->ss = (uint_t) loadbyte(soff + 1) & 0x3f;
-		kprintf("read_parttab: start sector = %u\n", p->ss);
-
 		p->et = (uint_t) loadbyte(eoff + 2) |
 		    (((uint_t) loadbyte(eoff + 1) & 0xc0) << 2);
-		kprintf("read_parttab: end sector = %u\n", p->et);
-
 		p->eh = (uint_t) loadbyte(eoff);
-		kprintf("read_parttab: end head = %u\n", p->eh);
-
 		p->es = (uint_t) loadbyte(eoff + 1) & 0x3f;
-		kprintf("read_parttab: end sector = %u\n", p->es);
-
 		p->off = (uint_t) loaddword(mbr + partent + PART_OFF_OFF);
 		p->size = (uint_t) loaddword(mbr + partent + PART_OFF_SIZE);
-
-		kprintf("read_parttab: offset = %u\n", p->off);
-		kprintf("read_parttab: size = %u\n", p->size);
 	}
 }
 
@@ -111,7 +88,7 @@ void write_parttab(part_t parttab, uchar_t * mbr)
 static void dump_part(int partno, part_t p)
 {
 	kprintf("%c", (p->active ? '*' : ' '));
-	kprintf("%3d  %5u  %3u     %2u  %5u  %3u     %2u %8u %12u ",
+	kprintf("%3d  %5u  %4u %6u %5u  %4u %6u  %6u %12u  ",
 		partno, p->st, p->sh, p->ss, p->et, p->eh, p->es, p->off,
 		p->size);
 	switch (p->sys) {
@@ -157,7 +134,7 @@ static void dump_part(int partno, part_t p)
 #define PART_HDR1                                                       \
     "      ------start------- --------end-------"
 #define PART_HDR2                                                       \
-    "part  track  head sector track  head sector   offset         size type"
+    "part  track  head sector track  head sector   offset        size  type"
 
 void dump_parttab(part_t parttab)
 {
