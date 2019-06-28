@@ -205,8 +205,25 @@ static int ata_identify(atad_t atad, char *drvstr)
 	return 0;
 }
 
+static void
+atapi_read_toc()
+{
+
+}
+
 static int atapi_identify(atad_t atad, char *drvstr)
 {
+	uchar_t sig[4];
+
+	sig[0] = inb(atad->atac->iobase + 2);
+	sig[1] = inb(atad->atac->iobase + 3);
+	sig[2] = inb(atad->atac->iobase + 4);
+	sig[3] = inb(atad->atac->iobase + 5);
+
+	if (sig[0] != 0x01 || sig[1] != 0x01 ||
+	    sig[2] != 0x14 || sig[3] != 0xeb)
+		return EFAIL;
+
 	/* Issue identify packet command */
 	ATA_OUTB(atad->atac, ATA_DRVHD, 0xa0 | (atad->drive << 4));
 	ATA_OUTB(atad->atac, ATA_COMMAND, ATA_CMD_ATAPI_IDENTIFY);
@@ -217,10 +234,6 @@ static int atapi_identify(atad_t atad, char *drvstr)
 	/* Read parameter data */
 	insw(atad->atac->iobase + ATA_DATA,
 	     (void *)&(atad->param), SECTOR_SIZE / 2);
-
-	/* Check for ATAPI device */
-	if ((atad->param.config & 0xc000) != 0x8000)
-		return EFAIL;
 
 	ata_convert_string(atad->param.model, 20);
 	kprintf("%s: ATAPI ", drvstr);
