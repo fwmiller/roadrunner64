@@ -205,12 +205,6 @@ static int ata_identify(atad_t atad, char *drvstr)
 	return 0;
 }
 
-static void
-atapi_read_toc()
-{
-
-}
-
 static int atapi_identify(atad_t atad, char *drvstr)
 {
 	uchar_t sig[4];

@@ -3,10 +3,10 @@
 #define COM_RX_STATUS	((short) 0x3fd)
 
 /**
- *   This function reads a byte from an I/O port.  The function returns
- *   a byte that was read from the I/O port.
+ *   This function reads a byte from an I/O port.
  *
  *   @param port	The I/O port from which the byte is read
+ *   @retval		The byte read from the I/O port
  **/
 static inline unsigned char inb(unsigned short port)
 {
@@ -30,6 +30,8 @@ static inline void outb(unsigned short port, unsigned char val)
  *   This reads a character from the UART.  The function returns a byte
  *   cast as an integer from the UART
  *   return value.
+ *
+ *   @retval		A byte cast to an integer from the UART
  **/
 int uart_getchar()
 {
