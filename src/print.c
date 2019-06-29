@@ -193,7 +193,7 @@ void bufdump(char *buf, int size)
 	lines = (size + LEN - 1) / LEN;
 	for (i = 0; i < lines; i++) {
 		line = (uchar_t *) buf + i * LEN;
-		kprintf("%08x  ", (uint_t) buf + i * LEN);
+		kprintf("%08x  ", (unsigned long long) buf + i * LEN);
 		for (j = 0; j < LEN; j++)
 			kprintf("%02x ", line[j]);
 		kprintf(" ");
