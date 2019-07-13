@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdio.h>
 
 #define PROMPT	"> "
 
@@ -6,17 +7,21 @@ void kprintf(const char *fmt, ...);
 void ata_init();
 int uart_getchar();
 
+static
+void word_widths()
+{
+	kprintf("uchar_t %d ushort_t %d uint_t %d ulong_t %d void* %d\n",
+		sizeof(uchar_t), sizeof(ushort_t), sizeof(uint_t),
+		sizeof(ulong_t), sizeof(void *));
+}
+
 void kmain()
 {
 	unsigned char ch;
 
-	kprintf("Roadrunner\n");
+	kprintf("Roadrunner 64-bit\n");
 
-	kprintf("sizeof(uchar_t) = %d\n", sizeof(uchar_t));
-	kprintf("sizeof(ushort_t) = %d\n", sizeof(ushort_t));
-	kprintf("sizeof(uint_t) = %d\n", sizeof(uint_t));
-	kprintf("sizeof(ulong_t) = %d\n", sizeof(ulong_t));
-
+	word_widths();
 	ata_init();
 
 	kprintf("Type ctrl-a x to exit\n");

@@ -205,6 +205,17 @@ static int ata_identify(atad_t atad, char *drvstr)
 	return 0;
 }
 
+static int atapi_read(atad_t atad, uint_t lba)
+{
+	ushort_t read_cmd[12] = { 0xa8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	uchar_t status;
+	int size;
+
+	//ATA_OUTB(atad->atac, );
+
+	return (-1);
+}
+
 static int atapi_identify(atad_t atad, char *drvstr)
 {
 	uchar_t sig[4];
