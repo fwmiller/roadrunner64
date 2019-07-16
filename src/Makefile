@@ -31,6 +31,9 @@ run: build
 clean:
 	$(RM) $(OBJS) $(KERNEL) isofiles iso.img
 
+wc: clean
+	wc -l ../include/*.h *.S *.c
+
 indent: clean
 	cd ../include;indent $(INDENT_RULES) *.h
 	indent $(INDENT_RULES) *.c

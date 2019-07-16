@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <part.h>
 
+#define ATAPI_SECTOR_SIZE	2048
+
 /* Partitions per drive */
 #define PARTS			4
 
