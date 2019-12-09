@@ -1,6 +1,7 @@
 #ifndef __ATA_H
 #define __ATA_H
 
+#include <ioctl.h>
 #include <stdint.h>
 #include <part.h>
 
@@ -139,6 +140,10 @@ typedef struct ata_partition *atap_t;
 void ata_reset(atac_t atac);
 void ata_convert_string(ushort_t * s, int words);
 int ata_identify(atad_t atad, char *drvstr);
+int ata_seek(atad_t atad, seek_t seekargs);
+
+int atapi_read_sector(atad_t atad, uint_t lba, uchar_t *buf);
+int atapi_identify(atad_t atad, char *drvstr);
 
 int ata_init();
 int ata_get_boot_device(uchar_t drv, char *device);
