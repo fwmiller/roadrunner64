@@ -137,22 +137,24 @@ typedef struct ata_controller *atac_t;
 typedef struct ata_drive *atad_t;
 typedef struct ata_partition *atap_t;
 
-void ata_reset(atac_t atac);
-void ata_convert_string(ushort_t * s, int words);
-int ata_identify(atad_t atad, char *drvstr);
-int ata_seek(atad_t atad, seek_t seekargs);
-
-int atapi_read_sector(atad_t atad, uint_t lba, uchar_t *buf);
-int atapi_identify(atad_t atad, char *drvstr);
-
 int ata_init();
 int ata_get_boot_device(uchar_t drv, char *device);
 int ata_ioctl(void *dev, int cmd, void *args);
+void ata_eoi(atac_t atac);
 int ata_read(void *dev, uchar_t * b, int *len);
 #if 0
 int ata_write(void *dev, buf_t * b);
 #endif
 
+void ata_reset(atac_t atac);
+void ata_convert_string(ushort_t * s, int words);
+int ata_identify(atad_t atad, char *drvstr);
+int ata_seek(atad_t atad, seek_t seekargs);
+int ata_read_mbr(atap_t atap, uchar_t * b, int *len);
+int ata_read_parttab(atad_t atad);
+
+int atapi_read_sector(atad_t atad, uint_t lba, uchar_t *buf);
+int atapi_identify(atad_t atad, char *drvstr);
 
 #define SECTOR_SIZE	512
 
