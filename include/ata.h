@@ -146,6 +146,8 @@ int ata_read(void *dev, uchar_t * b, int *len);
 int ata_write(void *dev, buf_t * b);
 #endif
 
+int ata_wait(atac_t atac, uchar_t cmd, uchar_t mask);
+
 void ata_reset(atac_t atac);
 void ata_convert_string(ushort_t * s, int words);
 int ata_identify(atad_t atad, char *drvstr);

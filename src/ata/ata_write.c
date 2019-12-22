@@ -18,7 +18,8 @@ int ata_write(void *dev, buf_t * b)
 		 0xa0 | ((uchar_t) atad->head & 0x0f) | (atad->drive << 4));
 
 	/* Wait for drive ready */
-	ATA_WAIT(atad->atac, ATA_CMD_WRITE, ATA_STAT_DRDY, ATA_TIMEOUT_DRDY);
+	/*ATA_WAIT(atad->atac, ATA_CMD_WRITE, ATA_STAT_DRDY, ATA_TIMEOUT_DRDY);*/
+	ata_wait(atad->atac, ATA_CMD_WRITE, ATA_STAT_DRDY);
 
 	/* Issue write sectors command */
 	ATA_OUTB(atad->atac, ATA_SECTORCNT, nsectors);
@@ -29,8 +30,9 @@ int ata_write(void *dev, buf_t * b)
 
 	for (i = 0; i < nsectors; i++) {
 		/* Wait for data ready */
-		ATA_WAIT(atad->atac, ATA_CMD_WRITE, ATA_STAT_DRQ,
-			 ATA_TIMEOUT_DRQ);
+		/*ATA_WAIT(atad->atac, ATA_CMD_WRITE, ATA_STAT_DRQ,
+			 ATA_TIMEOUT_DRQ);*/
+		ata_wait(atad->atac, ATA_CMD_WRITE, ATA_STAT_DRQ);
 
 		/* Write sector data */
 		buf = (ushort_t *) (bstart(*b) + i * SECTOR_SIZE);

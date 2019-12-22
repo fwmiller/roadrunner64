@@ -12,7 +12,7 @@ LDFLAGS = -nostdlib -Wl,-n,-T,link.ld -no-pie
 
 RM = rm -fr
 
-OBJS = boot.o mb2.o io.o kmain.o part.o print.o string.o time.o uart.o
+OBJS = boot.o mb2.o io.o kmain.o print.o string.o time.o uart.o
 LIBS = -lata
 KERNEL = kmain.elf
 

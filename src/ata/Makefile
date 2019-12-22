@@ -9,7 +9,7 @@ AR = ar -r
 RANLIB = ranlib
 RM = rm -fr
 
-OBJS = ata.o ata_get_boot_device.o ata_identify.o ata_ioctl.o ata_read.o ata_read_mbr.o ata_read_parttab.o ata_reset.o ata_seek.o ata_write.o atapi.o
+OBJS = ata.o ata_eoi.o ata_get_boot_device.o ata_identify.o ata_io.o ata_ioctl.o ata_read.o ata_read_mbr.o ata_read_parttab.o ata_reset.o ata_seek.o ata_write.o atapi.o part.o
 TGT = libata.a
 
 INDENT_RULES = -nbad -bap -nbc -bbo -hnl -br -brs -c33 -cd33 -ncdb -ce -ci4 -cli0 -d0 -di1 -nfc1 -i8 -ip0 -l80 -lp -npcs -nprs -npsl -sai -saf -saw -ncs -nsc -sob -nfca -cp33 -ss -ts8 -il1
