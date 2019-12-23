@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <part.h>
 
+#define SECTOR_SIZE		512
 #define ATAPI_SECTOR_SIZE	2048
 
 /* Partitions per drive */
@@ -147,6 +148,7 @@ int ata_write(void *dev, buf_t * b);
 #endif
 
 int ata_wait(atac_t atac, uchar_t cmd, uchar_t mask);
+void ata_outb(atac_t atac, ushort_t port, uchar_t val);
 
 void ata_reset(atac_t atac);
 void ata_convert_string(ushort_t * s, int words);
@@ -157,90 +159,5 @@ int ata_read_parttab(atad_t atad);
 
 int atapi_read_sector(atad_t atad, uint_t lba, uchar_t *buf);
 int atapi_identify(atad_t atad, char *drvstr);
-
-#define SECTOR_SIZE	512
-
-#define ATA_OUTB(ATAC, PORT, VAL)					\
-{									\
-    int i;								\
-    uchar_t status;							\
-									\
-    for (i = 0; i < 1000000; i++) {					\
-	status = inb((ATAC)->iobase + ATA_ALT_STATUS);			\
-	if (!(status & ATA_STAT_BSY) && !(status & ATA_STAT_DRQ)) {	\
-	    outb((ATAC)->iobase + (PORT), (VAL));			\
-	    break;							\
-	}								\
-    }									\
-}
-
-#define ATA_WAIT(ATAC, CMD, MASK, TIMEOUT)				\
-{									\
-    int i;								\
-    uchar_t status;							\
-									\
-    for (i = 0; i < 1000000; i++) {					\
-	status = inb((ATAC)->iobase + ATA_ALT_STATUS);			\
-	if (!(status & ATA_STAT_BSY)) {					\
-	    if (status & ATA_STAT_ERR)					\
-		switch (CMD) {						\
-		case ATA_CMD_READ:					\
-		    return EDEVREAD;					\
-		case ATA_CMD_WRITE:					\
-		    return EDEVWRITE;					\
-		default:						\
-		    return ENOSYS;					\
-		}							\
-	    if ((status & (MASK)) == (MASK))				\
-		break;							\
-	}								\
-    }									\
-}
-
-#if 0
-#define ATA_OUTB(ATAC, PORT, VAL)					\
-{									\
-    time_t start;							\
-    uchar_t status;							\
-									\
-    for (start = time();;) {						\
-	status = inb((ATAC)->iobase + ATA_ALT_STATUS);			\
-	if (!(status & ATA_STAT_BSY) && !(status & ATA_STAT_DRQ)) {	\
-	    outb((ATAC)->iobase + (PORT), (VAL));			\
-	    break;							\
-	}								\
-	if (time() - start >= ATA_TIMEOUT_OUTB) {			\
-	    ata_reset(ATAC);						\
-	    return ETIMEDOUT;						\
-	}								\
-    }									\
-}
-
-#define ATA_WAIT(ATAC, CMD, MASK, TIMEOUT)				\
-{									\
-    time_t start;							\
-    uchar_t status;							\
-    int i;
-
-for (start = time();;) {
-	status = inb((ATAC)->iobase + ATA_ALT_STATUS);
-	if (!(status & ATA_STAT_BSY)) {
-		if (status & ATA_STAT_ERR)
-			switch (CMD) {
-			case ATA_CMD_READ:
-				return EDEVREAD;
-			case ATA_CMD_WRITE:
-				return EDEVWRITE;
-			default:
-				return ENOSYS;
-			}
-		if ((status & (MASK)) == (MASK))
-			break;
-	}
-	if (time() - start >= (TIMEOUT))
-		return ETIMEDOUT;
-}
-}
-#endif
 
 #endif /* __ATA_H */

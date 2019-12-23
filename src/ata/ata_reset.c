@@ -1,8 +1,7 @@
 #include <ata.h>
 #include <io.h>
 
-void
-ata_reset(atac_t atac)
+void ata_reset(atac_t atac)
 {
 	int i;
 

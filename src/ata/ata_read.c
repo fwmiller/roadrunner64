@@ -17,24 +17,24 @@ int ata_read(void *dev, uchar_t * b, int *len)
 	nsectors = *len / SECTOR_SIZE;
 
 	/* Select drive */
-	ATA_OUTB(atad->atac, ATA_DRVHD,
+	ata_outb(atad->atac, ATA_DRVHD,
 		 0xa0 | ((uchar_t) atad->head & 0x0f) | (atad->drive << 4));
 
 	/* Wait for drive ready */
-	/*ATA_WAIT(atad->atac, ATA_CMD_READ, ATA_STAT_DRDY, ATA_TIMEOUT_DRDY);*/
+	/*ATA_WAIT(atad->atac, ATA_CMD_READ, ATA_STAT_DRDY, ATA_TIMEOUT_DRDY); */
 	ata_wait(atad->atac, ATA_CMD_READ, ATA_STAT_DRDY);
 
 	/* Issue read sectors command */
-	ATA_OUTB(atad->atac, ATA_SECTORCNT, nsectors);
-	ATA_OUTB(atad->atac, ATA_SECTOR, atad->sector);
-	ATA_OUTB(atad->atac, ATA_TRACKLSB, atad->track);
-	ATA_OUTB(atad->atac, ATA_TRACKMSB, (atad->track >> 8));
-	ATA_OUTB(atad->atac, ATA_COMMAND, ATA_CMD_READ);
+	ata_outb(atad->atac, ATA_SECTORCNT, nsectors);
+	ata_outb(atad->atac, ATA_SECTOR, atad->sector);
+	ata_outb(atad->atac, ATA_TRACKLSB, atad->track);
+	ata_outb(atad->atac, ATA_TRACKMSB, (atad->track >> 8));
+	ata_outb(atad->atac, ATA_COMMAND, ATA_CMD_READ);
 
 	for (i = 0; i < nsectors; i++) {
 		/* Wait for data ready */
 		/*ATA_WAIT(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ,
-			 ATA_TIMEOUT_DRQ);*/
+		   ATA_TIMEOUT_DRQ); */
 		ata_wait(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ);
 
 		/* Read sector data */

@@ -23,11 +23,11 @@ void ata_convert_string(ushort_t * s, int words)
 int ata_identify(atad_t atad, char *drvstr)
 {
 	/* Issue identify command */
-	ATA_OUTB(atad->atac, ATA_DRVHD, 0xa0 | (atad->drive << 4));
-	ATA_OUTB(atad->atac, ATA_COMMAND, ATA_CMD_IDENTIFY);
+	ata_outb(atad->atac, ATA_DRVHD, 0xa0 | (atad->drive << 4));
+	ata_outb(atad->atac, ATA_COMMAND, ATA_CMD_IDENTIFY);
 
 	/* Wait for data ready */
-	/*ATA_WAIT(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ, ATA_TIMEOUT_DRQ);*/
+	/*ATA_WAIT(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ, ATA_TIMEOUT_DRQ); */
 	ata_wait(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ);
 
 	/* Read parameter data */

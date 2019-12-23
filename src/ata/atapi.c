@@ -5,25 +5,23 @@
 void kprintf(const char *fmt, ...);
 void bufdump(char *buf, int size);
 
-int atapi_read_sector(atad_t atad, uint_t lba, uchar_t *buf)
+int atapi_read_sector(atad_t atad, uint_t lba, uchar_t * buf)
 {
 	uchar_t read_cmd[12] = { 0xa8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 	uchar_t status;
 	int size;
 
-	ATA_OUTB(atad->atac, ATA_FEATURE, 0);
-	ATA_OUTB(atad->atac, ATA_TRACKLSB, ATAPI_SECTOR_SIZE & 0xff);
-	ATA_OUTB(atad->atac, ATA_TRACKMSB, ATAPI_SECTOR_SIZE >> 8);
-	ATA_OUTB(atad->atac, ATA_DRVHD, 0xa0 | (atad->drive << 4));
-	/*ATA_WAIT(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ, ATA_TIMEOUT_DRQ);*/
+	ata_outb(atad->atac, ATA_FEATURE, 0);
+	ata_outb(atad->atac, ATA_TRACKLSB, ATAPI_SECTOR_SIZE & 0xff);
+	ata_outb(atad->atac, ATA_TRACKMSB, ATAPI_SECTOR_SIZE >> 8);
+	ata_outb(atad->atac, ATA_DRVHD, 0xa0 | (atad->drive << 4));
+	/*ATA_WAIT(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ, ATA_TIMEOUT_DRQ); */
 	ata_wait(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ);
 
-	while ((status = inb(atad->atac->iobase +
-			     ATA_ALT_STATUS)) & 0x80);
+	while ((status = inb(atad->atac->iobase + ATA_ALT_STATUS)) & 0x80) ;
 
 	while (!((status = inb(atad->atac->iobase +
-			       ATA_ALT_STATUS)) & 0x08) &&
-	       !(status & 0x01));
+			       ATA_ALT_STATUS)) & 0x08) && !(status & 0x01)) ;
 
 	if (status & 0x01) {
 #if _DEBUG
@@ -32,31 +30,28 @@ int atapi_read_sector(atad_t atad, uint_t lba, uchar_t *buf)
 		size = (-1);
 		goto cleanup;
 	}
-	read_cmd[9] = 1;			/* 1 sector */
+	read_cmd[9] = 1;	/* 1 sector */
 	read_cmd[2] = (lba >> 0x18) & 0xff;	/* most sig byte of LBA */
 	read_cmd[3] = (lba >> 0x10) & 0xff;
 	read_cmd[4] = (lba >> 0x08) & 0xff;
 	read_cmd[5] = (lba >> 0x00) & 0xff;	/* least sig byte of LBA */
 
-	outsw(atad->atac->iobase,
-	      (ushort_t *) read_cmd,
-	      sizeof(read_cmd) >> 1);
+	outsw(atad->atac->iobase, (ushort_t *) read_cmd, sizeof(read_cmd) >> 1);
 
 	/* XXX Wait for data ready IRQ */
 
 	/* Read actual size */
-	size = (((int) inb (atad->atac->iobase + ATA_TRACKMSB)) << 8) |
-	       (int) (inb (atad->atac->iobase + ATA_TRACKLSB));
+	size = (((int)inb(atad->atac->iobase + ATA_TRACKMSB)) << 8) |
+	    (int)(inb(atad->atac->iobase + ATA_TRACKLSB));
 #if _DEBUG
 	if (size != ATAPI_SECTOR_SIZE) {
-		kprintf("atapi_read: bad sector size read = %d bytes\n",
-			size);
+		kprintf("atapi_read: bad sector size read = %d bytes\n", size);
 	}
 #endif
 	/* Read data */
 	insw(atad->atac->iobase, (ushort_t *) buf, size >> 1);
 
-cleanup:
+ cleanup:
 	return size;
 }
 
@@ -76,11 +71,11 @@ int atapi_identify(atad_t atad, char *drvstr)
 		return EFAIL;
 
 	/* Issue identify packet command */
-	ATA_OUTB(atad->atac, ATA_DRVHD, 0xa0 | (atad->drive << 4));
-	ATA_OUTB(atad->atac, ATA_COMMAND, ATA_CMD_ATAPI_IDENTIFY);
+	ata_outb(atad->atac, ATA_DRVHD, 0xa0 | (atad->drive << 4));
+	ata_outb(atad->atac, ATA_COMMAND, ATA_CMD_ATAPI_IDENTIFY);
 
 	/* Wait for data ready */
-	/*ATA_WAIT(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ, ATA_TIMEOUT_DRQ);*/
+	/*ATA_WAIT(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ, ATA_TIMEOUT_DRQ); */
 	ata_wait(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ);
 
 	/* Read parameter data */
@@ -96,8 +91,8 @@ int atapi_identify(atad_t atad, char *drvstr)
 	kprintf("%s: %s\n", drvstr, atad->param.model);
 
 	result = atapi_read_sector(atad, 0, buf);
-	
-	bufdump((char *) buf, 128);
+
+	bufdump((char *)buf, 128);
 
 	return result;
 }
