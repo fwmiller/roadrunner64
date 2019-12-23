@@ -15,7 +15,6 @@ int atapi_read_sector(atad_t atad, uint_t lba, uchar_t * buf)
 	ata_outb(atad->atac, ATA_TRACKLSB, ATAPI_SECTOR_SIZE & 0xff);
 	ata_outb(atad->atac, ATA_TRACKMSB, ATAPI_SECTOR_SIZE >> 8);
 	ata_outb(atad->atac, ATA_DRVHD, 0xa0 | (atad->drive << 4));
-	/*ATA_WAIT(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ, ATA_TIMEOUT_DRQ); */
 	ata_wait(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ);
 
 	while ((status = inb(atad->atac->iobase + ATA_ALT_STATUS)) & 0x80) ;
@@ -75,7 +74,6 @@ int atapi_identify(atad_t atad, char *drvstr)
 	ata_outb(atad->atac, ATA_COMMAND, ATA_CMD_ATAPI_IDENTIFY);
 
 	/* Wait for data ready */
-	/*ATA_WAIT(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ, ATA_TIMEOUT_DRQ); */
 	ata_wait(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ);
 
 	/* Read parameter data */

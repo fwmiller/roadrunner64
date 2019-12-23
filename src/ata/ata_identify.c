@@ -27,7 +27,6 @@ int ata_identify(atad_t atad, char *drvstr)
 	ata_outb(atad->atac, ATA_COMMAND, ATA_CMD_IDENTIFY);
 
 	/* Wait for data ready */
-	/*ATA_WAIT(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ, ATA_TIMEOUT_DRQ); */
 	ata_wait(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ);
 
 	/* Read parameter data */
