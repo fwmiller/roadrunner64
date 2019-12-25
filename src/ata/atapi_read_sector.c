@@ -1,9 +1,7 @@
 #include <ata.h>
-#include <errno.h>
 #include <io.h>
 
 void kprintf(const char *fmt, ...);
-void bufdump(char *buf, int size);
 
 int atapi_read_sector(atad_t atad, uint_t lba, uchar_t * buf)
 {
@@ -52,45 +50,4 @@ int atapi_read_sector(atad_t atad, uint_t lba, uchar_t * buf)
 
  cleanup:
 	return size;
-}
-
-int atapi_identify(atad_t atad, char *drvstr)
-{
-	uchar_t sig[4];
-	uchar_t buf[ATAPI_SECTOR_SIZE];
-	int result;
-
-	sig[0] = inb(atad->atac->iobase + 2);
-	sig[1] = inb(atad->atac->iobase + 3);
-	sig[2] = inb(atad->atac->iobase + 4);
-	sig[3] = inb(atad->atac->iobase + 5);
-
-	if (sig[0] != 0x01 || sig[1] != 0x01 ||
-	    sig[2] != 0x14 || sig[3] != 0xeb)
-		return EFAIL;
-
-	/* Issue identify packet command */
-	ata_outb(atad->atac, ATA_DRVHD, 0xa0 | (atad->drive << 4));
-	ata_outb(atad->atac, ATA_COMMAND, ATA_CMD_ATAPI_IDENTIFY);
-
-	/* Wait for data ready */
-	ata_wait(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ);
-
-	/* Read parameter data */
-	insw(atad->atac->iobase + ATA_DATA,
-	     (void *)&(atad->param), SECTOR_SIZE / 2);
-
-	ata_convert_string(atad->param.model, 20);
-	kprintf("%s: ATAPI ", drvstr);
-	if (((atad->param.config >> 8) & 0x1f) == 5)
-		kprintf("CD-ROM drive\n");
-	else
-		kprintf("device\n");
-	kprintf("%s: %s\n", drvstr, atad->param.model);
-
-	result = atapi_read_sector(atad, 0, buf);
-
-	bufdump((char *)buf, 128);
-
-	return result;
 }

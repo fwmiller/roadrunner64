@@ -4,9 +4,7 @@
 
 static struct ata_controller atactab[ATA_CONTROLLERS];
 static struct ata_drive atadtab[ATA_DRIVES];
-
 static struct ata_partition ataptab[PARTS * ATA_DRIVES];
-static int nextpart = 0;
 
 void kprintf(const char *fmt, ...);
 
@@ -38,7 +36,7 @@ int ata_init()
 		sprintf(s, "ata%d", drive);
 		result = ata_identify(atad, s);
 		if (result == 0 && atad->blks > 0) {
-			int part;
+			int part, nextpart = 0;
 
 			/* Read the partition table */
 			atad->type = ATA_DRV_HD;
@@ -48,24 +46,11 @@ int ata_init()
 
 			for (part = 0; part < PARTS; part++) {
 				atap_t atap;
-#if 0
-				struct hd hd;
-#endif
+
 				atap = &(ataptab[nextpart++]);
 				atap->atad = atad;
 				atap->sectors = atad->parttab[part].size;
 				atap->offset = atad->parttab[part].off;
-#if 0
-				hd.ioctl = ata_ioctl;
-				hd.read = ata_read;
-				hd.write = ata_write;
-				hd.part = atap;
-				result = hd_alloc(&hd);
-				if (result < 0)
-					kprintf
-					    ("ata_init: allocate hd failed (%s)\n",
-					     strerror(result));
-#endif
 			}
 			dump_parttab(atad->parttab);
 			continue;
