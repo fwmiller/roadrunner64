@@ -38,10 +38,9 @@ int atapi_identify(atad_t atad, char *drvstr)
 	else
 		kprintf("device\n");
 	kprintf("%s: %s\n", drvstr, atad->param.model);
-#if 0
-	result = atapi_read_sector(atad, 0, buf);
 
+	result = atapi_read_sector(atad, 0, buf);
 	bufdump((char *)buf, 128);
-#endif
+
 	return result;
 }

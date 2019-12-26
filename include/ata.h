@@ -17,30 +17,36 @@
 #define ATA0_IOBASE		0x01f0
 #define ATA1_IOBASE		0x0170
 
-/* Controller registers */
+#define ATA0_CTLBASE		0x03f6
+#define ATA1_CTLBASE		0x0376
+
+/* Controller I/O register offsets */
 #define ATA_DATA		0	/* 16-bit port */
-#define ATA_ERR			0x001
-#define ATA_FEATURE		0x001
-#define ATA_SECTORCNT		0x002
-#define ATA_SECTOR		0x003
-#define ATA_TRACKLSB		0x004
-#define ATA_TRACKMSB		0x005
-#define ATA_DRVHD		0x006
-#define ATA_STATUS		0x007
-#define ATA_COMMAND		0x007
-#define ATA_ALT_STATUS		0x206
-#define ATA_CONTROL		0x206
+#define ATA_ERR			0x001	/* Error register (R) */
+#define ATA_FEATURE		0x001	/* Features register (W) */
+#define ATA_SECTORCNT		0x002	/* Sector count register (RW) */
+#define ATA_SECTOR		0x003	/* Sector number reg (LBAlo) (RW) */
+#define ATA_TRACKLSB		0x004	/* Cylinder low reg (LBAmid) (RW) */
+#define ATA_TRACKMSB		0x005	/* Cylinder High reg (LBAhi) (RW) */
+#define ATA_DRVHD		0x006	/* Drive/head register (RW) */
+#define ATA_STATUS		0x007	/* Status register (R) */
+#define ATA_COMMAND		0x007	/* Command register (W) */
+
+/* Controller Ctl register offsets */
+#define ATA_ALT_STATUS		0x00	/* Alternate status register */
+#define ATA_DEV_CONTROL		0x00	/* Device control register */
+#define ATA_DRVADDR		0x01	/* Drive address register */
 
 /* Controller commands */
 #define ATA_CTL_RESET		0x04
 
 /* Drive commands */
-#define ATA_CMD_READ		0x20
-#define ATA_CMD_WRITE		0x30
-#define ATA_CMD_ATAPI_IDENTIFY	0xa1
-#define ATA_CMD_IDENTIFY	0xec
+#define ATA_CMD_READ		0x20	/* Read sectors with retry */
+#define ATA_CMD_WRITE		0x30	/* Write sectors with retry */
+#define ATA_CMD_ATAPI_IDENTIFY	0xa1	/* Identify packet device */
+#define ATA_CMD_IDENTIFY	0xec	/* Identify device */
 
-/* Controller status */
+/* Controller status bits */
 #define ATA_STAT_ERR		0x01	/* Error */
 #define ATA_STAT_IDX		0x02	/* Index */
 #define ATA_STAT_CORR		0x04	/* Corrected data */
@@ -50,7 +56,7 @@
 #define ATA_STAT_DRDY		0x40	/* Drive ready */
 #define ATA_STAT_BSY		0x80	/* Controller busy */
 
-/* Controller error conditions */
+/* Controller error conditions bits */
 #define ATA_ERR_AMNF		0x01	/* Address mark not found */
 #define ATA_ERR_TK0NF		0x02	/* Track 0 not found */
 #define ATA_ERR_ABRT		0x04	/* Abort */

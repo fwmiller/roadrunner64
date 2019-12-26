@@ -57,7 +57,7 @@ int ata_identify(atad_t atad, char *drvstr)
 	kprintf("%s: %u blks (%d Mbytes) %u trks %u hds %u sec/trk\n",
 		drvstr, atad->blks, atad->size,
 		atad->tracks, atad->heads, atad->sectorspertrack);
-	atad->flags = ATA_FLAG_FOUND;
+	atad->flags |= ATA_FLAG_FOUND;
 
 	return 0;
 }
