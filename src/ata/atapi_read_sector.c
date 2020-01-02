@@ -15,14 +15,14 @@ int atapi_read_sector(atad_t atad, uint_t lba, uchar_t * buf)
 	ata_outb(atad->atac, ATA_DRVHD, 0xa0 | (atad->drive << 4));
 	ata_wait(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ);
 
-	while ((status = inb(atad->atac->iobase + ATA_ALT_STATUS)) & 0x80)
+	while ((status = inb(atad->atac->ctlbase + ATA_ALT_STATUS)) & 0x80)
 		kprintf(".");
 #if 0
-	while (!((status = inb(atad->atac->iobase +
+	while (!((status = inb(atad->atac->ctlbase +
 			       ATA_ALT_STATUS)) & 0x08) && !(status & 0x01))
 		kprintf("!");
 #endif
-	status = inb(atad->atac->iobase + ATA_ALT_STATUS);
+	status = inb(atad->atac->ctlbase + ATA_ALT_STATUS);
 	if (status & 0x01) {
 #if _DEBUG
 		kprintf("atapi_read: failed\n");

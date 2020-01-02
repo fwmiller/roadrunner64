@@ -2,7 +2,7 @@
 #include <errno.h>
 #include <io.h>
 
-#define ITERATIONS	1000000
+#define ITERATIONS	100000
 
 int ata_wait(atac_t atac, uchar_t cmd, uchar_t mask)
 {
@@ -10,7 +10,7 @@ int ata_wait(atac_t atac, uchar_t cmd, uchar_t mask)
 	uchar_t status;
 
 	for (i = 0; i < ITERATIONS; i++) {
-		status = inb(atac->iobase + ATA_ALT_STATUS);
+		status = inb(atac->ctlbase + ATA_ALT_STATUS);
 		if (!(status & ATA_STAT_BSY)) {
 			if (status & ATA_STAT_ERR) {
 				switch (cmd) {
@@ -35,7 +35,7 @@ void ata_outb(atac_t atac, ushort_t port, uchar_t val)
 	uchar_t status;
 
 	for (i = 0; i < 1000000; i++) {
-		status = inb(atac->iobase + ATA_ALT_STATUS);
+		status = inb(atac->ctlbase + ATA_ALT_STATUS);
 		if (!(status & ATA_STAT_BSY) && !(status & ATA_STAT_DRQ)) {
 			outb(atac->iobase + port, val);
 			break;
@@ -50,7 +50,7 @@ void ata_outb(atac_t atac, ushort_t port, uchar_t val)
 	uchar_t status;
 
 	for (start = time();;) {
-		status = inb((ATAC)->iobase + ATA_ALT_STATUS);
+		status = inb((ATAC)->ctlbase + ATA_ALT_STATUS);
 		if (!(status & ATA_STAT_BSY) && !(status & ATA_STAT_DRQ)) {
 			outb((ATAC)->iobase + (PORT), (VAL));
 			break;
@@ -69,7 +69,7 @@ void ata_outb(atac_t atac, ushort_t port, uchar_t val)
 	int i;
 
 	for (start = time();;) {
-		status = inb((ATAC)->iobase + ATA_ALT_STATUS);
+		status = inb((ATAC)->ctlbase + ATA_ALT_STATUS);
 		if (!(status & ATA_STAT_BSY)) {
 			if (status & ATA_STAT_ERR)
 				switch (CMD) {

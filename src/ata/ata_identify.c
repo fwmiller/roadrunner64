@@ -36,6 +36,7 @@ int ata_identify(atad_t atad, char *drvstr)
 	/* Check for ATA device */
 	if (atad->param.config & 0x8000) {
 #if _DEBUG
+		kprintf("ata_identify: not an ata device\n");
 		if ((atad->param.config & 0xc000) == 0x8000)
 			kprintf("ata_identify: detected ATAPI device\n");
 #endif
@@ -47,10 +48,16 @@ int ata_identify(atad_t atad, char *drvstr)
 	atad->sectorspertrack = atad->param.sectors;
 	atad->blks = atad->tracks * atad->heads * atad->sectorspertrack;
 	atad->size = (atad->blks * SECTOR_SIZE) / 1048576;
-
-	if (atad->blks == 0)
+#if _DEBUG
+	kprintf("ata_identify: tracks %d heads %d sec per trk %d\n",
+			atad->tracks, atad->heads, atad->sectorspertrack);
+#endif
+	if (atad->blks == 0) {
+#if _DEBUG
+		kprintf("ata_identify: zero blks\n");
+#endif
 		return EFAIL;
-
+	}
 	ata_convert_string(atad->param.model, 20);
 	kprintf("%s: ATA hard disk\n", drvstr);
 	kprintf("%s: %s\n", drvstr, atad->param.model);

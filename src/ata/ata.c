@@ -18,6 +18,8 @@ int ata_init()
 	/* Initial configuration for both controllers */
 	atactab[0].iobase = ATA0_IOBASE;
 	atactab[1].iobase = ATA1_IOBASE;
+	atactab[0].ctlbase = ATA0_CTLBASE;
+	atactab[1].ctlbase = ATA1_CTLBASE;
 
 	/* Reset both controllers */
 	ata_reset(&(atactab[0]));
@@ -34,6 +36,9 @@ int ata_init()
 		/* Check for an ATA hard drive */
 		memset(s, 0, 8);
 		sprintf(s, "ata%d", drive);
+#if _DEBUG
+		kprintf("%s\n", s);
+#endif
 		result = ata_identify(atad, s);
 		if (result == 0 && atad->blks > 0) {
 			int part, nextpart = 0;

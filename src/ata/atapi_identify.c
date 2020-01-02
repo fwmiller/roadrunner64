@@ -17,9 +17,12 @@ int atapi_identify(atad_t atad, char *drvstr)
 	sig[3] = inb(atad->atac->iobase + 5);
 
 	if (sig[0] != 0x01 || sig[1] != 0x01 ||
-	    sig[2] != 0x14 || sig[3] != 0xeb)
+	    sig[2] != 0x14 || sig[3] != 0xeb) {
+#if _DEBUG
+		kprintf("atapi_identify: signature does not match\n");
+#endif
 		return EFAIL;
-
+	}
 	/* Issue identify packet command */
 	ata_outb(atad->atac, ATA_DRVHD, 0xa0 | (atad->drive << 4));
 	ata_outb(atad->atac, ATA_COMMAND, ATA_CMD_ATAPI_IDENTIFY);

@@ -108,6 +108,7 @@ struct ata_controller {
 	struct mutex mutex;	/* Controller mutex */
 #endif
 	ushort_t iobase;	/* I/O port registers base address */
+	ushort_t ctlbase;	/* Ctl port registers base address */
 };
 
 struct ata_drive {
