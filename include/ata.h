@@ -38,7 +38,8 @@
 #define ATA_DRVADDR		0x01	/* Drive address register */
 
 /* Controller commands */
-#define ATA_CTL_RESET		0x04
+#define ATA_CTL_NIEN		0x02	/* nIEN disable interrupt */
+#define ATA_CTL_RESET		0x04	/* Reset controller */
 
 /* Drive commands */
 #define ATA_CMD_READ		0x20	/* Read sectors with retry */

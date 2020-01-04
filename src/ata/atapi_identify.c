@@ -42,6 +42,7 @@ int atapi_identify(atad_t atad, char *drvstr)
 		kprintf("device\n");
 	kprintf("%s: %s\n", drvstr, atad->param.model);
 
+	memset(buf, 0, ATAPI_SECTOR_SIZE);
 	result = atapi_read_sector(atad, 0, buf);
 	bufdump((char *)buf, 128);
 
