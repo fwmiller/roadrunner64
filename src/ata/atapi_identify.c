@@ -11,10 +11,10 @@ int atapi_identify(atad_t atad, char *drvstr)
 	uchar_t buf[ATAPI_SECTOR_SIZE];
 	int result;
 
-	sig[0] = inb(atad->atac->iobase + 2);
-	sig[1] = inb(atad->atac->iobase + 3);
-	sig[2] = inb(atad->atac->iobase + 4);
-	sig[3] = inb(atad->atac->iobase + 5);
+	sig[0] = inb(atad->atac->iobase + ATA_SECTORCNT);
+	sig[1] = inb(atad->atac->iobase + ATA_SECTOR);
+	sig[2] = inb(atad->atac->iobase + ATA_TRACKLSB);
+	sig[3] = inb(atad->atac->iobase + ATA_TRACKMSB);
 
 	if (sig[0] != 0x01 || sig[1] != 0x01 ||
 	    sig[2] != 0x14 || sig[3] != 0xeb) {

@@ -9,11 +9,11 @@ int atapi_read_sector(atad_t atad, uint_t lba, uchar_t * buf)
 	uchar_t status;
 	int size;
 
+	ata_outb(atad->atac, ATA_DRVHD, 0xa0 | (atad->drive << 4));
 	ata_outb(atad->atac, ATA_FEATURE, 0);
 	ata_outb(atad->atac, ATA_TRACKLSB, ATAPI_SECTOR_SIZE & 0xff);
 	ata_outb(atad->atac, ATA_TRACKMSB, ATAPI_SECTOR_SIZE >> 8);
-	ata_outb(atad->atac, ATA_DRVHD, 0xa0 | (atad->drive << 4));
-	ata_wait(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ);
+	ata_wait(atad->atac, ATA_CMD_ATAPI_READ, ATA_STAT_DRQ);
 
 	while ((status = inb(atad->atac->ctlbase + ATA_ALT_STATUS)) & 0x80)
 		kprintf(".");

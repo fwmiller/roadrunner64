@@ -44,6 +44,7 @@
 /* Drive commands */
 #define ATA_CMD_READ		0x20	/* Read sectors with retry */
 #define ATA_CMD_WRITE		0x30	/* Write sectors with retry */
+#define ATA_CMD_ATAPI_READ	0xa0	/* Identify packet device */
 #define ATA_CMD_ATAPI_IDENTIFY	0xa1	/* Identify packet device */
 #define ATA_CMD_IDENTIFY	0xec	/* Identify device */
 
