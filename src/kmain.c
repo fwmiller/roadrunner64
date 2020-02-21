@@ -19,7 +19,7 @@ void kmain()
 {
 	unsigned char ch;
 
-	kprintf("Roadrunner 64-bit\n");
+	kprintf("\nRoadrunner 64-bit\n");
 
 	word_widths();
 	ata_init();

@@ -9,14 +9,22 @@ int atapi_read_sector(atad_t atad, uint_t lba, uchar_t * buf)
 	uchar_t status;
 	int size;
 
+	/* Select drive */
 	ata_outb(atad->atac, ATA_DRVHD, 0xa0 | (atad->drive << 4));
+	ata_select_delay(atad->atac);
+
+	/* Issue read sectors command */
 	ata_outb(atad->atac, ATA_FEATURE, 0);
 	ata_outb(atad->atac, ATA_TRACKLSB, ATAPI_SECTOR_SIZE & 0xff);
 	ata_outb(atad->atac, ATA_TRACKMSB, ATAPI_SECTOR_SIZE >> 8);
+	ata_outb(atad->atac, ATA_COMMAND, 0xa0);
 	ata_wait(atad->atac, ATA_CMD_ATAPI_READ, ATA_STAT_DRQ);
 
-	while ((status = inb(atad->atac->ctlbase + ATA_ALT_STATUS)) & 0x80)
+	while ((status = inb(atad->atac->ctlbase + ATA_ALT_STATUS)) & 0x80) {
+#if _DEBUG
 		kprintf(".");
+#endif
+	}
 #if 0
 	while (!((status = inb(atad->atac->ctlbase +
 			       ATA_ALT_STATUS)) & 0x08) && !(status & 0x01))
@@ -25,7 +33,7 @@ int atapi_read_sector(atad_t atad, uint_t lba, uchar_t * buf)
 	status = inb(atad->atac->ctlbase + ATA_ALT_STATUS);
 	if (status & 0x01) {
 #if _DEBUG
-		kprintf("atapi_read: failed\n");
+		kprintf("atapi_read_sector: failed\n");
 #endif
 		size = (-1);
 		goto cleanup;
@@ -45,7 +53,8 @@ int atapi_read_sector(atad_t atad, uint_t lba, uchar_t * buf)
 	    (int)(inb(atad->atac->iobase + ATA_TRACKLSB));
 #if _DEBUG
 	if (size != ATAPI_SECTOR_SIZE) {
-		kprintf("atapi_read: bad sector size read = %d bytes\n", size);
+		kprintf("atapi_read_sector: ");
+		kprintf("bad sector size read = %d bytes\n", size);
 	}
 #endif
 	/* Read data */

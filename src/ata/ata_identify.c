@@ -24,10 +24,14 @@ int ata_identify(atad_t atad, char *drvstr)
 {
 	/* Issue identify command */
 	ata_outb(atad->atac, ATA_DRVHD, 0xa0 | (atad->drive << 4));
+	ata_select_delay(atad->atac);
 	ata_outb(atad->atac, ATA_COMMAND, ATA_CMD_IDENTIFY);
 
 	/* Wait for data ready */
-	ata_wait(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ);
+	for (int cnt = 100000;
+             cnt > 0 &&
+	     !(inb(atad->atac->iobase + ATA_STATUS) & ATA_STAT_DRDY);
+	     cnt--);
 
 	/* Read parameter data */
 	insw(atad->atac->iobase + ATA_DATA,

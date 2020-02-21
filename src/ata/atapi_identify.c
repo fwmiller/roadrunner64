@@ -1,6 +1,7 @@
 #include <ata.h>
 #include <errno.h>
 #include <io.h>
+#include <string.h>
 
 void kprintf(const char *fmt, ...);
 void bufdump(char *buf, int size);
@@ -25,6 +26,7 @@ int atapi_identify(atad_t atad, char *drvstr)
 	}
 	/* Issue identify packet command */
 	ata_outb(atad->atac, ATA_DRVHD, 0xa0 | (atad->drive << 4));
+	ata_select_delay(atad->atac);
 	ata_outb(atad->atac, ATA_COMMAND, ATA_CMD_ATAPI_IDENTIFY);
 
 	/* Wait for data ready */

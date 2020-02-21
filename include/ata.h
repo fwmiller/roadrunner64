@@ -158,6 +158,7 @@ int ata_write(void *dev, buf_t * b);
 
 int ata_wait(atac_t atac, uchar_t cmd, uchar_t mask);
 void ata_outb(atac_t atac, ushort_t port, uchar_t val);
+void ata_select_delay(atac_t atac);
 
 void ata_reset(atac_t atac);
 void ata_convert_string(ushort_t * s, int words);
