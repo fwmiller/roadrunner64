@@ -39,12 +39,20 @@ int atapi_identify(atad_t atad, char *drvstr)
 	ata_convert_string(atad->param.model, 20);
 	kprintf("%s: ATAPI ", drvstr);
 	if (((atad->param.config >> 8) & 0x1f) == 5)
-		kprintf("CD-ROM drive\n");
+		kprintf("CD-ROM drive");
 	else
-		kprintf("device\n");
+		kprintf("device");
+	kprintf("\n");
+
 	kprintf("%s: %s\n", drvstr, atad->param.model);
 
+	kprintf("atapi_identify: sector 0\n");
 	memset(buf, 0, ATAPI_SECTOR_SIZE);
+	result = atapi_read_sector(atad, 0, buf);
+	bufdump((char *)buf, 128);
+
+	kprintf("atapi_identify: sector 1\n");
+	memset(buf, 1, ATAPI_SECTOR_SIZE);
 	result = atapi_read_sector(atad, 0, buf);
 	bufdump((char *)buf, 128);
 

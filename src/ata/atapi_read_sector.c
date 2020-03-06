@@ -25,6 +25,8 @@ int atapi_read_sector(atad_t atad, uint_t lba, uchar_t * buf)
 		kprintf(".");
 #endif
 	}
+
+
 #if 0
 	while (!((status = inb(atad->atac->ctlbase +
 			       ATA_ALT_STATUS)) & 0x08) && !(status & 0x01))
@@ -52,6 +54,7 @@ int atapi_read_sector(atad_t atad, uint_t lba, uchar_t * buf)
 	size = (((int)inb(atad->atac->iobase + ATA_TRACKMSB)) << 8) |
 	    (int)(inb(atad->atac->iobase + ATA_TRACKLSB));
 #if _DEBUG
+	kprintf("atapi_read_sector: read %d bytes\n", size);
 	if (size != ATAPI_SECTOR_SIZE) {
 		kprintf("atapi_read_sector: ");
 		kprintf("bad sector size read = %d bytes\n", size);
