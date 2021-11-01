@@ -145,26 +145,27 @@ typedef struct ata_drive *atad_t;
 typedef struct ata_partition *atap_t;
 
 int ata_init();
-int ata_get_boot_device(uchar_t drv, char *device);
-void ata_eoi(atac_t atac);
-int ata_read(void *dev, uchar_t * b, int *len);
-#if 0
-int ata_write(void *dev, buf_t * b);
-#endif
 
+int ata_read(void *dev, uchar_t * b, int *len);
+
+void ata_reset(atac_t atac);
+void ata_eoi(atac_t atac);
+void ata_select_delay(atac_t atac);
 int ata_wait(atac_t atac, uchar_t cmd, uchar_t mask);
 uchar_t ata_inb(atac_t atac, ushort_t port);
 void ata_outb(atac_t atac, ushort_t port, uchar_t val);
-void ata_select_delay(atac_t atac);
 
-void ata_reset(atac_t atac);
-void ata_convert_string(ushort_t * s, int words);
 int ata_identify(atad_t atad, char *drvstr);
+int ata_read_parttab(atad_t atad);
 int ata_seek(atad_t atad, seek_t seekargs);
 int ata_read_mbr(atap_t atap, uchar_t * b, int *len);
-int ata_read_parttab(atad_t atad);
 
-int atapi_read_sector(atad_t atad, uint_t lba, uchar_t *buf);
+void ata_convert_string(ushort_t * s, int words);
+
 int atapi_identify(atad_t atad, char *drvstr);
+
+void read_parttab(uchar_t * mbr, part_t parttab);
+void write_parttab(part_t parttab, uchar_t * mbr);
+void dump_parttab(part_t parttab);
 
 #endif /* __ATA_H */

@@ -54,8 +54,9 @@ void kmain()
 	char cmdline[80];
 
 	kprintf("\nRoadrunner 64-bit\n");
-
+#if 0
 	word_widths();
+#endif
 	ata_init();
 
 	kprintf("Type ctrl-a x to exit\n");
