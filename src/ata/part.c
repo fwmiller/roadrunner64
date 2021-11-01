@@ -100,6 +100,9 @@ static void dump_part(int partno, part_t p)
 	case PART_SYS_RRFS:
 		kprintf("rrfs");
 		break;
+	case PART_SYS_MEMORY_DUMP:
+		kprintf("memory dump");
+		break;
 	default:
 		kprintf("0x%02x", (uchar_t) p->sys);
 	}

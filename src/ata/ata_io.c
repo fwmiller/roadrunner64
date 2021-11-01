@@ -4,7 +4,8 @@
 
 #define ITERATIONS	100000
 
-int ata_wait(atac_t atac, uchar_t cmd, uchar_t mask)
+int
+ata_wait(atac_t atac, uchar_t cmd, uchar_t mask)
 {
 	int i;
 	uchar_t status;
@@ -29,8 +30,17 @@ int ata_wait(atac_t atac, uchar_t cmd, uchar_t mask)
 	return 0;
 }
 
-void ata_outb(atac_t atac, ushort_t port, uchar_t val)
+uchar_t
+ata_inb(atac_t atac, ushort_t port)
 {
+	return inb(atac->iobase + port);
+}
+
+void
+ata_outb(atac_t atac, ushort_t port, uchar_t val)
+{
+	outb(atac->iobase + port, val);
+#if 0
 	int i;
 	uchar_t status;
 
@@ -41,7 +51,9 @@ void ata_outb(atac_t atac, ushort_t port, uchar_t val)
 			break;
 		}
 	}
+#endif
 }
+
 
 #if 0
 #define ATA_OUTB(ATAC, PORT, VAL)

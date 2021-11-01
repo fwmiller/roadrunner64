@@ -57,6 +57,7 @@ typedef struct part {
 #define PART_SYS_LINUX_SWAP	0x82
 #define PART_SYS_EXT2FS		0x83
 #define PART_SYS_RRFS		0xcc
+#define PART_SYS_MEMORY_DUMP	0xcd
 	uchar_t sys;		/* File system type */
 
 	uint_t st;		/* Start track */

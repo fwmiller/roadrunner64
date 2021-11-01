@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #if 0
 #include <stdio.h>
 #include <stdlib.h>
@@ -96,11 +98,13 @@ time_t time()
 	return systemclock.tv_sec;
 }
 
-/*
- * The caller must disable/enable interrupts
- */
 void utime(long *tv_sec, long *tv_usec)
 {
+	/* The caller must disable/enable interrupts */
+
+	if (tv_sec == NULL || tv_usec == NULL)
+		return;
+
 	*tv_sec = systemclock.tv_sec;
 	*tv_usec = systemclock.tv_usec;
 }

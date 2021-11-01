@@ -6,4 +6,6 @@ typedef unsigned short ushort_t;
 typedef unsigned int uint_t;
 typedef unsigned long ulong_t;
 
+typedef unsigned char uint8_t;
+
 #endif

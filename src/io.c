@@ -1,87 +1,88 @@
 #include <io.h>
 
-void insb(ushort_t port, uchar_t * dst, int bytes)
+void
+insb(ushort_t port, uchar_t * dst, int bytes)
 {
-	int i;
-
-	for (i = 0; i < bytes; i++)
+	for (int i = 0; i < bytes; i++)
 		dst[i] = inb(port);
 }
 
-void insw(ushort_t port, ushort_t * dst, int words)
+void
+insw(ushort_t port, ushort_t * dst, int words)
 {
-	int i;
-
-	for (i = 0; i < words; i++)
+	for (int i = 0; i < words; i++)
 		((ushort_t *) dst)[i] = inw(port);
 }
 
-void insl(ushort_t port, ulong_t * dst, int dwords)
+void
+insl(ushort_t port, ulong_t * dst, int dwords)
 {
-	int i;
-
-	for (i = 0; i < dwords; i++)
+	for (int i = 0; i < dwords; i++)
 		((uint_t *) dst)[i] = inl(port);
 }
 
-void outsb(ushort_t port, uchar_t * src, int bytes)
+void
+outsb(ushort_t port, uchar_t * src, int bytes)
 {
-	int i;
-
-	for (i = 0; i < bytes; i++)
+	for (int i = 0; i < bytes; i++)
 		outb(port, src[i]);
 }
 
-void outsw(ushort_t port, ushort_t * src, int words)
+void
+outsw(ushort_t port, ushort_t * src, int words)
 {
-	int i;
-
-	for (i = 0; i < words; i++)
+	for (int i = 0; i < words; i++)
 		outw(port, ((ushort_t *) src)[i]);
 }
 
-void outsl(ushort_t port, ulong_t * src, int dwords)
+void
+outsl(ushort_t port, ulong_t * src, int dwords)
 {
-	int i;
-
-	for (i = 0; i < dwords; i++)
+	for (int i = 0; i < dwords; i++)
 		outl(port, ((uint_t *) src)[i]);
 }
 
-int bcd2int(uchar_t v)
+int
+bcd2int(uchar_t v)
 {
 	return (int)((v >> 4) * 10 + (v % 0x10));
 }
 
-uchar_t loadbyte(uchar_t * ptr)
+uchar_t
+loadbyte(uchar_t * ptr)
 {
 	return (uchar_t) * ptr;
 }
 
-ushort_t loadword(uchar_t * ptr)
+ushort_t
+loadword(uchar_t * ptr)
 {
 	return (short)*ptr | (ushort_t) (*(ptr + 1) << 8);
 }
 
-uint_t loaddword(uchar_t * ptr)
+uint_t
+loaddword(uchar_t * ptr)
 {
 	return (uint_t) * ptr |
 	    (uint_t) (*(ptr + 1) << 8) |
 	    (uint_t) (*(ptr + 2) << 16) | (uint_t) (*(ptr + 3) << 24);
 }
 
-void storebyte(uchar_t val, uchar_t * ptr)
+void
+storebyte(uchar_t val, uchar_t * ptr)
 {
 	*ptr = (uchar_t) val & 0xff;
 }
 
-void storeword(uint_t val, uchar_t * ptr)
+void
+storeword(uint_t val, uchar_t * ptr)
 {
 	*ptr = (uchar_t) val & 0xff;
 	*(ptr + 1) = (uchar_t) (val >> 8) & 0xff;
 }
 
-void storedword(uint_t val, uchar_t * ptr)
+void
+storedword(uint_t val, uchar_t * ptr)
 {
 	*ptr = (uchar_t) val & 0xff;
 	*(ptr + 1) = (uchar_t) (val >> 8) & 0xff;

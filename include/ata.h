@@ -106,9 +106,6 @@ struct ata_param {
 };
 
 struct ata_controller {
-#if 0
-	struct mutex mutex;	/* Controller mutex */
-#endif
 	ushort_t iobase;	/* I/O port registers base address */
 	ushort_t ctlbase;	/* Ctl port registers base address */
 };
@@ -149,7 +146,6 @@ typedef struct ata_partition *atap_t;
 
 int ata_init();
 int ata_get_boot_device(uchar_t drv, char *device);
-int ata_ioctl(void *dev, int cmd, void *args);
 void ata_eoi(atac_t atac);
 int ata_read(void *dev, uchar_t * b, int *len);
 #if 0
@@ -157,6 +153,7 @@ int ata_write(void *dev, buf_t * b);
 #endif
 
 int ata_wait(atac_t atac, uchar_t cmd, uchar_t mask);
+uchar_t ata_inb(atac_t atac, ushort_t port);
 void ata_outb(atac_t atac, ushort_t port, uchar_t val);
 void ata_select_delay(atac_t atac);
 

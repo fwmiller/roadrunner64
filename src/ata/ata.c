@@ -36,9 +36,6 @@ int ata_init()
 		/* Check for an ATA hard drive */
 		memset(s, 0, 8);
 		sprintf(s, "ata%d", drive);
-#if 0
-		kprintf("%s\n", s);
-#endif
 		result = ata_identify(atad, s);
 		if (result == 0 && atad->blks > 0) {
 			int part, nextpart = 0;
