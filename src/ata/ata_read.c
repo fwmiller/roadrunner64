@@ -40,8 +40,5 @@ int ata_read(void *dev, uchar_t * b, int *len)
 
 		ata_eoi(atad->atac);
 	}
-#if 1
-	bufdump(b, 64);
-#endif
 	return 0;
 }

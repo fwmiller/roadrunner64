@@ -38,24 +38,15 @@ int ata_identify(atad_t atad, char *drvstr)
 	     (void *)&(atad->param), SECTOR_SIZE / 2);
 
 	/* Check for ATA device */
-	if (atad->param.config & 0x8000) {
-#if 0
-		kprintf("ata_identify: not an ata device\n");
-		if ((atad->param.config & 0xc000) == 0x8000)
-			kprintf("ata_identify: detected ATAPI device\n");
-#endif
+	if (atad->param.config & 0x8000)
 		return EFAIL;
-	}
+
 	/* Fill in drive parameters */
 	atad->tracks = atad->param.cylinders;
 	atad->heads = atad->param.heads;
 	atad->sectorspertrack = atad->param.sectors;
 	atad->blks = atad->tracks * atad->heads * atad->sectorspertrack;
 	atad->size = (atad->blks * SECTOR_SIZE) / 1048576;
-#if 0
-	kprintf("ata_identify: tracks %d heads %d sec per trk %d\n",
-			atad->tracks, atad->heads, atad->sectorspertrack);
-#endif
 	if (atad->blks == 0)
 		return EFAIL;
 

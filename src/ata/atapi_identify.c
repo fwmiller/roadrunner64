@@ -4,12 +4,10 @@
 #include <string.h>
 
 void kprintf(const char *fmt, ...);
-void bufdump(char *buf, int size);
 
 int atapi_identify(atad_t atad, char *drvstr)
 {
 	uchar_t sig[4];
-	uchar_t buf[ATAPI_SECTOR_SIZE];
 	int result;
 
 	sig[0] = inb(atad->atac->iobase + ATA_SECTORCNT);
@@ -42,16 +40,5 @@ int atapi_identify(atad_t atad, char *drvstr)
 	kprintf("\n");
 
 	kprintf("%s: %s\n", drvstr, atad->param.model);
-#if 0
-	kprintf("atapi_identify: sector 0\n");
-	memset(buf, 0, ATAPI_SECTOR_SIZE);
-	result = atapi_read_sector(atad, 0, buf);
-	bufdump((char *)buf, 128);
-
-	kprintf("atapi_identify: sector 1\n");
-	memset(buf, 1, ATAPI_SECTOR_SIZE);
-	result = atapi_read_sector(atad, 0, buf);
-	bufdump((char *)buf, 128);
-#endif
 	return result;
 }
