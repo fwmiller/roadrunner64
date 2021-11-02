@@ -17,7 +17,7 @@ This code was originally based on
 https://github.com/winksaville/baremetal-x86_64 so I've included the
 Apache license document as required.
 
-To run this you will need to have xorriso and qemu installed on your
+To run this you will need to have xorriso and QEMU installed on your
 Linux distro.  For Ubuntu you can do this:
 
 ```

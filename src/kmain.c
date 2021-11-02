@@ -12,9 +12,11 @@ int uart_getchar();
 static void
 word_widths()
 {
-	kprintf("uint8_t %d uint16_t %d uint32_t %d uint64_t %d void* %d\n",
-		sizeof(uint8_t), sizeof(uint16_t), sizeof(uint32_t),
-		sizeof(uint64_t), sizeof(void *));
+	kprintf("uint8_t = %u", sizeof(uint8_t));
+	kprintf(" uint16_t = %u", sizeof(uint16_t));
+	kprintf(" uint32_t = %u", sizeof(uint32_t));
+	kprintf(" uint64_t = %u", sizeof(uint64_t));
+	kprintf(" void * = %u (bytes)\r\n", sizeof(void *));
 }
 
 static int
@@ -54,9 +56,8 @@ void kmain()
 	char cmdline[80];
 
 	kprintf("\nRoadrunner 64-bit\n");
-#if 1
+
 	word_widths();
-#endif
 	ata_init();
 
 	kprintf("Type ctrl-a x to exit\n");
