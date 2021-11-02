@@ -63,15 +63,15 @@ typedef struct geometry {
 #define GF_REMOVABLE		0x01
 #define GF_PARTITIONED		0x02
 	int flags;
-	ulong_t tracks;
-	ulong_t heads;
-	ulong_t sectorspertrack;
-	ushort_t bytespersector;
+	uint32_t tracks;
+	uint32_t heads;
+	uint32_t sectorspertrack;
+	uint16_t bytespersector;
 } *geometry_t;
 
 /* SEEK_BYTE and SEEK_BLOCK */
 typedef struct seek {
-	ulong_t offset;
+	uint32_t offset;
 #define SEEK_SET		0
 #define SEEK_CUR		1
 #define SEEK_END		2

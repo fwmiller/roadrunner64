@@ -6,14 +6,14 @@
 
 int uart_putchar(int ch);
 
-void uint2str(uint_t v, char *s, int base)
+void uint2str(uint32_t v, char *s, int base)
 {
 	if (v == 0) {
 		s[0] = '0';
 		s[1] = '\0';
 	} else {
 		char s1[80];
-		uint_t v1;
+		uint32_t v1;
 		int i = 0, j = 0;
 
 		while (v > 0) {
@@ -75,7 +75,7 @@ static void print(char *string, int *pos, const char *fmt, va_list args)
 
 			v = va_arg(args, int);
 
-			uint2str((v < 0 ? (uint_t) - v : (uint_t) v), s, 10);
+			uint2str((v < 0 ? (uint32_t) - v : (uint32_t) v), s, 10);
 
 			if (len != 0 && (l = strlen(s)) <= len) {
 				int padlen;
@@ -100,10 +100,10 @@ static void print(char *string, int *pos, const char *fmt, va_list args)
 	case 'x':
 		{
 			char s[80];
-			uint_t v;
+			uint32_t v;
 			int l, i;
 
-			v = va_arg(args, uint_t);
+			v = va_arg(args, uint32_t);
 			uint2str(v, s, (*fmt == 'x' ? 16 : 10));
 
 			if (len != 0 && (l = strlen(s)) <= len)
@@ -187,12 +187,12 @@ int sprintf(char *s, const char *fmt, ...)
 
 void bufdump(char *buf, int size)
 {
-	uchar_t *line;
+	uint8_t *line;
 	int i, j, lines;
 
 	lines = (size + LEN - 1) / LEN;
 	for (i = 0; i < lines; i++) {
-		line = (uchar_t *) buf + i * LEN;
+		line = (uint8_t *) buf + i * LEN;
 		kprintf("%08x  ", (unsigned long long) buf + i * LEN);
 		for (j = 0; j < LEN; j++)
 			kprintf("%02x ", line[j]);

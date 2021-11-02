@@ -64,31 +64,31 @@
 #define outl(port, data)						\
     asm volatile ("outl %%eax,%%dx" : : "a" (data), "d" (port))
 
-void insb(ushort_t port, uchar_t * dst, int bytes);
-void insw(ushort_t port, ushort_t * dst, int words);
-void insl(ushort_t port, ulong_t * dst, int dwords);
-void outsb(ushort_t port, uchar_t * src, int bytes);
-void outsw(ushort_t port, ushort_t * src, int words);
-void outsl(ushort_t port, ulong_t * src, int dwords);
+void insb(uint16_t port, uint8_t * dst, int bytes);
+void insw(uint16_t port, uint16_t * dst, int words);
+void insl(uint16_t port, uint32_t * dst, int dwords);
+void outsb(uint16_t port, uint8_t * src, int bytes);
+void outsw(uint16_t port, uint16_t * src, int words);
+void outsl(uint16_t port, uint32_t * src, int dwords);
 
-int bcd2int(uchar_t v);
+int bcd2int(uint8_t v);
 
-static inline uchar_t loadcmosbyte(uchar_t field)
+static inline uint8_t loadcmosbyte(uint8_t field)
 {
 	outb(MC146818_ADDR, field);
 	return inb(MC146818_DATA);
 }
 
-uchar_t loadbyte(uchar_t * ptr);
-ushort_t loadword(uchar_t * ptr);
-uint_t loaddword(uchar_t * ptr);
+uint8_t loadbyte(uint8_t * ptr);
+uint16_t loadword(uint8_t * ptr);
+uint32_t loaddword(uint8_t * ptr);
 
-void storebyte(uchar_t val, uchar_t * ptr);
-void storeword(uint_t val, uchar_t * ptr);
-void storedword(uint_t val, uchar_t * ptr);
+void storebyte(uint8_t val, uint8_t * ptr);
+void storeword(uint32_t val, uint8_t * ptr);
+void storedword(uint32_t val, uint8_t * ptr);
 
 void halt();
 void reboot();
-int load(char *path, char **prog, ulong_t * size, char **start);
+int load(char *path, char **prog, uint32_t * size, char **start);
 
 #endif

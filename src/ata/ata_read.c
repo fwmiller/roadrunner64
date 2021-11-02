@@ -3,11 +3,11 @@
 #include <io.h>
 #include <stdlib.h>
 
-int ata_read(void *dev, uchar_t * b, int *len)
+int ata_read(void *dev, uint8_t * b, int *len)
 {
 	atap_t atap = (atap_t) dev;
 	atad_t atad = atap->atad;
-	ushort_t *buf;
+	uint16_t *buf;
 	int i, nsectors;
 
 	if (dev == NULL ||
@@ -18,7 +18,7 @@ int ata_read(void *dev, uchar_t * b, int *len)
 
 	/* Select drive */
 	ata_outb(atad->atac, ATA_DRVHD,
-		 0xa0 | ((uchar_t) atad->head & 0x0f) | (atad->drive << 4));
+		 0xa0 | ((uint8_t) atad->head & 0x0f) | (atad->drive << 4));
 
 	/* Wait for drive ready */
 	ata_wait(atad->atac, ATA_CMD_READ, ATA_STAT_DRDY);
@@ -35,7 +35,7 @@ int ata_read(void *dev, uchar_t * b, int *len)
 		ata_wait(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ);
 
 		/* Read sector data */
-		buf = (ushort_t *) (b + i * SECTOR_SIZE);
+		buf = (uint16_t *) (b + i * SECTOR_SIZE);
 		insw(atad->atac->iobase + ATA_DATA, buf, SECTOR_SIZE / 2);
 
 		ata_eoi(atad->atac);

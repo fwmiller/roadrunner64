@@ -3,7 +3,7 @@
 
 int ata_read_parttab(atad_t atad)
 {
-	uchar_t b[SECTOR_SIZE];
+	uint8_t b[SECTOR_SIZE];
 	struct ata_partition atap;
 	int len, result;
 

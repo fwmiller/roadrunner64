@@ -101,9 +101,9 @@ struct tm {
 	int tm_isdst;		/* Daylight Savings Time flag */
 };
 
-typedef ulong_t time_t;
+typedef uint64_t time_t;
 
-extern ulong_t tick;
+extern uint64_t tick;
 
 void time_init();
 time_t time();

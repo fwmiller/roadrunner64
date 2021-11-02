@@ -44,7 +44,7 @@
 #define PART_OFF_SIZE		12
 
 typedef struct part {
-	uchar_t active;		/* Active entry?  */
+	uint8_t active;		/* Active entry?  */
 
 #define PART_SYS_NONE		0x00
 #define PART_SYS_FAT12		0x01
@@ -57,20 +57,20 @@ typedef struct part {
 #define PART_SYS_LINUX_SWAP	0x82
 #define PART_SYS_EXT2FS		0x83
 #define PART_SYS_RRFS		0xcc
-	uchar_t sys;		/* File system type */
+	uint8_t sys;		/* File system type */
 
-	uint_t st;		/* Start track */
-	uint_t sh;		/* Start head */
-	uint_t ss;		/* Start sector */
-	uint_t et;		/* End track */
-	uint_t eh;		/* End head */
-	uint_t es;		/* End sector */
-	uint_t off;		/* Sector offset */
-	uint_t size;		/* Number of sectors */
+	uint32_t st;		/* Start track */
+	uint32_t sh;		/* Start head */
+	uint32_t ss;		/* Start sector */
+	uint32_t et;		/* End track */
+	uint32_t eh;		/* End head */
+	uint32_t es;		/* End sector */
+	uint32_t off;		/* Sector offset */
+	uint32_t size;		/* Number of sectors */
 } *part_t;
 
 void dump_parttab(part_t parttab);
-void read_parttab(uchar_t * mbr, part_t parttab);
-void write_parttab(part_t parttab, uchar_t * mbr);
+void read_parttab(uint8_t * mbr, part_t parttab);
+void write_parttab(part_t parttab, uint8_t * mbr);
 
 #endif

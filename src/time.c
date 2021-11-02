@@ -21,7 +21,7 @@
 #include <time.h>
 
 /* Duration added to current time of day for each timer interrupt */
-ulong_t tick = 1000000 / CLOCK;
+uint64_t tick = 1000000 / CLOCK;
 
 static struct timeval systemclock = { 0, 0 };
 

@@ -7,7 +7,7 @@ void kprintf(const char *fmt, ...);
 
 int atapi_identify(atad_t atad, char *drvstr)
 {
-	uchar_t sig[4];
+	uint8_t sig[4];
 	int result;
 
 	sig[0] = inb(atad->atac->iobase + ATA_SECTORCNT);

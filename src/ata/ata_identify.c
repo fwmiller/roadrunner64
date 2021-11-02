@@ -4,7 +4,7 @@
 
 void kprintf(const char *fmt, ...);
 
-void ata_convert_string(ushort_t * s, int words)
+void ata_convert_string(uint16_t * s, int words)
 {
 	char *s1;
 	int i;

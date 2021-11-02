@@ -12,9 +12,9 @@ int uart_getchar();
 static void
 word_widths()
 {
-	kprintf("uchar_t %d ushort_t %d uint_t %d ulong_t %d void* %d\n",
-		sizeof(uchar_t), sizeof(ushort_t), sizeof(uint_t),
-		sizeof(ulong_t), sizeof(void *));
+	kprintf("uint8_t %d uint16_t %d uint32_t %d uint64_t %d void* %d\n",
+		sizeof(uint8_t), sizeof(uint16_t), sizeof(uint32_t),
+		sizeof(uint64_t), sizeof(void *));
 }
 
 static int
@@ -54,7 +54,7 @@ void kmain()
 	char cmdline[80];
 
 	kprintf("\nRoadrunner 64-bit\n");
-#if 0
+#if 1
 	word_widths();
 #endif
 	ata_init();

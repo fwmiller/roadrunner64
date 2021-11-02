@@ -5,10 +5,10 @@
 #define ITERATIONS	100000
 
 int
-ata_wait(atac_t atac, uchar_t cmd, uchar_t mask)
+ata_wait(atac_t atac, uint8_t cmd, uint8_t mask)
 {
 	int i;
-	uchar_t status;
+	uint8_t status;
 
 	for (i = 0; i < ITERATIONS; i++) {
 		status = inb(atac->ctlbase + ATA_ALT_STATUS);
@@ -29,14 +29,14 @@ ata_wait(atac_t atac, uchar_t cmd, uchar_t mask)
 	return 0;
 }
 
-uchar_t
-ata_inb(atac_t atac, ushort_t port)
+uint8_t
+ata_inb(atac_t atac, uint16_t port)
 {
 	return inb(atac->iobase + port);
 }
 
 void
-ata_outb(atac_t atac, ushort_t port, uchar_t val)
+ata_outb(atac_t atac, uint16_t port, uint8_t val)
 {
 	outb(atac->iobase + port, val);
 }

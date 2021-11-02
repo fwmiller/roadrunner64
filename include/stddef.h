@@ -3,6 +3,6 @@
 
 #include <stdint.h>
 
-typedef uint_t size_t;
+typedef uint32_t size_t;
 
 #endif

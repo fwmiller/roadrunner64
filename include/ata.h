@@ -84,34 +84,34 @@
 /* Parameters returned by read drive parameters command */
 struct ata_param {
 	/* Drive information */
-	ushort_t config;	/* General configuration bits */
-	ushort_t cylinders;	/* Cylinders */
-	ushort_t reserved;
-	ushort_t heads;		/* Heads */
-	ushort_t unfbytespertrk;	/* Unformatted bytes/track */
-	ushort_t unfbytes;	/* Unformatted bytes/sector */
-	ushort_t sectors;	/* Sectors per track */
-	ushort_t vendorunique[3];
+	uint16_t config;	/* General configuration bits */
+	uint16_t cylinders;	/* Cylinders */
+	uint16_t reserved;
+	uint16_t heads;		/* Heads */
+	uint16_t unfbytespertrk;	/* Unformatted bytes/track */
+	uint16_t unfbytes;	/* Unformatted bytes/sector */
+	uint16_t sectors;	/* Sectors per track */
+	uint16_t vendorunique[3];
 
 	/* Controller information */
-	ushort_t serial[10];	/* Serial number */
-	ushort_t buffertype;	/* Buffer type */
-	ushort_t buffersize;	/* Buffer size, in 512-byte units */
-	ushort_t necc;		/* ECC bytes appended */
-	ushort_t rev[4];	/* Firmware revision */
-	ushort_t model[20];	/* Model name */
-	ushort_t nsecperint;	/* Sectors per interrupt */
-	ushort_t usedmovsd;	/* Can use double word read/write? */
-	ushort_t pad[209];
+	uint16_t serial[10];	/* Serial number */
+	uint16_t buffertype;	/* Buffer type */
+	uint16_t buffersize;	/* Buffer size, in 512-byte units */
+	uint16_t necc;		/* ECC bytes appended */
+	uint16_t rev[4];	/* Firmware revision */
+	uint16_t model[20];	/* Model name */
+	uint16_t nsecperint;	/* Sectors per interrupt */
+	uint16_t usedmovsd;	/* Can use double word read/write? */
+	uint16_t pad[209];
 };
 
 struct ata_controller {
-	ushort_t iobase;	/* I/O port registers base address */
-	ushort_t ctlbase;	/* Ctl port registers base address */
+	uint16_t iobase;	/* I/O port registers base address */
+	uint16_t ctlbase;	/* Ctl port registers base address */
 };
 
 struct ata_drive {
-	uchar_t flags;
+	uint8_t flags;
 	struct ata_controller *atac;	/* Controller */
 	int drive;		/* Drive number */
 	int type;		/* Drive type */
@@ -121,23 +121,23 @@ struct ata_drive {
 	struct part parttab[PARTS];
 
 	/* Geometry */
-	uint_t blks;		/* Number of blocks on drive */
-	uint_t size;		/* Size in Mbytes */
-	uint_t tracks;		/* Number of tracks */
-	uint_t heads;		/* Number of heads */
-	uint_t sectorspertrack;	/* Sectors per track */
+	uint32_t blks;		/* Number of blocks on drive */
+	uint32_t size;		/* Size in Mbytes */
+	uint32_t tracks;		/* Number of tracks */
+	uint32_t heads;		/* Number of heads */
+	uint32_t sectorspertrack;	/* Sectors per track */
 
 	/* Current transfer location */
-	uint_t blkno;		/* Current block */
-	uint_t track;		/* Current track */
-	uint_t head;		/* Current head */
-	uint_t sector;		/* Current sector */
+	uint32_t blkno;		/* Current block */
+	uint32_t track;		/* Current track */
+	uint32_t head;		/* Current head */
+	uint32_t sector;		/* Current sector */
 };
 
 struct ata_partition {
 	struct ata_drive *atad;
-	ulong_t sectors;
-	ulong_t offset;
+	uint32_t sectors;
+	uint32_t offset;
 };
 
 typedef struct ata_controller *atac_t;
@@ -146,26 +146,26 @@ typedef struct ata_partition *atap_t;
 
 int ata_init();
 
-int ata_read(void *dev, uchar_t * b, int *len);
+int ata_read(void *dev, uint8_t * b, int *len);
 
 void ata_reset(atac_t atac);
 void ata_eoi(atac_t atac);
 void ata_select_delay(atac_t atac);
-int ata_wait(atac_t atac, uchar_t cmd, uchar_t mask);
-uchar_t ata_inb(atac_t atac, ushort_t port);
-void ata_outb(atac_t atac, ushort_t port, uchar_t val);
+int ata_wait(atac_t atac, uint8_t cmd, uint8_t mask);
+uint8_t ata_inb(atac_t atac, uint16_t port);
+void ata_outb(atac_t atac, uint16_t port, uint8_t val);
 
 int ata_identify(atad_t atad, char *drvstr);
 int ata_read_parttab(atad_t atad);
 int ata_seek(atad_t atad, seek_t seekargs);
-int ata_read_mbr(atap_t atap, uchar_t * b, int *len);
+int ata_read_mbr(atap_t atap, uint8_t * b, int *len);
 
-void ata_convert_string(ushort_t * s, int words);
+void ata_convert_string(uint16_t * s, int words);
 
 int atapi_identify(atad_t atad, char *drvstr);
 
-void read_parttab(uchar_t * mbr, part_t parttab);
-void write_parttab(part_t parttab, uchar_t * mbr);
+void read_parttab(uint8_t * mbr, part_t parttab);
+void write_parttab(part_t parttab, uint8_t * mbr);
 void dump_parttab(part_t parttab);
 
 #endif /* __ATA_H */
