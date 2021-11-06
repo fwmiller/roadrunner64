@@ -1,13 +1,9 @@
 # Roadrunner64
 
-This operating system image runs on a 64-bit x86_64 QEMU virtual machine.
-The system will dump some output and then present the user with a simple
-echo command line.  You can type anything and it will be echo'd back to
-you.  It uses simple UART access to send and receive characters from the
-user.
-
-The kernel is single-threaded and boots the virtual processor into 64-bit
-long mode with a flat memory model and no memory protection.
+Roadrunner64 is a 64-bit operating system.  It runs on Intel 64-bit machines
+in 64-bit long mode.  The kernel is single-threaded and boots the processor
+into 64-bit long mode with a flat memory model and no virtual addressing or
+memory protection.  There is support for a simple command line interface.
 
 An ATA driver has been added for access to the QEMU virtual machine image
 as the primary hard drive.  You should see the storage devices connected
