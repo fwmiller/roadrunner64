@@ -8,11 +8,30 @@ void cli();
 static void
 word_widths()
 {
-	kprintf("uint8_t = %u", sizeof(uint8_t));
-	kprintf(" uint16_t = %u", sizeof(uint16_t));
-	kprintf(" uint32_t = %u", sizeof(uint32_t));
-	kprintf(" uint64_t = %u", sizeof(uint64_t));
-	kprintf(" void * = %u (bytes)\r\n", sizeof(void *));
+	int halt = 0;
+
+	if (sizeof(uint8_t) != 1) {
+		kprintf("sizeof(uint8_t) = %u bytes\r\n", sizeof(uint8_t));
+		halt = 1;
+	}
+	if (sizeof(uint16_t) != 2) {
+		kprintf("sizeof(uint16_t) = %u bytes\r\n", sizeof(uint16_t));
+		halt = 1;
+	}
+	if (sizeof(uint32_t) != 4) {
+		kprintf("sizeof(uint32_t) = %u bytes\r\n", sizeof(uint32_t));
+		halt = 1;
+	}
+	if (sizeof(uint64_t) != 8) {
+		kprintf("sizeof(uint64_t) = %u bytes\r\n", sizeof(uint64_t));
+		halt = 1;
+	}
+	if (sizeof(void *) != 8) {
+		kprintf("sizeof(void *) = %u bytes\r\n", sizeof(void *));
+		halt = 1;
+	}
+	if (halt)
+		for (;;);
 }
 
 void kmain()
