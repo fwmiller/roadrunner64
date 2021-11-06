@@ -2,10 +2,9 @@
 #include <stdint.h>
 #include <string.h>
 #include <sys.h>
+#include <uart.h>
 
 #define PROMPT	"> "
-
-int uart_getchar();
 
 static int
 get_cmdline(char *cmdline, int len)

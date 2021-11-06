@@ -3,8 +3,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-
-int uart_putchar(int ch);
+#include <uart.h>
 
 void uint2str(uint32_t v, char *s, int base)
 {
