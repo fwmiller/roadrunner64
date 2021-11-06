@@ -1,10 +1,10 @@
 #include <ctype.h>
 #include <stdint.h>
 #include <string.h>
+#include <sys.h>
 
 #define PROMPT	"> "
 
-void kprintf(const char *fmt, ...);
 int uart_getchar();
 
 static int

@@ -87,8 +87,4 @@ void storebyte(uint8_t val, uint8_t * ptr);
 void storeword(uint32_t val, uint8_t * ptr);
 void storedword(uint32_t val, uint8_t * ptr);
 
-void halt();
-void reboot();
-int load(char *path, char **prog, uint32_t * size, char **start);
-
 #endif

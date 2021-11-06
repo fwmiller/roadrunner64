@@ -1,7 +1,6 @@
+#include <ata.h>
 #include <stdint.h>
-
-void kprintf(const char *fmt, ...);
-void ata_init();
+#include <sys.h>
 
 void cli();
 
