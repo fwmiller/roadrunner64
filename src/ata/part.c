@@ -1,11 +1,11 @@
-#include <io.h>
 #include <stdio.h>
 #include <string.h>
-#include <part.h>
+#include <sys/io.h>
+#include <sys/part.h>
 
 void kprintf(const char *fmt, ...);;
 
-void read_parttab(uint8_t * mbr, part_t parttab)
+void load_parttab(uint8_t * mbr, part_t parttab)
 {
 	part_t p;
 	uint32_t partent;

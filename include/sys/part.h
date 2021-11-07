@@ -70,7 +70,7 @@ typedef struct part {
 } *part_t;
 
 void dump_parttab(part_t parttab);
-void read_parttab(uint8_t * mbr, part_t parttab);
+void load_parttab(uint8_t * mbr, part_t parttab);
 void write_parttab(part_t parttab, uint8_t * mbr);
 
 #endif

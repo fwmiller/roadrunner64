@@ -1,5 +1,5 @@
-#include <ata.h>
 #include <errno.h>
+#include <sys/ata.h>
 
 int ata_seek(atad_t atad, seek_t seekargs)
 {

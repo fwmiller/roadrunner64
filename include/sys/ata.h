@@ -1,9 +1,9 @@
 #ifndef __ATA_H
 #define __ATA_H
 
-#include <ioctl.h>
 #include <stdint.h>
-#include <part.h>
+#include <sys/ioctl.h>
+#include <sys/part.h>
 
 #define SECTOR_SIZE		512
 #define ATAPI_SECTOR_SIZE	2048
@@ -164,7 +164,7 @@ void ata_convert_string(uint16_t * s, int words);
 
 int atapi_identify(atad_t atad, char *drvstr);
 
-void read_parttab(uint8_t * mbr, part_t parttab);
+void load_parttab(uint8_t * mbr, part_t parttab);
 void write_parttab(part_t parttab, uint8_t * mbr);
 void dump_parttab(part_t parttab);
 

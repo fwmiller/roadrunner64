@@ -26,8 +26,8 @@
 #ifndef __SYS_H
 #define __SYS_H
 
-#include <mc146818.h>
 #include <stdint.h>
+#include <sys/mc146818.h>
 
 #define ALIGN(V, SIZE) ((((V) + (SIZE) - 1) / (SIZE)) * (SIZE))
 

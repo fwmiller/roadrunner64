@@ -1,4 +1,4 @@
-#include <io.h>
+#include <sys/io.h>
 
 #define COM_TX_FIFO	((short) 0x3f8)
 #define COM_RX_FIFO	((short) 0x3f8)

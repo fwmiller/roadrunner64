@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include <uart.h>
+#include <sys/uart.h>
 
 void uint2str(uint32_t v, char *s, int base)
 {

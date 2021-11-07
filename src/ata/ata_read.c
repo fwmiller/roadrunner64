@@ -1,7 +1,7 @@
-#include <ata.h>
 #include <errno.h>
-#include <io.h>
 #include <stdlib.h>
+#include <sys/ata.h>
+#include <sys/io.h>
 
 int ata_read(void *dev, uint8_t * b, int *len)
 {

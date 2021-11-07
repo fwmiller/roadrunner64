@@ -1,10 +1,9 @@
-#include <ata.h>
 #include <errno.h>
-#include <io.h>
+#include <sys/ata.h>
+#include <sys/io.h>
 
-void kprintf(const char *fmt, ...);
-
-void ata_convert_string(uint16_t * s, int words)
+void
+ata_convert_string(uint16_t * s, int words)
 {
 	char *s1;
 	int i;
@@ -20,7 +19,8 @@ void ata_convert_string(uint16_t * s, int words)
 	}
 }
 
-int ata_identify(atad_t atad, char *drvstr)
+int
+ata_identify(atad_t atad, char *drvstr)
 {
 	/* Issue identify command */
 	ata_outb(atad->atac, ATA_DRVHD, 0xa0 | (atad->drive << 4));

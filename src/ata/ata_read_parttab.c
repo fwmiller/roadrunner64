@@ -1,5 +1,5 @@
-#include <ata.h>
 #include <string.h>
+#include <sys/ata.h>
 
 int ata_read_parttab(atad_t atad)
 {
@@ -16,6 +16,6 @@ int ata_read_parttab(atad_t atad)
 	if (result < 0)
 		return result;
 
-	read_parttab(b, atad->parttab);
+	load_parttab(b, atad->parttab);
 	return 0;
 }

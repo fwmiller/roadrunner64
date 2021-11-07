@@ -1,6 +1,5 @@
-#include <ata.h>
 #include <stdint.h>
-#include <sys.h>
+#include <sys/ata.h>
 
 void cli();
 

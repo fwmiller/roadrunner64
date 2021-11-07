@@ -1,8 +1,7 @@
 #include <ctype.h>
 #include <stdint.h>
 #include <string.h>
-#include <sys.h>
-#include <uart.h>
+#include <sys/uart.h>
 
 #define PROMPT	"> "
 

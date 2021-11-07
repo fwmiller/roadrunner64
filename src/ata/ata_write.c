@@ -1,4 +1,4 @@
-#include <ata.h>
+#include <sys/ata.h>
 
 #if 0
 int ata_write(void *dev, buf_t * b)

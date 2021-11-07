@@ -1,7 +1,7 @@
-#include <ata.h>
 #include <errno.h>
-#include <io.h>
 #include <string.h>
+#include <sys/ata.h>
+#include <sys/io.h>
 
 void kprintf(const char *fmt, ...);
 

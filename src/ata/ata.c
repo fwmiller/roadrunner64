@@ -1,14 +1,33 @@
-#include <ata.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/ata.h>
 
 static struct ata_controller atactab[ATA_CONTROLLERS];
 static struct ata_drive atadtab[ATA_DRIVES];
 static struct ata_partition ataptab[PARTS * ATA_DRIVES];
 
-void kprintf(const char *fmt, ...);
+static void
+read_parttab(atad_t atad)
+{
+	int part, nextpart = 0, result;
 
-int ata_init()
+	/* Read the partition table */
+	result = ata_read_parttab(atad);
+	if (result < 0)
+		return;
+
+	for (part = 0; part < PARTS; part++) {
+		atap_t atap = &(ataptab[nextpart++]);
+
+		atap->atad = atad;
+		atap->sectors = atad->parttab[part].size;
+		atap->offset = atad->parttab[part].off;
+	}
+	dump_parttab(atad->parttab);
+}
+
+int
+ata_init()
 {
 	int drive, result;
 
@@ -38,29 +57,14 @@ int ata_init()
 		sprintf(s, "ata%d", drive);
 		result = ata_identify(atad, s);
 		if (result == 0 && atad->blks > 0) {
-			int part, nextpart = 0;
-
-			/* Read the partition table */
 			atad->type = ATA_DRV_HD;
-			result = ata_read_parttab(atad);
-			if (result < 0)
-				continue;
-
-			for (part = 0; part < PARTS; part++) {
-				atap_t atap;
-
-				atap = &(ataptab[nextpart++]);
-				atap->atad = atad;
-				atap->sectors = atad->parttab[part].size;
-				atap->offset = atad->parttab[part].off;
-			}
-			dump_parttab(atad->parttab);
+			read_parttab(atad);
 			continue;
 		}
 		/* Check for an ATAPI device */
-		result = atapi_identify(&(atadtab[drive]), s);
+		result = atapi_identify(atad, s);
 		if (result == 0)
-			atadtab[drive].type = ATA_DRV_CDROM;
+			atad->type = ATA_DRV_CDROM;
 	}
 	return 0;
 }
