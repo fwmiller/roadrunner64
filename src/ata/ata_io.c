@@ -17,7 +17,6 @@ ata_outb(atac_t atac, uint16_t port, uint8_t val)
 	outb(atac->iobase + port, val);
 }
 
-
 void
 ata_select_delay(atac_t atac)
 {

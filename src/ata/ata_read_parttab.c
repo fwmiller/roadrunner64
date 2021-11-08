@@ -1,7 +1,8 @@
 #include <string.h>
 #include <sys/ata.h>
 
-int ata_read_parttab(atad_t atad)
+int
+ata_read_parttab(atad_t atad)
 {
 	uint8_t b[SECTOR_SIZE];
 	struct ata_partition atap;

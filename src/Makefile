@@ -17,7 +17,7 @@ OBJS = boot.o mb2.o cli.o io.o kmain.o print.o string.o time.o uart.o
 LIBS = -lata
 KERNEL = kmain.elf
 
-INDENT_RULES = -nbad -bap -nbc -bbo -hnl -br -brs -c33 -cd33 -ncdb -ce -ci4 -cli0 -d0 -di1 -nfc1 -i8 -ip0 -l80 -lp -npcs -nprs -npsl -sai -saf -saw -ncs -nsc -sob -nfca -cp33 -ss -ts8 -il1
+INDENT_RULES = -nbad -bap -nbc -bbo -hnl -br -brs -c33 -cd33 -ncdb -ce -ci4 -cli0 -d0 -di1 -nfc1 -i8 -ip0 -l80 -lp -npcs -nprs -psl -sai -saf -saw -ncs -nsc -sob -nfca -cp33 -ss -ts8 -il1
 
 all: build
 
@@ -41,9 +41,10 @@ wc: clean
 
 indent: clean
 	cd ../include;indent $(INDENT_RULES) *.h
+	cd ../include/sys;indent $(INDENT_RULES) *.h
 	cd ata;indent $(INDENT_RULES) *.c
 	indent $(INDENT_RULES) *.c
-	rm ../include/*~ *~
+	rm ../include/*~ ../include/sys/*~ ./ata/*~ *~
 
 .c.o:
 	$(CC) $(CFLAGS) -I$(INCDIR) -o $@ $<

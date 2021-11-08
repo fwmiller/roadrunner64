@@ -123,7 +123,7 @@ struct ata_drive {
 	/* Geometry */
 	uint32_t blks;		/* Number of blocks on drive */
 	uint32_t size;		/* Size in Mbytes */
-	uint32_t tracks;		/* Number of tracks */
+	uint32_t tracks;	/* Number of tracks */
 	uint32_t heads;		/* Number of heads */
 	uint32_t sectorspertrack;	/* Sectors per track */
 
@@ -131,7 +131,7 @@ struct ata_drive {
 	uint32_t blkno;		/* Current block */
 	uint32_t track;		/* Current track */
 	uint32_t head;		/* Current head */
-	uint32_t sector;		/* Current sector */
+	uint32_t sector;	/* Current sector */
 };
 
 struct ata_partition {
@@ -168,4 +168,4 @@ void load_parttab(uint8_t * mbr, part_t parttab);
 void write_parttab(part_t parttab, uint8_t * mbr);
 void dump_parttab(part_t parttab);
 
-#endif /* __ATA_H */
+#endif				/* __ATA_H */

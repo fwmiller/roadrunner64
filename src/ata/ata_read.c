@@ -3,7 +3,8 @@
 #include <sys/ata.h>
 #include <sys/io.h>
 
-int ata_read(void *dev, uint8_t * b, int *len)
+int
+ata_read(void *dev, uint8_t * b, int *len)
 {
 	atap_t atap = (atap_t) dev;
 	atad_t atad = atap->atad;

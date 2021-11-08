@@ -29,9 +29,8 @@ ata_identify(atad_t atad, char *drvstr)
 
 	/* Wait for data ready */
 	for (int cnt = 100000;
-             cnt > 0 &&
-	     !(inb(atad->atac->iobase + ATA_STATUS) & ATA_STAT_DRDY);
-	     cnt--);
+	     cnt > 0 &&
+	     !(inb(atad->atac->iobase + ATA_STATUS) & ATA_STAT_DRDY); cnt--) ;
 
 	/* Read parameter data */
 	insw(atad->atac->iobase + ATA_DATA,

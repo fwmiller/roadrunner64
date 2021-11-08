@@ -1,7 +1,8 @@
 #include <errno.h>
 #include <sys/ata.h>
 
-int ata_seek(atad_t atad, seek_t seekargs)
+int
+ata_seek(atad_t atad, seek_t seekargs)
 {
 	if (seekargs->whence != SEEK_SET)
 		return EINVAL;

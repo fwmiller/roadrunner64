@@ -73,7 +73,8 @@ void outsl(uint16_t port, uint32_t * src, int dwords);
 
 int bcd2int(uint8_t v);
 
-static inline uint8_t loadcmosbyte(uint8_t field)
+static inline uint8_t
+loadcmosbyte(uint8_t field)
 {
 	outb(MC146818_ADDR, field);
 	return inb(MC146818_DATA);

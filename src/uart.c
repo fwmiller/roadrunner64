@@ -11,7 +11,8 @@
  *
  *   @retval		A byte cast to an integer from the UART
  **/
-int uart_getchar()
+int
+uart_getchar()
 {
 	while (!(inb(COM_RX_STATUS) & 0x01)) ;
 	return (int)inb(COM_RX_FIFO);
@@ -24,7 +25,8 @@ int uart_getchar()
  *   @param ch		The character value of this int iw written
  *   			to the UART.
  **/
-void uart_putchar(int ch)
+void
+uart_putchar(int ch)
 {
 	outb(COM_TX_FIFO, ch);
 }

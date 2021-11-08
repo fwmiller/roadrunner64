@@ -1,7 +1,8 @@
 #include <sys/ata.h>
 
 #if 0
-int ata_write(void *dev, buf_t * b)
+int
+ata_write(void *dev, buf_t * b)
 {
 	atap_t atap = (atap_t) dev;
 	atad_t atad = atap->atad;

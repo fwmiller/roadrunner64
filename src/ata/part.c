@@ -5,7 +5,8 @@
 
 void kprintf(const char *fmt, ...);;
 
-void load_parttab(uint8_t * mbr, part_t parttab)
+void
+load_parttab(uint8_t * mbr, part_t parttab)
 {
 	part_t p;
 	uint32_t partent;
@@ -33,7 +34,8 @@ void load_parttab(uint8_t * mbr, part_t parttab)
 	}
 }
 
-void write_parttab(part_t parttab, uint8_t * mbr)
+void
+write_parttab(part_t parttab, uint8_t * mbr)
 {
 	part_t p;
 	uint32_t partent;
@@ -60,7 +62,8 @@ void write_parttab(part_t parttab, uint8_t * mbr)
 	}
 }
 
-static void dump_part(int partno, part_t p)
+static void
+dump_part(int partno, part_t p)
 {
 	kprintf("%c", (p->active ? '*' : ' '));
 	kprintf("%3d  %5u  %4u %6u %5u  %4u %6u  %6u %12u  ",
@@ -111,7 +114,8 @@ static void dump_part(int partno, part_t p)
 #define PART_HDR2                                                       \
     "part  track  head sector track  head sector   offset        size  type"
 
-void dump_parttab(part_t parttab)
+void
+dump_parttab(part_t parttab)
 {
 	part_t p;
 	int i;

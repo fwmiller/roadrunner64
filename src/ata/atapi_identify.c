@@ -5,7 +5,8 @@
 
 void kprintf(const char *fmt, ...);
 
-int atapi_identify(atad_t atad, char *drvstr)
+int
+atapi_identify(atad_t atad, char *drvstr)
 {
 	uint8_t sig[4];
 	int result;

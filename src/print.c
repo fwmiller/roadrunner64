@@ -5,7 +5,8 @@
 #include <string.h>
 #include <sys/uart.h>
 
-void uint2str(uint32_t v, char *s, int base)
+void
+uint2str(uint32_t v, char *s, int base)
 {
 	if (v == 0) {
 		s[0] = '0';
@@ -29,7 +30,8 @@ void uint2str(uint32_t v, char *s, int base)
 	}
 }
 
-static void put1(char *s, int *pos, int c)
+static void
+put1(char *s, int *pos, int c)
 {
 	if (s != NULL) {
 		s[(*pos)++] = (char)c;
@@ -38,7 +40,8 @@ static void put1(char *s, int *pos, int c)
 	uart_putchar(c);
 }
 
-static void print(char *string, int *pos, const char *fmt, va_list args)
+static void
+print(char *string, int *pos, const char *fmt, va_list args)
 {
 	int len;
 	char pad;
@@ -74,7 +77,8 @@ static void print(char *string, int *pos, const char *fmt, va_list args)
 
 			v = va_arg(args, int);
 
-			uint2str((v < 0 ? (uint32_t) - v : (uint32_t) v), s, 10);
+			uint2str((v < 0 ? (uint32_t) - v : (uint32_t) v), s,
+				 10);
 
 			if (len != 0 && (l = strlen(s)) <= len) {
 				int padlen;
@@ -163,7 +167,8 @@ static void print(char *string, int *pos, const char *fmt, va_list args)
 		put1(string, pos, (int)'\0');
 }
 
-void kprintf(const char *fmt, ...)
+void
+kprintf(const char *fmt, ...)
 {
 	va_list args;
 
@@ -172,7 +177,8 @@ void kprintf(const char *fmt, ...)
 	print(NULL, NULL, fmt, args);
 }
 
-int sprintf(char *s, const char *fmt, ...)
+int
+sprintf(char *s, const char *fmt, ...)
 {
 	va_list args;
 	int pos = 0;
@@ -184,7 +190,8 @@ int sprintf(char *s, const char *fmt, ...)
 
 #define LEN     8
 
-void bufdump(char *buf, int size)
+void
+bufdump(char *buf, int size)
 {
 	uint8_t *line;
 	int i, j, lines;
@@ -192,7 +199,7 @@ void bufdump(char *buf, int size)
 	lines = (size + LEN - 1) / LEN;
 	for (i = 0; i < lines; i++) {
 		line = (uint8_t *) buf + i * LEN;
-		kprintf("%08x  ", (unsigned long long) buf + i * LEN);
+		kprintf("%08x  ", (unsigned long long)buf + i * LEN);
 		for (j = 0; j < LEN; j++)
 			kprintf("%02x ", line[j]);
 		kprintf(" ");

@@ -1,6 +1,7 @@
 #include <sys/ata.h>
 
-int ata_read_mbr(atap_t atap, uint8_t * b, int *len)
+int
+ata_read_mbr(atap_t atap, uint8_t * b, int *len)
 {
 	struct seek seekargs;
 	int result;

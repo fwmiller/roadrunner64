@@ -36,8 +36,8 @@ get_cmdline(char *cmdline, int len)
 	return pos;
 }
 
-
-void cli()
+void
+cli()
 {
 	char cmdline[80];
 

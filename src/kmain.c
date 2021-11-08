@@ -29,10 +29,11 @@ word_widths()
 		halt = 1;
 	}
 	if (halt)
-		for (;;);
+		for (;;) ;
 }
 
-void kmain()
+void
+kmain()
 {
 	kprintf("\r\nRoadrunner 64-bit\r\n");
 
