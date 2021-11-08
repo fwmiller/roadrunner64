@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdio.h>
 #include <sys/ata.h>
 
 void cli();

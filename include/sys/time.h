@@ -1,5 +1,5 @@
-#ifndef __TIME_H
-#define __TIME_H
+#ifndef __REAL_TIME_H
+#define __REAL_TIME_H
 
 #include <stdint.h>
 

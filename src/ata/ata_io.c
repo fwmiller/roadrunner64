@@ -3,7 +3,7 @@
 #include <sys/i8259.h>
 #include <sys/io.h>
 
-static const int ATA_WAIT_ITERATIONS = 1000;
+static const int ATA_WAIT_ITERATIONS = 10000;
 
 uint8_t
 ata_inb(atac_t atac, uint16_t port)
@@ -76,7 +76,7 @@ ata_reset(atac_t atac)
 	outb(atac->ctlbase + ATA_DEV_CONTROL, ATA_CTL_RESET);
 
 	/*
-	 * XXX Should be 5 microseconds (ATA/ATAPI-6).  This would be better
+	 * TODO: Should be 5 microseconds (ATA/ATAPI-6).  This would be better
 	 * implemented with the Timestamp Counter.
 	 */
 	ata_select_delay(atac);

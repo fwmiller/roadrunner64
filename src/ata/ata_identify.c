@@ -1,4 +1,5 @@
 #include <errno.h>
+#include <stdio.h>
 #include <sys/ata.h>
 #include <sys/io.h>
 

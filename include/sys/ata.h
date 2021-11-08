@@ -158,7 +158,6 @@ void ata_outb(atac_t atac, uint16_t port, uint8_t val);
 int ata_identify(atad_t atad, char *drvstr);
 int ata_read_parttab(atad_t atad);
 int ata_seek(atad_t atad, seek_t seekargs);
-int ata_read_mbr(atap_t atap, uint8_t * b, int *len);
 
 void ata_convert_string(uint16_t * s, int words);
 

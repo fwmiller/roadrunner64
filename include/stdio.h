@@ -3,4 +3,6 @@
 
 int sprintf(char *s, const char *fmt, ...);
 
+void kprintf(const char *fmt, ...);
+
 #endif
