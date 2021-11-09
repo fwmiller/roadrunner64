@@ -38,8 +38,8 @@ atapi_identify(atad_t atad, char *drvstr)
 		kprintf("CD-ROM drive");
 	else
 		kprintf("device");
-	kprintf("\n");
+	kprintf("\r\n");
 
-	kprintf("%s: %s\n", drvstr, atad->param.model);
+	kprintf("%s: %s\r\n", drvstr, atad->param.model);
 	return result;
 }

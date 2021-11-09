@@ -20,7 +20,7 @@ get_cmdline(char *cmdline, int len)
 			continue;
 
 		if (ch == '\n' || ch == '\r') {
-			kprintf("\n");
+			kprintf("\r\n");
 			break;
 		}
 		if (ch == '\b' && pos > 0) {

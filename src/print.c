@@ -208,6 +208,6 @@ bufdump(char *buf, int size)
 				kprintf("%c", (char)line[j]);
 			else
 				kprintf(".");
-		kprintf("\n");
+		kprintf("\r\n");
 	}
 }

@@ -106,7 +106,7 @@ dump_part(int partno, part_t p)
 	default:
 		kprintf("0x%02x", (uint8_t) p->sys);
 	}
-	kprintf("\n");
+	kprintf("\r\n");
 }
 
 #define PART_HDR1                                                       \
@@ -120,8 +120,8 @@ dump_parttab(part_t parttab)
 	part_t p;
 	int i;
 
-	kprintf("%s\n", PART_HDR1);
-	kprintf("%s\n", PART_HDR2);
+	kprintf("%s\r\n", PART_HDR1);
+	kprintf("%s\r\n", PART_HDR2);
 	for (i = 0, p = parttab; i < PARTS; i++, p++)
 		dump_part(i, p);
 }
