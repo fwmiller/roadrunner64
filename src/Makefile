@@ -13,7 +13,7 @@ LDFLAGS = -nostdlib -Wl,-n,-T,link.ld -no-pie
 RM = rm -fr
 
 # boot.o and mb2.o must be first
-OBJS = boot.o mb2.o cli.o io.o kmain.o print.o string.o time.o uart.o
+OBJS = boot.o mb2.o cli.o io.o iso9660.o kmain.o print.o string.o time.o uart.o
 LIBS = -lata
 KERNEL = kmain.elf
 
