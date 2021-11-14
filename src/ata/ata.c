@@ -26,6 +26,13 @@ read_parttab(atad_t atad)
 	dump_parttab(atad->parttab);
 }
 
+atap_t
+ata_get_primary_partition()
+{
+	/* First partition on the first drive */
+	return &(ataptab[0]);
+}
+
 int
 ata_init()
 {

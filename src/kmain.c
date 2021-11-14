@@ -40,6 +40,7 @@ kmain()
 
 	word_widths();
 	ata_init();
+	iso9660_init();
 
 	kprintf("Type ctrl-a x to exit\r\n");
 	cli();

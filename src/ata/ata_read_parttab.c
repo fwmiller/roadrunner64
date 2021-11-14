@@ -13,7 +13,7 @@ ata_read_mbr(atap_t atap, uint8_t * b, int *len)
 	if (result < 0)
 		return result;
 
-	result = ata_read(atap, b, len);
+	result = ata_read(atap, b, *len);
 	if (result < 0)
 		return result;
 

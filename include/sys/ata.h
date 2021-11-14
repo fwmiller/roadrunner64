@@ -145,8 +145,9 @@ typedef struct ata_drive *atad_t;
 typedef struct ata_partition *atap_t;
 
 int ata_init();
+atap_t ata_get_primary_partition();
 
-int ata_read(void *dev, uint8_t * b, int *len);
+int ata_read(void *dev, uint8_t * b, int len);
 
 void ata_reset(atac_t atac);
 void ata_eoi(atac_t atac);
