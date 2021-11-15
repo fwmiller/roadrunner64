@@ -25,6 +25,4 @@ $ make run
 ```
 
 The 64-bit long mode boot code was originally based on
-https://github.com/winksaville/baremetal-x86_64 so I've included the
-Apache license document as required.
-
+https://github.com/winksaville/baremetal-x86_64
