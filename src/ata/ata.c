@@ -73,5 +73,27 @@ ata_init()
 		if (result == 0)
 			atad->type = ATA_DRV_CDROM;
 	}
+
+	struct seek seekargs;
+	uint8_t buf[2048];
+
+	kprintf("seek to sector 0\r\n");
+	seekargs.offset = 0;
+	seekargs.whence = SEEK_SET;
+	ata_seek(&(atadtab[0]), &seekargs);
+	kprintf("read sector 0\r\n");
+	memset(buf, 0, 2048);
+	ata_read(&(atadtab[0]), buf, 512);
+	bufdump(buf, 520);
+
+	kprintf("seek to sector 1\r\n");
+	seekargs.offset = 1;
+	seekargs.whence = SEEK_SET;
+	ata_seek(&(atadtab[0]), &seekargs);
+	kprintf("read sector 0\r\n");
+	memset(buf, 0, 2048);
+	ata_read(&(atadtab[0]), buf, 512);
+	bufdump(buf, 128);
+
 	return 0;
 }
