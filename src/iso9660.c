@@ -16,6 +16,8 @@ read_blk(atap_t part, lba_t lba, uint8_t * buf)
 	struct seek seekargs;
 	int i, result;
 
+	kprintf("read_blk: lba %u\r\n", lba);
+
 	/* Convert lba to sector */
 	uint32_t sectorno = lba << 2;
 
@@ -69,6 +71,8 @@ iso9660_dump_primary_volume(primary_volume_descriptor_t pri)
 	kprintf("path table location blk %u\r\n", pri->path_table_loc);
 }
 
+static uint8_t pri_vol_desc[ATAPI_SECTOR_SIZE];
+
 void
 iso9660_init()
 {
@@ -78,20 +82,22 @@ iso9660_init()
 	int result;
 
 	/* Read primary volume descriptor */
-	memset(buf, 0, ATAPI_SECTOR_SIZE);
-	read_blk(atap, RESERVED_SECTORS, buf);
+	memset(pri_vol_desc, 0, ATAPI_SECTOR_SIZE);
+	read_blk(atap, RESERVED_SECTORS, pri_vol_desc);
 
-	result = iso9660_verify_primary_volume((volume_descriptor_t) buf);
+	result = iso9660_verify_primary_volume(
+			(volume_descriptor_t) pri_vol_desc);
 	if (result < 0) {
 		kprintf("ISO9660 primary volume not found\r\n");
 		halt();
 	}
 	pri = (primary_volume_descriptor_t)
-		(buf + sizeof(struct volume_descriptor));
+		(pri_vol_desc + sizeof(struct volume_descriptor));
+
 	iso9660_dump_primary_volume(pri);
 
 	/* Read path table */
 	memset(buf, 0, ATAPI_SECTOR_SIZE);
-	read_blk(atap, RESERVED_SECTORS + pri->path_table_loc, buf);
-	bufdump(buf, ATAPI_SECTOR_SIZE);
+	read_blk(atap, pri->path_table_loc, buf);
+	bufdump(buf, pri->path_table_size_le);
 }
