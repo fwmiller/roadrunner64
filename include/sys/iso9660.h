@@ -54,7 +54,15 @@ struct primary_volume_descriptor {
 	uint8_t reserved[653];
 } __attribute__((packed));
 
+struct path_table_record {
+	uint8_t dir_id_len;
+	uint8_t ext_att_rec_len;
+	uint32_t lba;
+	uint16_t parent_dirno;
+} __attribute__((packed));
+
 typedef struct volume_descriptor *volume_descriptor_t;
 typedef struct primary_volume_descriptor *primary_volume_descriptor_t;
+typedef struct path_table_record *path_table_record_t;
 
 #endif
