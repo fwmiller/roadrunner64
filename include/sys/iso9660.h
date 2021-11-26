@@ -61,8 +61,24 @@ struct path_table_record {
 	uint16_t parent_dirno;
 } __attribute__((packed));
 
+struct directory_record {
+	uint8_t dir_rec_len;
+	uint8_t ext_att_rec_len;
+	uint32_t lba_le;
+	uint32_t lba_be;
+	uint32_t size_le;
+	uint32_t size_be;
+	uint8_t record_date[7];
+	uint8_t flags;
+	uint8_t unit_size;
+	uint8_t interleave_gap_size;
+	uint32_t vol_seqno;
+	uint8_t file_id_len;
+} __attribute__((packed));
+
 typedef struct volume_descriptor *volume_descriptor_t;
 typedef struct primary_volume_descriptor *primary_volume_descriptor_t;
 typedef struct path_table_record *path_table_record_t;
+typedef struct directory_record *directory_record_t;
 
 #endif
