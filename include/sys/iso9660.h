@@ -16,7 +16,7 @@ struct volume_descriptor {
 	uint8_t type;
 	uint8_t id[5];
 	uint8_t version;
-} __attribute__((packed));
+} __attribute__ ((packed));
 
 struct primary_volume_descriptor {
 	uint8_t unused1;
@@ -52,14 +52,14 @@ struct primary_volume_descriptor {
 	uint8_t unused4;
 	uint8_t application[512];
 	uint8_t reserved[653];
-} __attribute__((packed));
+} __attribute__ ((packed));
 
 struct path_table_record {
 	uint8_t dir_id_len;
 	uint8_t ext_att_rec_len;
 	uint32_t lba;
 	uint16_t parent_dirno;
-} __attribute__((packed));
+} __attribute__ ((packed));
 
 struct directory_record {
 	uint8_t dir_rec_len;
@@ -74,11 +74,13 @@ struct directory_record {
 	uint8_t interleave_gap_size;
 	uint32_t vol_seqno;
 	uint8_t file_id_len;
-} __attribute__((packed));
+} __attribute__ ((packed));
 
 typedef struct volume_descriptor *volume_descriptor_t;
 typedef struct primary_volume_descriptor *primary_volume_descriptor_t;
 typedef struct path_table_record *path_table_record_t;
 typedef struct directory_record *directory_record_t;
+
+void iso9660_init();
 
 #endif

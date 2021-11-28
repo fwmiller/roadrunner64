@@ -5,9 +5,8 @@
 #define COM_RX_STATUS	((short) 0x3fd)
 
 /**
- *   This reads a character from the UART.  The function returns a byte
- *   cast as an integer from the UART
- *   return value.
+ *   This function reads a character from the UART.  The function returns
+ *   a byte cast as an integer from the UART
  *
  *   @retval		A byte cast to an integer from the UART
  **/

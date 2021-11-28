@@ -188,7 +188,7 @@ sprintf(char *s, const char *fmt, ...)
 	return 0;
 }
 
-#define LEN    16 
+#define LEN    16
 
 void
 bufdump(char *buf, int size)
