@@ -34,8 +34,10 @@ struct primary_volume_descriptor {
 	uint16_t logical_blk_size_be;
 	uint32_t path_table_size_le;
 	uint32_t path_table_size_be;
-	uint32_t path_table_loc;
-	uint32_t opt_path_table_loc;
+	uint32_t path_table_loc_le;
+	uint32_t opt_path_table_loc_le;
+	uint32_t path_table_loc_be;
+	uint32_t opt_path_table_loc_be;
 	uint8_t root_dir_entry[34];
 	uint8_t vol_set_id[128];
 	uint8_t publisher_id[128];
@@ -72,7 +74,8 @@ struct directory_record {
 	uint8_t flags;
 	uint8_t unit_size;
 	uint8_t interleave_gap_size;
-	uint32_t vol_seqno;
+	uint16_t vol_seqno_le;
+	uint16_t vol_seqno_be;
 	uint8_t file_id_len;
 } __attribute__ ((packed));
 

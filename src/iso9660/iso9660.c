@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
@@ -8,12 +9,15 @@
 
 typedef uint32_t lba_t;
 
+static uint8_t pri_vol_desc[ATAPI_SECTOR_SIZE];
+static uint8_t path_table[ATAPI_SECTOR_SIZE];
+
 /*
  * buf must be at least ATAPI_SECTOR_SIZE = 2048 bytes and is assumed to
  * be zeroed
  */
 static int
-read_blk(atap_t part, lba_t lba, uint8_t * buf)
+iso9660_read_blk(atap_t part, lba_t lba, uint8_t * buf)
 {
 	struct seek seekargs;
 	int result;
@@ -36,9 +40,8 @@ static int
 iso9660_verify_primary_volume(volume_descriptor_t vol)
 {
 	if (vol->type != VOLUME_DESCRIPTOR_TYPE_PRIMARY ||
-	    vol->id[0] != 'C' ||
-	    vol->id[1] != 'D' ||
-	    vol->id[2] != '0' || vol->id[3] != '0' || vol->id[4] != '1')
+	    vol->id[0] != 'C' || vol->id[1] != 'D' || vol->id[2] != '0' ||
+	    vol->id[3] != '0' || vol->id[4] != '1')
 		return (-1);
 	return 0;
 }
@@ -66,11 +69,11 @@ iso9660_dump_primary_volume(primary_volume_descriptor_t pri)
 
 	kprintf("logical blk size %u bytes\r\n", pri->logical_blk_size_le);
 	kprintf("path table size %u bytes\r\n", pri->path_table_size_le);
-	kprintf("path table location blk %u\r\n", pri->path_table_loc);
+	kprintf("path table location blk %u\r\n", pri->path_table_loc_le);
 }
 
 static void
-dump_path_table_record(path_table_record_t rec)
+iso9660_dump_path_table_record(path_table_record_t rec)
 {
 	kprintf("%10u ", rec->dir_id_len);
 	kprintf("%15u ", rec->ext_att_rec_len);
@@ -85,14 +88,14 @@ dump_path_table_record(path_table_record_t rec)
 }
 
 static void
-dump_path_table(primary_volume_descriptor_t pri, uint8_t * buf)
+iso9660_dump_path_table(primary_volume_descriptor_t pri, uint8_t * buf)
 {
 	kprintf("dir_id_len ext_att_rec_len lba          ");
 	kprintf("parent_dirno path\r\n");
 
 	for (int pos = 0; pos < pri->path_table_size_le;) {
 		path_table_record_t rec = (path_table_record_t) (buf + pos);
-		dump_path_table_record(rec);
+		iso9660_dump_path_table_record(rec);
 
 		unsigned reclen = sizeof(struct path_table_record) +
 		    rec->dir_id_len;
@@ -102,7 +105,28 @@ dump_path_table(primary_volume_descriptor_t pri, uint8_t * buf)
 	}
 }
 
-static uint8_t pri_vol_desc[ATAPI_SECTOR_SIZE];
+void
+iso9660_dump_directory(uint8_t * buf)
+{
+	directory_record_t rec = (directory_record_t) buf;
+
+	kprintf("dir_rec_len %u\r\n", rec->dir_rec_len);
+	kprintf("ext_att_rec_len %u\r\n", rec->ext_att_rec_len);
+	kprintf("lba %u\r\n", rec->lba_le);
+	kprintf("size %u\r\n", rec->size_le);
+	kprintf("flags 0x%02x\r\n", rec->flags);
+	kprintf("unit_size %u\r\n", rec->unit_size);
+	kprintf("interleave_gap_size %u\r\n", rec->interleave_gap_size);
+	kprintf("vol_seqno %u\r\n", rec->vol_seqno_le);
+	kprintf("file_id_len %u\r\n", rec->file_id_len);
+
+	kprintf("[");
+	for (int i = 0; i < rec->file_id_len; i++) {
+		char *str = (char *)(buf + sizeof(struct directory_record));
+		kprintf("%c", *(str + i));
+	}
+	kprintf("]\r\n");
+}
 
 void
 iso9660_init()
@@ -114,7 +138,7 @@ iso9660_init()
 
 	/* Read primary volume descriptor */
 	memset(pri_vol_desc, 0, ATAPI_SECTOR_SIZE);
-	read_blk(atap, RESERVED_SECTORS, pri_vol_desc);
+	iso9660_read_blk(atap, RESERVED_SECTORS, pri_vol_desc);
 
 	result = iso9660_verify_primary_volume((volume_descriptor_t)
 					       pri_vol_desc);
@@ -128,7 +152,9 @@ iso9660_init()
 	iso9660_dump_primary_volume(pri);
 
 	/* Read path table */
-	memset(buf, 0, ATAPI_SECTOR_SIZE);
-	read_blk(atap, pri->path_table_loc, buf);
-	dump_path_table(pri, buf);
+	memset(path_table, 0, ATAPI_SECTOR_SIZE);
+	iso9660_read_blk(atap, pri->path_table_loc_le, path_table);
+	iso9660_dump_path_table(pri, path_table);
+
+	iso9660_dump_directory((uint8_t *) pri->root_dir_entry);
 }
