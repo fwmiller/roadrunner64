@@ -42,11 +42,11 @@ cli()
 {
 	char cmdline[80];
 
-	kprintf(PROMPT);
 	for (;;) {
-		get_cmdline(cmdline, 80);
-		if (strlen(cmdline) > 0)
-			kprintf("%s\r\n", cmdline);
 		kprintf(PROMPT);
+
+		get_cmdline(cmdline, 80);
+		if (strlen(cmdline) == 0)
+			continue;
 	}
 }
