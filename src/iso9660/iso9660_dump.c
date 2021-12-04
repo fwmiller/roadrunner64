@@ -69,12 +69,12 @@ void iso9660_dump_directory(uint8_t * buf, int size)
 			break;
 
 		kprintf("\r\n[");
+		char *str = ((char *) rec) +
+			sizeof(struct directory_record);
 		for (int i = 0; i < rec->file_id_len; i++) {
-			char *str =
-			    (char *)(buf + sizeof(struct directory_record));
 			char ch = *(str + i);
-			if (isupper(ch) || isdigit(ch) || ch == '_')
-				kprintf("<%c>", ch);
+			if (isprint(ch))
+				kprintf("%c", ch);
 			else
 				kprintf("(%02x)", ch);
 		}

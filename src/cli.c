@@ -4,7 +4,8 @@
 #include <string.h>
 #include <sys/uart.h>
 
-#define PROMPT	"> "
+#define PROMPT		"> "
+#define CMD_LINE_LEN	80
 
 static int
 get_cmdline(char *cmdline, int len)
@@ -40,12 +41,12 @@ get_cmdline(char *cmdline, int len)
 void
 cli()
 {
-	char cmdline[80];
+	char cmdline[CMD_LINE_LEN];
 
 	for (;;) {
 		kprintf(PROMPT);
 
-		get_cmdline(cmdline, 80);
+		get_cmdline(cmdline, CMD_LINE_LEN);
 		if (strlen(cmdline) == 0)
 			continue;
 	}
