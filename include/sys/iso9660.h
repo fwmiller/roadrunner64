@@ -86,6 +86,7 @@ struct directory_record {
 	uint8_t file_id_len;
 } __attribute__ ((packed));
 
+typedef uint32_t lba_t;
 typedef struct volume_descriptor *volume_descriptor_t;
 typedef struct primary_volume_descriptor *primary_volume_descriptor_t;
 typedef struct path_table_record *path_table_record_t;
