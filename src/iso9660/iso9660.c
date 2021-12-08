@@ -14,7 +14,8 @@ static uint8_t root_dir[ATAPI_SECTOR_SIZE];
  * buf must be at least ATAPI_SECTOR_SIZE = 2048 bytes and is assumed to
  * be zeroed
  */
-static int iso9660_read_blk(atap_t part, lba_t lba, uint8_t * buf)
+static int
+iso9660_read_blk(atap_t part, lba_t lba, uint8_t * buf)
 {
 	struct seek seekargs;
 	int result;
@@ -35,7 +36,8 @@ static int iso9660_read_blk(atap_t part, lba_t lba, uint8_t * buf)
 	return ata_read(part, buf, ATAPI_SECTOR_SIZE);
 }
 
-static int iso9660_verify_primary_volume(volume_descriptor_t vol)
+static int
+iso9660_verify_primary_volume(volume_descriptor_t vol)
 {
 	if (vol->type != VOLUME_DESCRIPTOR_TYPE_PRIMARY ||
 	    vol->id[0] != 'C' || vol->id[1] != 'D' || vol->id[2] != '0' ||
@@ -44,7 +46,8 @@ static int iso9660_verify_primary_volume(volume_descriptor_t vol)
 	return 0;
 }
 
-void iso9660_init()
+void
+iso9660_init()
 {
 	atap_t atap = ata_get_primary_partition();
 	primary_volume_descriptor_t pri;
@@ -71,13 +74,11 @@ void iso9660_init()
 	iso9660_dump_path_table(pri, path_table);
 
 	iso9660_dump_directory((uint8_t *) pri->root_dir_entry,
-				sizeof(pri->root_dir_entry));
+			       sizeof(pri->root_dir_entry));
 
 	/* Read root directory */
 	directory_record_t rec = (directory_record_t) pri->root_dir_entry;
 	memset(root_dir, 0, ATAPI_SECTOR_SIZE);
 	iso9660_read_blk(atap, rec->lba_le, root_dir);
-
-	bufdump(root_dir, ATAPI_SECTOR_SIZE);
 	iso9660_dump_directory((uint8_t *) root_dir, ATAPI_SECTOR_SIZE);
 }
