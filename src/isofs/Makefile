@@ -9,8 +9,8 @@ AR = ar -r
 RANLIB = ranlib
 RM = rm -fr
 
-OBJS = iso9660.o iso9660_dump.o iso9660_dump_path_table.o iso9660_dump_primary_volume.o
-TGT = libiso9660.a
+OBJS = isofs.o isofs_dump.o isofs_dump_path_table.o isofs_dump_primary_volume.o isofs_find.o
+TGT = libisofs.a
 
 INDENT_RULES = -nbad -bap -nbc -bbo -hnl -br -brs -c33 -cd33 -ncdb -ce -ci4 -cli0 -d0 -di1 -nfc1 -i8 -ip0 -l80 -lp -npcs -nprs -npsl -sai -saf -saw -ncs -nsc -sob -nfca -cp33 -ss -ts8 -il1
 
