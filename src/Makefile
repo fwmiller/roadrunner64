@@ -1,5 +1,4 @@
 INCDIR = ../include
-LIBDIR = -L./ata -L./isofs
 
 CC = gcc
 
@@ -13,8 +12,8 @@ LDFLAGS = -nostdlib -Wl,-n,-T,link.ld -no-pie
 RM = rm -fr
 
 # boot.o and mb2.o must be first
-OBJS = boot.o mb2.o cli.o io.o kmain.o print.o string.o sys.o time.o uart.o
-LIBS = -lata -lisofs
+OBJS = boot.o mb2.o ata.o ata_identify.o ata_io.o atapi_identify.o ata_read.o ata_read_parttab.o ata_seek.o ata_write.o cli.o io.o isofs.o isofs_dump.o isofs_dump_path_table.o isofs_dump_primary_volume.o isofs_find.o kmain.o part.o print.o string.o sys.o time.o uart.o
+
 KERNEL = kmain.elf
 
 INDENT_RULES = -nbad -bap -nbc -bbo -hnl -br -brs -c33 -cd33 -ncdb -ce -ci4 -cli0 -d0 -di1 -nfc1 -i8 -ip0 -l80 -lp -npcs -nprs -psl -sai -saf -saw -ncs -nsc -sob -nfca -cp33 -ss -ts8 -il1
@@ -22,9 +21,7 @@ INDENT_RULES = -nbad -bap -nbc -bbo -hnl -br -brs -c33 -cd33 -ncdb -ce -ci4 -cli
 all: build
 
 build: $(OBJS) link.ld
-	cd ata; make
-	cd isofs; make
-	$(LD) $(LDFLAGS) $(LIBDIR) -o $(KERNEL) $(OBJS) $(LIBS)
+	$(LD) $(LDFLAGS) -o $(KERNEL) $(OBJS)
 	mkdir -p isofiles/boot/grub
 	cp $(KERNEL) isofiles/boot/
 	cp grub.cfg isofiles/boot/grub
@@ -34,8 +31,6 @@ run: build
 	qemu-system-x86_64 -nographic -no-reboot -drive format=raw,file=iso.img
 
 clean:
-	cd ata; make clean
-	cd isofs; make clean
 	$(RM) $(OBJS) $(KERNEL) isofiles iso.img
 
 wc: clean
