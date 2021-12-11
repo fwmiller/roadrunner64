@@ -1,8 +1,8 @@
 #include <string.h>
-#include <sys/iso9660.h>
+#include <sys/isofs.h>
 
 lba_t
-iso9660_find(char *path, uint8_t * buf, int size)
+isofs_find(char *path, uint8_t * buf, int size)
 {
 	directory_record_t rec;
 	lba_t lba;

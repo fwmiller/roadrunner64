@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <sys/ata.h>
-#include <sys/iso9660.h>
+#include <sys/isofs.h>
 
 void cli();
 
@@ -41,7 +41,7 @@ kmain()
 
 	word_widths();
 	ata_init();
-	iso9660_init();
+	isofs_init();
 
 	kprintf("Type ctrl-a x to exit\r\n");
 	cli();

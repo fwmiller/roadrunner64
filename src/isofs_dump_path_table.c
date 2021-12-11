@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include <sys/iso9660.h>
+#include <sys/isofs.h>
 
 static void
-iso9660_dump_path_table_record(path_table_record_t rec)
+isofs_dump_path_table_record(path_table_record_t rec)
 {
 	kprintf("%10u ", rec->dir_id_len);
 	kprintf("%15u ", rec->ext_att_rec_len);
@@ -17,14 +17,14 @@ iso9660_dump_path_table_record(path_table_record_t rec)
 }
 
 void
-iso9660_dump_path_table(primary_volume_descriptor_t pri, uint8_t * buf)
+isofs_dump_path_table(primary_volume_descriptor_t pri, uint8_t * buf)
 {
 	kprintf("dir_id_len ext_att_rec_len lba          ");
 	kprintf("parent_dirno path\r\n");
 
 	for (int pos = 0; pos < pri->path_table_size_le;) {
 		path_table_record_t rec = (path_table_record_t) (buf + pos);
-		iso9660_dump_path_table_record(rec);
+		isofs_dump_path_table_record(rec);
 
 		unsigned reclen = sizeof(struct path_table_record) +
 		    rec->dir_id_len;

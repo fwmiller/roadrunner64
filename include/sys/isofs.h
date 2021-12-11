@@ -92,9 +92,9 @@ typedef struct primary_volume_descriptor *primary_volume_descriptor_t;
 typedef struct path_table_record *path_table_record_t;
 typedef struct directory_record *directory_record_t;
 
-void iso9660_init();
-void iso9660_dump_primary_volume(primary_volume_descriptor_t pri);
-void iso9660_dump_path_table(primary_volume_descriptor_t pri, uint8_t * buf);
-void iso9660_dump_directory(uint8_t * buf, int size);
+void isofs_init();
+void isofs_dump_primary_volume(primary_volume_descriptor_t pri);
+void isofs_dump_path_table(primary_volume_descriptor_t pri, uint8_t * buf);
+void isofs_dump_directory(uint8_t * buf, int size);
 
 #endif

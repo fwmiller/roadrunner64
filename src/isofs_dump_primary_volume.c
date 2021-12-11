@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <sys/ata.h>
-#include <sys/iso9660.h>
+#include <sys/isofs.h>
 
 void
-iso9660_dump_primary_volume(primary_volume_descriptor_t pri)
+isofs_dump_primary_volume(primary_volume_descriptor_t pri)
 {
 	int i;
 
