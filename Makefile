@@ -12,6 +12,8 @@ CFLAGS	:= -c -Wall -m64 -Og -nostdinc -ffreestanding
 #CFLAGS	+= -D_DEBUG
 LDFLAGS	:= -nostdlib -Wl,-n,-T,$(SRC)/link.ld -no-pie
 
+INDENT_RULES := -nbad -bap -nbc -bbo -hnl -br -brs -c33 -cd33 -ncdb -ce -ci4 -cli0 -d0 -di1 -nfc1 -i8 -ip0 -l80 -lp -npcs -nprs -psl -sai -saf -saw -ncs -nsc -sob -nfca -cp33 -ss -ts8 -il1
+
 C_SRCS	:= $(shell find src/ -maxdepth 1 -type f -regex ".*\.c")
 C_FILES	:= $(sort $(notdir $(C_SRCS)))
 
@@ -36,6 +38,12 @@ run: all
 
 clean:
 	$(RM) $(BIN)
+
+indent:
+	cd $(INC);indent $(INDENT_RULES) *.h
+	cd $(INC)/sys;indent $(INDENT_RULES) *.h
+	cd $(SRC);indent $(INDENT_RULES) *.c
+	rm $(INC)/*~ $(INC)/sys/*~ $(SRC)/*~
 
 debug:
 	@for f in $(C_SRCS); do echo $$f; done
