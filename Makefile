@@ -1,42 +1,53 @@
-MKDIR	:= mkdir -p
-CC	:= gcc
-RM	:= rm -fr
-
-CFLAGS	:= -c -Wall -m64 -Og -nostdinc -ffreestanding
-#CFLAGS	+= -D_DEBUG
-
 INC	= include
 SRC	= src
 BIN	= build
 
-C_SRCS	:= $(sort $(shell find src/ -maxdepth 1 -type f -regex ".*\.c"))
-S_SRCS	:= $(sort $(shell find src/ -maxdepth 1 -type f -regex ".*\.S"))
+MKDIR	:= mkdir -p
+CC	:= gcc
+LD	:= gcc
+CP	:= cp
+RM	:= rm -fr
 
+CFLAGS	:= -c -Wall -m64 -Og -nostdinc -ffreestanding
+#CFLAGS	+= -D_DEBUG
+LDFLAGS	:= -nostdlib -Wl,-n,-T,$(SRC)/link.ld -no-pie
+
+C_SRCS	:= $(shell find src/ -maxdepth 1 -type f -regex ".*\.c")
 C_FILES	:= $(sort $(notdir $(C_SRCS)))
+
+S_SRCS	:= $(shell find src/ -maxdepth 1 -type f -regex ".*\.S")
 S_FILES	:= $(sort $(notdir $(S_SRCS)))
 
 OBJS	:= $(foreach f,$(C_FILES),$(addprefix $(BIN)/,$(subst .c,.o,$(f))))
 OBJS	+= $(foreach f,$(S_FILES),$(addprefix $(BIN)/,$(subst .S,.o,$(f))))
 OBJS	:= $(sort $(OBJS))
 
-all: $(OBJS)
+KERNEL	:= $(BIN)/kmain.elf
+
+all: $(OBJS) $(SRC)/link.ld
+	$(LD) $(LDFLAGS) -o $(KERNEL) $(OBJS)
+	$(MKDIR) $(BIN)/isofiles/boot/grub
+	$(CP) $(KERNEL) $(BIN)/isofiles/boot/
+	$(CP) $(SRC)/grub.cfg $(BIN)/isofiles/boot/grub
+	grub-mkrescue -o $(BIN)/iso.img $(BIN)/isofiles
+
+run: all
+	qemu-system-x86_64 -nographic -no-reboot -drive format=raw,file=$(BIN)/iso.img
 
 clean:
 	$(RM) $(BIN)
 
 debug:
-#	@echo $(C_SRCS)
-#	@echo
-#	@echo $(S_SRCS)
-#	@echo
-#	@for f in $(OBJS); do echo $$f; done
+	@for f in $(C_SRCS); do echo $$f; done
+	@echo
+	@for f in $(S_SRCS); do echo $$f; done
+	@echo
+	@for f in $(OBJS); do echo $$f; done
 
 $(BIN)/%.o: $(SRC)/%.S
 	@$(MKDIR) $(BIN)
-#	@echo $<
 	$(CC) $(CFLAGS) -I$(INC) -o $@ $<
 
 $(BIN)/%.o: $(SRC)/%.c
 	@$(MKDIR) $(BIN)
-#	@echo $<
 	$(CC) $(CFLAGS) -I$(INC) -o $@ $<
