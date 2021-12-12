@@ -65,20 +65,36 @@ isofs_init()
 	}
 	pri = (primary_volume_descriptor_t)
 	    (pri_vol_desc + sizeof(struct volume_descriptor));
-
+#if 0
 	isofs_dump_primary_volume(pri);
-
+#endif
 	/* Read path table */
 	memset(path_table, 0, ATAPI_SECTOR_SIZE);
+#if 0
 	isofs_read_blk(atap, pri->path_table_loc_le, path_table);
 	isofs_dump_path_table(pri, path_table);
-
+#endif
 	isofs_dump_directory((uint8_t *) pri->root_dir_entry,
 			     sizeof(pri->root_dir_entry));
 
-	/* Read root directory */
+	/* Read / directory */
+	kprintf("\r\n/\r\n");
 	directory_record_t rec = (directory_record_t) pri->root_dir_entry;
 	memset(root_dir, 0, ATAPI_SECTOR_SIZE);
 	isofs_read_blk(atap, rec->lba_le, root_dir);
 	isofs_dump_directory((uint8_t *) root_dir, ATAPI_SECTOR_SIZE);
+
+	static uint8_t dir[ATAPI_SECTOR_SIZE];
+
+	/* Read /boot directory */
+	kprintf("\r\n/boot\r\n");
+	memset(dir, 0, ATAPI_SECTOR_SIZE);
+	isofs_read_blk(atap, 21, dir);
+	isofs_dump_directory(dir, ATAPI_SECTOR_SIZE);
+
+	/* Read /boot/grub directory */
+	kprintf("\r\n/boot/grub\r\n");
+	memset(dir, 0, ATAPI_SECTOR_SIZE);
+	isofs_read_blk(atap, 22, dir);
+	isofs_dump_directory(dir, ATAPI_SECTOR_SIZE);
 }

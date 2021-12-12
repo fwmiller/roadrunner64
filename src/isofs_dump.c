@@ -8,6 +8,14 @@ isofs_dump_file_id(directory_record_t rec)
 {
 	char *s = ((char *)rec) + sizeof(struct directory_record);
 
+	if (s[0] == 0) {
+		kprintf(".");
+		return;
+	}
+	if (s[0] == 1) {
+		kprintf("..");
+		return;
+	}
 	for (int i = 0; i < rec->file_id_len; i++) {
 		char ch = *(s + i);
 		if (isprint(ch))
@@ -88,7 +96,6 @@ isofs_dump_directory(uint8_t * buf, int size)
 		kprintf("\r\n");
 #if 0
 		/* File creation time and date */
-		kprintf("created ");
 		isofs_dump_record_date(rec);
 		kprintf("\r\n");
 

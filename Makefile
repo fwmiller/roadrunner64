@@ -39,7 +39,7 @@ run: all
 clean:
 	$(RM) $(BIN)
 
-indent:
+indent: clean
 	cd $(INC);indent $(INDENT_RULES) *.h
 	cd $(INC)/sys;indent $(INDENT_RULES) *.h
 	cd $(SRC);indent $(INDENT_RULES) *.c
