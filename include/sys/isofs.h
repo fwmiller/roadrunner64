@@ -96,5 +96,6 @@ void isofs_init();
 void isofs_dump_primary_volume(primary_volume_descriptor_t pri);
 void isofs_dump_path_table(primary_volume_descriptor_t pri, uint8_t * buf);
 void isofs_dump_directory(uint8_t * buf, int size);
+lba_t isofs_find(char *path, uint8_t * buf, int size);
 
 #endif

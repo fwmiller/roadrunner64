@@ -84,6 +84,8 @@ isofs_init()
 	isofs_read_blk(atap, rec->lba_le, root_dir);
 	isofs_dump_directory((uint8_t *) root_dir, ATAPI_SECTOR_SIZE);
 
+	isofs_find("boot", root_dir, ATAPI_SECTOR_SIZE);
+
 	static uint8_t dir[ATAPI_SECTOR_SIZE];
 
 	/* Read /boot directory */
