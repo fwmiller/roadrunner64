@@ -19,9 +19,9 @@ isofs_read_blk(atap_t part, lba_t lba, uint8_t * buf)
 {
 	struct seek seekargs;
 	int result;
-
-	kprintf("blkno %u\r\n", lba);
-
+#if _DEBUG
+	kprintf("isofs_read_blk: blkno %u\r\n", lba);
+#endif
 	/* Convert lba to sector */
 	uint32_t sectorno = lba << 2;
 
@@ -65,12 +65,12 @@ isofs_init()
 	}
 	pri = (primary_volume_descriptor_t)
 	    (pri_vol_desc + sizeof(struct volume_descriptor));
-#if 0
+#if _DEBUG
 	isofs_dump_primary_volume(pri);
 #endif
 	/* Read path table */
 	memset(path_table, 0, ATAPI_SECTOR_SIZE);
-#if 0
+#if _DEBUG
 	isofs_read_blk(atap, pri->path_table_loc_le, path_table);
 	isofs_dump_path_table(pri, path_table);
 #endif
@@ -84,7 +84,7 @@ isofs_init()
 	isofs_read_blk(atap, rec->lba_le, root_dir);
 	isofs_dump_directory((uint8_t *) root_dir, ATAPI_SECTOR_SIZE);
 
-	isofs_find("boot", root_dir, ATAPI_SECTOR_SIZE);
+	isofs_find("/boot", root_dir, ATAPI_SECTOR_SIZE);
 
 	static uint8_t dir[ATAPI_SECTOR_SIZE];
 

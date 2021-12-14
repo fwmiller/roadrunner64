@@ -1,15 +1,15 @@
 #include <errno.h>
+#if _DEBUG
+#include <stdio.h>
+#endif
 #include <string.h>
 #include <sys/ata.h>
 #include <sys/io.h>
-
-void kprintf(const char *fmt, ...);
 
 int
 atapi_identify(atad_t atad, char *drvstr)
 {
 	uint8_t sig[4];
-	int result;
 
 	sig[0] = inb(atad->atac->iobase + ATA_SECTORCNT);
 	sig[1] = inb(atad->atac->iobase + ATA_SECTOR);
@@ -31,7 +31,7 @@ atapi_identify(atad_t atad, char *drvstr)
 	/* Read parameter data */
 	insw(atad->atac->iobase + ATA_DATA,
 	     (void *)&(atad->param), SECTOR_SIZE / 2);
-
+#if _DEBUG
 	ata_convert_string(atad->param.model, 20);
 	kprintf("%s: ATAPI ", drvstr);
 	if (((atad->param.config >> 8) & 0x1f) == 5)
@@ -41,5 +41,6 @@ atapi_identify(atad_t atad, char *drvstr)
 	kprintf("\r\n");
 
 	kprintf("%s: %s\r\n", drvstr, atad->param.model);
-	return result;
+#endif
+	return 0;
 }

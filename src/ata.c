@@ -2,8 +2,13 @@
 #include <string.h>
 #include <sys/ata.h>
 
+/* There are typically 2 controllers per system */
 static struct ata_controller atactab[ATA_CONTROLLERS];
+
+/* There can be up to 4 drives per system, 2 per controller */
 static struct ata_drive atadtab[ATA_DRIVES];
+
+/* There can be up to 16 total partitions per system, 4 per drive */
 static struct ata_partition ataptab[PARTS * ATA_DRIVES];
 
 static void
@@ -23,7 +28,9 @@ read_parttab(atad_t atad)
 		atap->sectors = atad->parttab[part].size;
 		atap->offset = atad->parttab[part].off;
 	}
+#if _DEBUG
 	dump_parttab(atad->parttab);
+#endif
 }
 
 atap_t
