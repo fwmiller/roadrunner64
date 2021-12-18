@@ -3,6 +3,7 @@
 #endif
 #include <string.h>
 #include <sys/isofs.h>
+#include <sys/lex.h>
 
 /* This routine searches a directory buffer for a path element */
 static lba_t
@@ -36,7 +37,13 @@ isofs_search_dir(char *s, uint8_t * buf, int size)
 lba_t
 isofs_find(char *path, uint8_t * buf, int size)
 {
+	struct lex l;
+	lba_t lba;
 	int pos = 0;
+
+#if _DEBUG
+	kprintf("isofs_find: path [%s]\r\n", path);
+#endif
 
 	/* Look for the full path leading slash */
 	if (path[pos++] != '/') {
@@ -45,5 +52,31 @@ isofs_find(char *path, uint8_t * buf, int size)
 #endif
 		return 0;
 	}
-	return isofs_search_dir(path, buf, size);
+	for (;;) {
+		/* Get the next path element */
+		memset(&l, 0, sizeof(struct lex));
+		nextlex(path, &pos, &l);
+		if (l.type != LEX_ID) {
+#if _DEBUG
+			kprintf("isofs_find: ");
+			kprintf("illegal path element\r\n");
+#endif
+			return 0;
+		}
+#if _DEBUG
+		kprintf("isofs_find: ");
+		kprintf("path element [%s]\r\n", l.s);
+#endif
+		/* Search the directory for the path element */
+		lba = isofs_search_dir(path, buf, size);
+		if (lba == 0) {
+			/* Path element not found */
+		}
+
+		memset(&l, 0, sizeof(struct lex));
+		nextlex(path, &pos, &l);
+		if (l.type != LEX_SLASH)
+			break;
+	}
+	return 0;
 }
