@@ -67,15 +67,14 @@ isofs_init()
 	    (pri_vol_desc + sizeof(struct volume_descriptor));
 #if _DEBUG
 	isofs_dump_primary_volume(pri);
+	isofs_dump_directory((uint8_t *) pri->root_dir_entry,
+			     sizeof(pri->root_dir_entry));
 #endif
 	/* Read path table */
 	memset(path_table, 0, ATAPI_SECTOR_SIZE);
-#if _DEBUG
 	isofs_read_blk(atap, pri->path_table_loc_le, path_table);
+#if _DEBUG
 	isofs_dump_path_table(pri, path_table);
-#endif
-	isofs_dump_directory((uint8_t *) pri->root_dir_entry,
-			     sizeof(pri->root_dir_entry));
 
 	/* Read / directory */
 	kprintf("\r\n/\r\n");
@@ -83,9 +82,9 @@ isofs_init()
 	memset(root_dir, 0, ATAPI_SECTOR_SIZE);
 	isofs_read_blk(atap, rec->lba_le, root_dir);
 	isofs_dump_directory((uint8_t *) root_dir, ATAPI_SECTOR_SIZE);
-
+#endif
 	isofs_find("/boot", root_dir, ATAPI_SECTOR_SIZE);
-
+#if 0
 	static uint8_t dir[ATAPI_SECTOR_SIZE];
 
 	/* Read /boot directory */
@@ -99,4 +98,5 @@ isofs_init()
 	memset(dir, 0, ATAPI_SECTOR_SIZE);
 	isofs_read_blk(atap, 22, dir);
 	isofs_dump_directory(dir, ATAPI_SECTOR_SIZE);
+#endif
 }

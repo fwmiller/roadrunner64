@@ -7,14 +7,14 @@
 
 /* This routine searches a directory buffer for a path element */
 static lba_t
-isofs_search_dir(char *s, uint8_t * buf, int size)
+isofs_search_dir(char *s, uint8_t * dir, int size)
 {
 	directory_record_t rec;
 	char *file_id;
 
 	/* Loop over directory entries */
 	for (int pos = 0; pos < size; pos += rec->dir_rec_len) {
-		rec = (directory_record_t) (buf + pos);
+		rec = (directory_record_t) (dir + pos);
 		if (rec->dir_rec_len == 0)
 			break;
 
@@ -35,7 +35,7 @@ isofs_search_dir(char *s, uint8_t * buf, int size)
  * directories for a file or directory
  */
 lba_t
-isofs_find(char *path, uint8_t * buf, int size)
+isofs_find(char *path, uint8_t * rootdir, int size)
 {
 	struct lex l;
 	lba_t lba;
@@ -68,7 +68,7 @@ isofs_find(char *path, uint8_t * buf, int size)
 		kprintf("path element [%s]\r\n", l.s);
 #endif
 		/* Search the directory for the path element */
-		lba = isofs_search_dir(path, buf, size);
+		lba = isofs_search_dir(path, rootdir, size);
 		if (lba == 0) {
 			/* Path element not found */
 		}
