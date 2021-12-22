@@ -62,6 +62,9 @@ nextlex(char *ln, int *pos, lex_t l)
 	case ':':
 		LEX_SINGLE_CHAR(LEX_COLON);
 		break;
+	case ';':
+		LEX_SINGLE_CHAR(LEX_SEMICOLON);
+		break;
 	case '-':
 		LEX_SINGLE_CHAR(LEX_DASH);
 		break;

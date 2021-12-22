@@ -9,10 +9,11 @@ typedef struct lex {
 #define LEX_ID		4
 #define LEX_NUM		5
 #define LEX_COLON	6
-#define LEX_DASH	7
-#define LEX_QUESTION	8
-#define LEX_SLASH	9
-#define LEX_PERIOD	10
+#define LEX_SEMICOLON	7
+#define LEX_DASH	8
+#define LEX_QUESTION	9
+#define LEX_SLASH	10
+#define LEX_PERIOD	11
 	int type;
 	int val;
 	char s[80];

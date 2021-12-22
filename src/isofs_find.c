@@ -72,11 +72,34 @@ isofs_find(char *path, uint8_t * buf, int size)
 		if (lba == 0) {
 			/* Path element not found */
 		}
-
 		memset(&l, 0, sizeof(struct lex));
 		nextlex(path, &pos, &l);
+		if (l.type == LEX_SEMICOLON) {
+			/*
+			 * Found the location of the last path element 
+			 * which must be a file
+			 */
+#if _DEBUG
+			kprintf("isofs_find: found file\r\n");
+#endif
+			return lba;
+
+		}
+		if (l.type == LEX_EOL) {
+			/*
+			 * Found the location of the last path element 
+			 * which must be a directory
+			 */
+#if _DEBUG
+			kprintf("isofs_find: found directory\r\n");
+#endif
+			return lba;
+		}
 		if (l.type != LEX_SLASH)
 			break;
 	}
+#if _DEBUG
+	kprintf("isofs_find: not found\r\n");
+#endif
 	return 0;
 }
