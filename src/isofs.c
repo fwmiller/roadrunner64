@@ -14,7 +14,7 @@ static uint8_t root_dir[ATAPI_SECTOR_SIZE];
  * buf must be at least ATAPI_SECTOR_SIZE = 2048 bytes and is assumed to
  * be zeroed
  */
-static int
+int
 isofs_read_blk(atap_t part, lba_t lba, uint8_t * buf)
 {
 	struct seek seekargs;
@@ -83,7 +83,11 @@ isofs_init()
 	isofs_read_blk(atap, rec->lba_le, root_dir);
 	isofs_dump_directory((uint8_t *) root_dir, ATAPI_SECTOR_SIZE);
 #endif
-	isofs_find("/boot", root_dir, ATAPI_SECTOR_SIZE);
+	lba_t lba = isofs_find("/boot/grub", root_dir, ATAPI_SECTOR_SIZE);
+	if (lba == 0)
+		kprintf("isofs_init: /boot/grub not found\r\n");
+	else
+		kprintf("isofs_init: /boot/grub found lba %u\r\n", lba);
 #if 0
 	static uint8_t dir[ATAPI_SECTOR_SIZE];
 

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #endif
 #include <string.h>
+#include <sys/ata.h>
 #include <sys/isofs.h>
 #include <sys/lex.h>
 
@@ -22,12 +23,27 @@ isofs_search_dir(char *s, uint8_t * dir, int size)
 		file_id = ((char *)rec) + sizeof(struct directory_record);
 		if (strncmp(s, file_id, rec->file_id_len) == 0) {
 #if _DEBUG
-			kprintf("found %s lba %u\r\n", s, rec->lba_le);
+			kprintf("isofs_search_dir: found %s lba %u\r\n", s,
+				rec->lba_le);
 #endif
 			return rec->lba_le;
 		}
 	}
+#if _DEBUG
+	kprintf("isofs_search_dir: %s not found\r\n", s);
+#endif
 	return 0;
+}
+
+static lba_t
+isofs_found_file(lba_t lba)
+{
+#if _DEBUG
+	kprintf("isofs_found_file: found file\r\n");
+#endif
+	/* XXX Skip over the version number appended to the file name */
+
+	return lba;
 }
 
 /*
@@ -37,9 +53,11 @@ isofs_search_dir(char *s, uint8_t * dir, int size)
 lba_t
 isofs_find(char *path, uint8_t * rootdir, int size)
 {
+	uint8_t *dir = rootdir;
+	uint8_t buf[ATAPI_SECTOR_SIZE];
 	struct lex l;
 	lba_t lba;
-	int pos = 0;
+	int pos = 0, result;
 
 #if _DEBUG
 	kprintf("isofs_find: path [%s]\r\n", path);
@@ -61,41 +79,33 @@ isofs_find(char *path, uint8_t * rootdir, int size)
 			kprintf("isofs_find: ");
 			kprintf("illegal path element\r\n");
 #endif
-			return 0;
+			break;
 		}
 #if _DEBUG
 		kprintf("isofs_find: ");
 		kprintf("path element [%s]\r\n", l.s);
 #endif
 		/* Search the directory for the path element */
-		lba = isofs_search_dir(path, rootdir, size);
-		if (lba == 0) {
-			/* Path element not found */
-		}
+		if ((lba = isofs_search_dir(l.s, dir, size)) == 0)
+			break;
+
+		/* Path element found */
 		memset(&l, 0, sizeof(struct lex));
 		nextlex(path, &pos, &l);
-		if (l.type == LEX_SEMICOLON) {
-			/*
-			 * Found the location of the last path element 
-			 * which must be a file
-			 */
-#if _DEBUG
-			kprintf("isofs_find: found file\r\n");
-#endif
+		if (l.type == LEX_EOL)
 			return lba;
 
-		}
-		if (l.type == LEX_EOL) {
-			/*
-			 * Found the location of the last path element 
-			 * which must be a directory
-			 */
-#if _DEBUG
-			kprintf("isofs_find: found directory\r\n");
-#endif
-			return lba;
-		}
+		if (l.type == LEX_SEMICOLON)
+			return isofs_found_file(lba);
+
 		if (l.type != LEX_SLASH)
+			break;
+
+		/* Read the next directory */
+		dir = buf;
+		memset(buf, 0, ATAPI_SECTOR_SIZE);
+		result = isofs_read_blk(ata_get_primary_partition(), lba, buf);
+		if (result < 0)
 			break;
 	}
 #if _DEBUG

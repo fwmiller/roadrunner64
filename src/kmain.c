@@ -1,8 +1,8 @@
-#include <stdint.h>
 #include <stdio.h>
 #include <sys/ata.h>
 #include <sys/isofs.h>
 
+void cpuid();
 void cli();
 
 static void
@@ -39,6 +39,7 @@ kmain()
 {
 	kprintf("\r\nRoadrunner 64-bit\r\n");
 
+	cpuid();
 	word_widths();
 	ata_init();
 	isofs_init();
