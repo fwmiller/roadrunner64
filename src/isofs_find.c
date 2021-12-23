@@ -59,10 +59,6 @@ isofs_find(char *path, uint8_t * rootdir, int size)
 	lba_t lba;
 	int pos = 0, result;
 
-#if _DEBUG
-	kprintf("isofs_find: path [%s]\r\n", path);
-#endif
-
 	/* Look for the full path leading slash */
 	if (path[pos++] != '/') {
 #if _DEBUG
@@ -81,10 +77,6 @@ isofs_find(char *path, uint8_t * rootdir, int size)
 #endif
 			break;
 		}
-#if _DEBUG
-		kprintf("isofs_find: ");
-		kprintf("path element [%s]\r\n", l.s);
-#endif
 		/* Search the directory for the path element */
 		if ((lba = isofs_search_dir(l.s, dir, size)) == 0)
 			break;

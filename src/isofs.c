@@ -75,19 +75,21 @@ isofs_init()
 	isofs_read_blk(atap, pri->path_table_loc_le, path_table);
 #if _DEBUG
 	isofs_dump_path_table(pri, path_table);
-
+#endif
 	/* Read / directory */
-	kprintf("\r\n/\r\n");
 	directory_record_t rec = (directory_record_t) pri->root_dir_entry;
 	memset(root_dir, 0, ATAPI_SECTOR_SIZE);
 	isofs_read_blk(atap, rec->lba_le, root_dir);
+#if _DEBUG
 	isofs_dump_directory((uint8_t *) root_dir, ATAPI_SECTOR_SIZE);
 #endif
+
 	lba_t lba = isofs_find("/boot/grub", root_dir, ATAPI_SECTOR_SIZE);
 	if (lba == 0)
 		kprintf("isofs_init: /boot/grub not found\r\n");
 	else
 		kprintf("isofs_init: /boot/grub found lba %u\r\n", lba);
+
 #if 0
 	static uint8_t dir[ATAPI_SECTOR_SIZE];
 
