@@ -51,7 +51,7 @@ isofs_found_file(lba_t lba)
  * directories for a file or directory
  */
 lba_t
-isofs_find(char *path, uint8_t * rootdir, int size)
+isofs_find(const char *path, uint8_t * rootdir, int size)
 {
 	uint8_t *dir = rootdir;
 	uint8_t buf[ATAPI_SECTOR_SIZE];

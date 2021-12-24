@@ -9,7 +9,7 @@
     (*pos)++
 
 void
-nextlex(char *ln, int *pos, lex_t l)
+nextlex(const char *ln, int *pos, lex_t l)
 {
 	char *s;
 	char ch;

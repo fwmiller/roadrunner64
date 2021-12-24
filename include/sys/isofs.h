@@ -92,11 +92,18 @@ typedef struct primary_volume_descriptor *primary_volume_descriptor_t;
 typedef struct path_table_record *path_table_record_t;
 typedef struct directory_record *directory_record_t;
 
-int isofs_read_blk(atap_t part, lba_t lba, uint8_t * buf);
+extern uint8_t pri_vol_desc[];
+extern uint8_t path_table[];
+extern uint8_t root_dir[];
+
 void isofs_init();
+int isofs_read_blk(atap_t part, lba_t lba, uint8_t * buf);
+lba_t isofs_find(const char *path, uint8_t * buf, int size);
+
+#if _DEBUG
 void isofs_dump_primary_volume(primary_volume_descriptor_t pri);
 void isofs_dump_path_table(primary_volume_descriptor_t pri, uint8_t * buf);
 void isofs_dump_directory(uint8_t * buf, int size);
-lba_t isofs_find(char *path, uint8_t * buf, int size);
+#endif
 
 #endif
