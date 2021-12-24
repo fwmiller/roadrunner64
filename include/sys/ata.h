@@ -2,7 +2,6 @@
 #define __ATA_H
 
 #include <stdint.h>
-#include <sys/ioctl.h>
 #include <sys/part.h>
 
 #define SECTOR_SIZE		512
@@ -158,7 +157,7 @@ void ata_outb(atac_t atac, uint16_t port, uint8_t val);
 
 int ata_identify(atad_t atad, char *drvstr);
 int ata_read_parttab(atad_t atad);
-int ata_seek(atad_t atad, seek_t seekargs);
+int ata_seek(atad_t atad, uint32_t blkno);
 
 void ata_convert_string(uint16_t * s, int words);
 

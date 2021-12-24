@@ -47,12 +47,9 @@ ata_read(void *dev, uint8_t * b, int len)
 static int
 ata_read_mbr(atap_t atap, uint8_t * b, int *len)
 {
-	struct seek seekargs;
 	int result;
 
-	seekargs.offset = 0;
-	seekargs.whence = SEEK_SET;
-	result = ata_seek(atap->atad, &seekargs);
+	result = ata_seek(atap->atad, 0);
 	if (result < 0)
 		return result;
 
