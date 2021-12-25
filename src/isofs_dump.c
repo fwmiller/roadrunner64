@@ -99,8 +99,8 @@ isofs_dump_primary_volume(primary_volume_descriptor_t pri)
 	printf("]\r\n");
 
 	printf("%u blks (%u MB)\r\n",
-		pri->vol_space_size_le,
-		pri->vol_space_size_le * ATAPI_SECTOR_SIZE / 0x100000);
+	       pri->vol_space_size_le,
+	       pri->vol_space_size_le * ATAPI_SECTOR_SIZE / 0x100000);
 
 	printf("logical blk size %u bytes\r\n", pri->logical_blk_size_le);
 	printf("path table size %u bytes\r\n", pri->path_table_size_le);

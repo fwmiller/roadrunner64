@@ -24,7 +24,7 @@ isofs_search_dir(char *s, uint8_t * dir, int size)
 		if (strncmp(s, file_id, rec->file_id_len) == 0) {
 #if _DEBUG
 			printf("isofs_search_dir: found %s lba %u\r\n", s,
-				rec->lba_le);
+			       rec->lba_le);
 #endif
 			return rec->lba_le;
 		}

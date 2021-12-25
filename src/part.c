@@ -65,8 +65,8 @@ dump_part(int partno, part_t p)
 {
 	printf("%c", (p->active ? '*' : ' '));
 	printf("%3d  %5u  %4u %6u %5u  %4u %6u  %6u %12u  ",
-		partno, p->st, p->sh, p->ss, p->et, p->eh, p->es, p->off,
-		p->size);
+	       partno, p->st, p->sh, p->ss, p->et, p->eh, p->es, p->off,
+	       p->size);
 	switch (p->sys) {
 	case PART_SYS_NONE:
 		printf("unused");
