@@ -2,7 +2,6 @@
 #define __STDIO_H
 
 int sprintf(char *s, const char *fmt, ...);
-
-void kprintf(const char *fmt, ...);
+void printf(const char *fmt, ...);
 
 #endif

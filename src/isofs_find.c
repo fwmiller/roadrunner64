@@ -23,14 +23,14 @@ isofs_search_dir(char *s, uint8_t * dir, int size)
 		file_id = ((char *)rec) + sizeof(struct directory_record);
 		if (strncmp(s, file_id, rec->file_id_len) == 0) {
 #if _DEBUG
-			kprintf("isofs_search_dir: found %s lba %u\r\n", s,
+			printf("isofs_search_dir: found %s lba %u\r\n", s,
 				rec->lba_le);
 #endif
 			return rec->lba_le;
 		}
 	}
 #if _DEBUG
-	kprintf("isofs_search_dir: %s not found\r\n", s);
+	printf("isofs_search_dir: %s not found\r\n", s);
 #endif
 	return 0;
 }
@@ -39,7 +39,7 @@ static lba_t
 isofs_found_file(lba_t lba)
 {
 #if _DEBUG
-	kprintf("isofs_found_file: found file\r\n");
+	printf("isofs_found_file: found file\r\n");
 #endif
 	/* XXX Skip over the version number appended to the file name */
 
@@ -62,7 +62,7 @@ isofs_find(const char *path, uint8_t * rootdir, int size)
 	/* Look for the full path leading slash */
 	if (path[pos++] != '/') {
 #if _DEBUG
-		kprintf("isofs_find: full path required\r\n");
+		printf("isofs_find: full path required\r\n");
 #endif
 		return 0;
 	}
@@ -72,8 +72,8 @@ isofs_find(const char *path, uint8_t * rootdir, int size)
 		nextlex(path, &pos, &l);
 		if (l.type != LEX_ID) {
 #if _DEBUG
-			kprintf("isofs_find: ");
-			kprintf("illegal path element\r\n");
+			printf("isofs_find: ");
+			printf("illegal path element\r\n");
 #endif
 			break;
 		}
@@ -101,7 +101,7 @@ isofs_find(const char *path, uint8_t * rootdir, int size)
 			break;
 	}
 #if _DEBUG
-	kprintf("isofs_find: not found\r\n");
+	printf("isofs_find: not found\r\n");
 #endif
 	return 0;
 }

@@ -168,7 +168,7 @@ print(char *string, int *pos, const char *fmt, va_list args)
 }
 
 void
-kprintf(const char *fmt, ...)
+printf(const char *fmt, ...)
 {
 	va_list args;
 
@@ -199,15 +199,15 @@ bufdump(char *buf, int size)
 	lines = (size + LEN - 1) / LEN;
 	for (i = 0; i < lines; i++) {
 		line = (uint8_t *) buf + i * LEN;
-		kprintf("%08x  ", (unsigned long long)buf + i * LEN);
+		printf("%08x  ", (unsigned long long)buf + i * LEN);
 		for (j = 0; j < LEN; j++)
-			kprintf("%02x ", line[j]);
-		kprintf(" ");
+			printf("%02x ", line[j]);
+		printf(" ");
 		for (j = 0; j < LEN; j++)
 			if (isprint(line[j]))
-				kprintf("%c", (char)line[j]);
+				printf("%c", (char)line[j]);
 			else
-				kprintf(".");
-		kprintf("\r\n");
+				printf(".");
+		printf("\r\n");
 	}
 }

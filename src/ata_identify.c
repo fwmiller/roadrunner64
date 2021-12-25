@@ -54,9 +54,9 @@ ata_identify(atad_t atad, char *drvstr)
 
 	ata_convert_string(atad->param.model, 20);
 #if _DEBUG
-	kprintf("%s: ATA hard disk\r\n", drvstr);
-	kprintf("%s: %s\r\n", drvstr, atad->param.model);
-	kprintf("%s: %u blks (%d MB) %u trks %u hds %u sec/trk\r\n",
+	printf("%s: ATA hard disk\r\n", drvstr);
+	printf("%s: %s\r\n", drvstr, atad->param.model);
+	printf("%s: %u blks (%d MB) %u trks %u hds %u sec/trk\r\n",
 		drvstr, atad->blks, atad->size,
 		atad->tracks, atad->heads, atad->sectorspertrack);
 #endif

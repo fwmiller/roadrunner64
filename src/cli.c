@@ -21,16 +21,16 @@ get_cmdline(char *cmdline, int len)
 			continue;
 
 		if (ch == '\n' || ch == '\r') {
-			kprintf("\r\n");
+			printf("\r\n");
 			break;
 		}
 		if (ch == '\b' && pos > 0) {
 			cmdline[--pos] = '\0';
-			kprintf("\b \b");
+			printf("\b \b");
 
 		} else if (ch != '\b' && ch != '\r') {
 			cmdline[pos++] = ch;
-			kprintf("%c", ch);
+			printf("%c", ch);
 			if (pos == len - 1)
 				break;
 		}
@@ -44,7 +44,7 @@ cli()
 	char cmdline[CMD_LINE_LEN];
 
 	for (;;) {
-		kprintf(PROMPT);
+		printf(PROMPT);
 
 		get_cmdline(cmdline, CMD_LINE_LEN);
 		if (strlen(cmdline) == 0)

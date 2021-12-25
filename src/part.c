@@ -3,8 +3,6 @@
 #include <sys/io.h>
 #include <sys/part.h>
 
-void kprintf(const char *fmt, ...);;
-
 void
 load_parttab(uint8_t * mbr, part_t parttab)
 {
@@ -65,48 +63,48 @@ write_parttab(part_t parttab, uint8_t * mbr)
 static void
 dump_part(int partno, part_t p)
 {
-	kprintf("%c", (p->active ? '*' : ' '));
-	kprintf("%3d  %5u  %4u %6u %5u  %4u %6u  %6u %12u  ",
+	printf("%c", (p->active ? '*' : ' '));
+	printf("%3d  %5u  %4u %6u %5u  %4u %6u  %6u %12u  ",
 		partno, p->st, p->sh, p->ss, p->et, p->eh, p->es, p->off,
 		p->size);
 	switch (p->sys) {
 	case PART_SYS_NONE:
-		kprintf("unused");
+		printf("unused");
 		break;
 	case PART_SYS_FAT12:
-		kprintf("fat12");
+		printf("fat12");
 		break;
 	case PART_SYS_FAT16:
-		kprintf("fat16");
+		printf("fat16");
 		break;
 	case PART_SYS_EXT:
-		kprintf("extended");
+		printf("extended");
 		break;
 	case PART_SYS_LARGE:
-		kprintf("fat16 large");
+		printf("fat16 large");
 		break;
 	case PART_SYS_HPFS:
-		kprintf("hpfs");
+		printf("hpfs");
 		break;
 	case PART_SYS_FAT32:
-		kprintf("fat32");
+		printf("fat32");
 		break;
 	case PART_SYS_UFS:
-		kprintf("ufs");
+		printf("ufs");
 		break;
 	case PART_SYS_LINUX_SWAP:
-		kprintf("linux swap");
+		printf("linux swap");
 		break;
 	case PART_SYS_EXT2FS:
-		kprintf("ext2fs");
+		printf("ext2fs");
 		break;
 	case PART_SYS_RRFS:
-		kprintf("rrfs");
+		printf("rrfs");
 		break;
 	default:
-		kprintf("0x%02x", (uint8_t) p->sys);
+		printf("0x%02x", (uint8_t) p->sys);
 	}
-	kprintf("\r\n");
+	printf("\r\n");
 }
 
 #define PART_HDR1                                                       \
@@ -120,8 +118,8 @@ dump_parttab(part_t parttab)
 	part_t p;
 	int i;
 
-	kprintf("%s\r\n", PART_HDR1);
-	kprintf("%s\r\n", PART_HDR2);
+	printf("%s\r\n", PART_HDR1);
+	printf("%s\r\n", PART_HDR2);
 	for (i = 0, p = parttab; i < PARTS; i++, p++)
 		dump_part(i, p);
 }

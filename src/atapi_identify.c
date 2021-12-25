@@ -33,14 +33,14 @@ atapi_identify(atad_t atad, char *drvstr)
 	     (void *)&(atad->param), SECTOR_SIZE / 2);
 #if _DEBUG
 	ata_convert_string(atad->param.model, 20);
-	kprintf("%s: ATAPI ", drvstr);
+	printf("%s: ATAPI ", drvstr);
 	if (((atad->param.config >> 8) & 0x1f) == 5)
-		kprintf("CD-ROM drive");
+		printf("CD-ROM drive");
 	else
-		kprintf("device");
-	kprintf("\r\n");
+		printf("device");
+	printf("\r\n");
 
-	kprintf("%s: %s\r\n", drvstr, atad->param.model);
+	printf("%s: %s\r\n", drvstr, atad->param.model);
 #endif
 	return 0;
 }
