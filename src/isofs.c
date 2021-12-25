@@ -17,7 +17,6 @@ uint8_t root_dir[ATAPI_SECTOR_SIZE];
 int
 isofs_read_blk(atap_t part, lba_t lba, uint8_t * buf)
 {
-	struct seek seekargs;
 	int result;
 #if _DEBUG
 	printf("isofs_read_blk: blkno %u\r\n", lba);
@@ -26,9 +25,7 @@ isofs_read_blk(atap_t part, lba_t lba, uint8_t * buf)
 	uint32_t sectorno = lba << 2;
 
 	/* Seek to sector */
-	seekargs.offset = sectorno;
-	seekargs.whence = SEEK_SET;
-	result = ata_seek(part->atad, &seekargs);
+	result = ata_seek(part->atad, sectorno);
 	if (result < 0)
 		return (-1);
 
