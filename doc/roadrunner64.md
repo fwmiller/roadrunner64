@@ -3,14 +3,10 @@
 Roadrunner64 is simple operating system.  It provides a high-performance
 operating environment for 64-bit Intel processors.
 
-The system is currently targeted at a QEMU emulated 64-bit Intel
-environment.  The system is built into an ISO9660 file system that can be
-booted by QEMU.  When the system starts it will provide command-line
-access to the ISO9660 file system through a POSIX compatible API.
-
-
-[Roadrunner64](https://github.com/fwmiller/roadrunner64)
-
+The system is currently targeted at a QEMU emulated x86_64 environment.
+The system is built into an ISO9660 file system that can be booted by
+QEMU.  When the system starts it will provide command-line access to the
+ISO9660 file system through a POSIX compatible API.
 
 ## Features
 
@@ -27,15 +23,15 @@ The system runs as a single thread of execution.
 
 ### Memory Model
 
-The memory model is a single 64-bit physical address space.  Pointer types
-are 64-bits wide.  The amount of available physical memory will be much
-smaller.
+The memory model is a single, 64-bit physical address space.  Pointer
+types are 64-bits wide.  The amount of available physical memory will be
+much smaller.
 
 ### ATA Support
 
-The QEMU virtual machine provides access to a virtual ATA disk through
-a hardware compatible ATA interface.  The system includes a device driver
-that allows access to this disk.
+The QEMU virtual machine provides access to a virtual disk through a
+hardware compatible ATA interface.  The system includes a device driver
+that allows access to this virtual disk.
 
 ### ISO9660 Support
 
