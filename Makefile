@@ -47,6 +47,7 @@ indent: clean
 
 wc: clean
 	wc -l $(INC)/*.h $(INC)/sys/*.h $(SRC)/*.S $(SRC)/*.c
+
 debug:
 	@for f in $(C_SRCS); do echo $$f; done
 	@echo
