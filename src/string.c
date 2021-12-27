@@ -33,6 +33,17 @@ strncmp(const char *s1, const char *s2, size_t n)
 	return 0;
 }
 
+char *
+strcpy(char *dst, const char *src)
+{
+	int i;
+
+	for (i = 0; src[i] != '\0'; i++)
+		dst[i] = src[i];
+	dst[i] = '\0';
+	return dst;
+}
+
 void *
 memset(void *b, int c, size_t len)
 {

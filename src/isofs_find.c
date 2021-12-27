@@ -12,7 +12,12 @@ isofs_search_dir(char *s, uint8_t * dir, int size)
 {
 	directory_record_t rec;
 	char *file_id;
+	int len;
 
+	len = strlen(s);
+#if _DEBUG
+	printf("isofs_search_dir: search for [%s] len %u\r\n", s, len);
+#endif
 	/* Loop over directory entries */
 	for (int pos = 0; pos < size; pos += rec->dir_rec_len) {
 		rec = (directory_record_t) (dir + pos);
@@ -20,6 +25,9 @@ isofs_search_dir(char *s, uint8_t * dir, int size)
 			break;
 
 		/* Check entry file id against path element */
+		if (len != rec->file_id_len)
+			continue;
+
 		file_id = ((char *)rec) + sizeof(struct directory_record);
 		if (strncmp(s, file_id, rec->file_id_len) == 0) {
 #if _DEBUG
@@ -59,6 +67,9 @@ isofs_find(const char *path, uint8_t * rootdir, int size)
 	lba_t lba;
 	int pos = 0, result;
 
+#if _DEBUG
+	printf("isofs_find: path [%s]\r\n", path);
+#endif
 	/* Look for the full path leading slash */
 	if (path[pos++] != '/') {
 #if _DEBUG

@@ -1,6 +1,27 @@
 #include <ctype.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/lex.h>
+
+void
+nextarg(char *ln, int *pos, char *arg)
+{
+	char *s;
+	char ch;
+
+	s = arg;
+
+	ch = ln[*pos];
+	while (isspace(ch))
+		ch = ln[++(*pos)];
+
+	strcpy(s, "");
+	while (ch != '\0' && !isspace(ch)) {
+		*(s++) = ch;
+		ch = ln[++(*pos)];
+	};
+	*s = '\0';
+}
 
 #define LEX_SINGLE_CHAR(TYPE)						\
     l->type = TYPE;							\

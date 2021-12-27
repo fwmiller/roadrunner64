@@ -80,26 +80,4 @@ isofs_init()
 #if _DEBUG
 	isofs_dump_directory((uint8_t *) root_dir, ATAPI_SECTOR_SIZE);
 #endif
-
-	lba_t lba = isofs_find("/boot/grub", root_dir, ATAPI_SECTOR_SIZE);
-	if (lba == 0)
-		printf("isofs_init: /boot/grub not found\r\n");
-	else
-		printf("isofs_init: /boot/grub found lba %u\r\n", lba);
-
-#if 0
-	static uint8_t dir[ATAPI_SECTOR_SIZE];
-
-	/* Read /boot directory */
-	printf("\r\n/boot\r\n");
-	memset(dir, 0, ATAPI_SECTOR_SIZE);
-	isofs_read_blk(atap, 21, dir);
-	isofs_dump_directory(dir, ATAPI_SECTOR_SIZE);
-
-	/* Read /boot/grub directory */
-	printf("\r\n/boot/grub\r\n");
-	memset(dir, 0, ATAPI_SECTOR_SIZE);
-	isofs_read_blk(atap, 22, dir);
-	isofs_dump_directory(dir, ATAPI_SECTOR_SIZE);
-#endif
 }

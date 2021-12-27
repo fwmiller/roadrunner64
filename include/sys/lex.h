@@ -19,6 +19,7 @@ typedef struct lex {
 	char s[80];
 } *lex_t;
 
+void nextarg(char *ln, int *pos, char *arg);
 void nextlex(const char *ln, int *pos, lex_t l);
 
 #endif
