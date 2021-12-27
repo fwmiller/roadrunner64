@@ -6,7 +6,24 @@
 #include <sys/isofs.h>
 #include <sys/lex.h>
 
-/* This routine searches a directory buffer for a path element */
+static void
+nextelem(const char *ln, int *pos, char *arg)
+{
+	int i;
+	char ch;
+
+	/* Consume leading slashes */
+	while (ln[*pos] == '/')
+		(*pos)++;
+
+	for (i = 0;; (*pos)++) {
+		ch = ln[*pos];
+		if (ch == '\0' || ch == '/')
+			break;
+		arg[i++] = ch;
+	}
+}
+
 static lba_t
 isofs_search_dir(char *s, uint8_t * dir, int size)
 {
@@ -43,17 +60,35 @@ isofs_search_dir(char *s, uint8_t * dir, int size)
 	return 0;
 }
 
-static lba_t
-isofs_found_file(lba_t lba)
+lba_t
+isofs_find(const char *path, uint8_t * rootdir, int size)
 {
+	char elem[80];
+	lba_t lba;
 #if _DEBUG
-	printf("isofs_found_file: found file\r\n");
+	printf("isofs_find: path [%s]\r\n", path);
 #endif
-	/* XXX Skip over the version number appended to the file name */
+	for (int pos = 0;;) {
+		/* Consume path separators */
+		if (path[pos++] != '/')
+			break;
 
-	return lba;
+		/* Get next path element to search for */
+		memset(elem, 0, 80);
+		nextelem(path, &pos, elem);
+#if _DEBUG
+		printf("isofs_find: elem [%s]\r\n", path);
+#endif
+		/* Search the directory for the path element */
+		if ((lba = isofs_search_dir(elem, rootdir, size)) == 0)
+			break;
+
+		return lba;
+	}
+	return 0;
 }
 
+#if 0
 /*
  * This routine uses a specified full path to search the file system
  * directories for a file or directory
@@ -116,3 +151,4 @@ isofs_find(const char *path, uint8_t * rootdir, int size)
 #endif
 	return 0;
 }
+#endif
