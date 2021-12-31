@@ -9,10 +9,11 @@ fs_init()
 	ata_init();
 	isofs_init();
 
-	lba_t lba = isofs_find("/boot.cat;1", root_dir, ATAPI_SECTOR_SIZE);
+	lba_t lba =
+	    isofs_find("/boot/grub/grub.cfg;1", root_dir, ATAPI_SECTOR_SIZE);
 	if (lba == 0)
-		printf("fs_init: /boot.cat;1 not found\r\n");
+		printf("fs_init: not found\r\n");
 	else
-		printf("fs_init: /boot.cat;1 found lba %u\r\n", lba);
+		printf("fs_init: found lba %u\r\n", lba);
 
 }
