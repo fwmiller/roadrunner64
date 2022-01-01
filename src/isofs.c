@@ -5,9 +5,15 @@
 
 typedef uint32_t lba_t;
 
-uint8_t pri_vol_desc[ATAPI_SECTOR_SIZE];
-uint8_t path_table[ATAPI_SECTOR_SIZE];
-uint8_t root_dir[ATAPI_SECTOR_SIZE];
+static uint8_t pri_vol_desc[ATAPI_SECTOR_SIZE];
+static uint8_t path_table[ATAPI_SECTOR_SIZE];
+static uint8_t root_dir[ATAPI_SECTOR_SIZE];
+
+uint8_t *
+isofs_get_root_dir()
+{
+	return root_dir;
+}
 
 /*
  * buf must be at least ATAPI_SECTOR_SIZE = 2048 bytes and is assumed to

@@ -93,9 +93,7 @@ typedef struct primary_volume_descriptor *primary_volume_descriptor_t;
 typedef struct path_table_record *path_table_record_t;
 typedef struct directory_record *directory_record_t;
 
-extern uint8_t pri_vol_desc[];
-extern uint8_t path_table[];
-extern uint8_t root_dir[];
+uint8_t *isofs_get_root_dir();
 
 void isofs_init();
 int isofs_read_blk(atap_t part, lba_t lba, uint8_t * buf);
