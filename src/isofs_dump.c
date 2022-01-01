@@ -124,7 +124,7 @@ isofs_dump_path_table_record(path_table_record_t rec)
 void
 isofs_dump_path_table(primary_volume_descriptor_t pri, uint8_t * buf)
 {
-	printf("dir_id_len ext_att_rec_len lba          ");
+	printf("dir_id_len ext_att_rec_len          lba ");
 	printf("parent_dirno path\r\n");
 
 	for (int pos = 0; pos < pri->path_table_size_le;) {
