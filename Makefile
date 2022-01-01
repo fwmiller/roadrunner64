@@ -1,44 +1,83 @@
-INC	= include
-SRC	= src
-BIN	= build
+##############################################################################
+#
+# Directories
+#
+INC	:= include
+SRC	:= src
+BIN	:= build
 
+#
+# Tools
+#
 MKDIR	:= mkdir -p
 CC	:= gcc
 LD	:= gcc
 CP	:= cp
 RM	:= rm -fr
 
+##############################################################################
+#
+# Tool options
+#
 CFLAGS	:= -c -Wall -m64 -Og -nostdinc -ffreestanding
 CFLAGS	+= -D_DEBUG
-LDFLAGS	:= -nostdlib -Wl,-n,-T,$(SRC)/link.ld -no-pie
+
+LINKER_SCRIPT	:= link.ld
+LDFLAGS		:= -nostdlib -Wl,-n,-T,$(SRC)/$(LINKER_SCRIPT) -no-pie
 
 INDENT_RULES := -nbad -bap -nbc -bbo -hnl -br -brs -c33 -cd33 -ncdb -ce -ci4 -cli0 -d0 -di1 -nfc1 -i8 -ip0 -l80 -lp -npcs -nprs -psl -sai -saf -saw -ncs -nsc -sob -nfca -cp33 -ss -ts8 -il1
 
-C_SRCS	:= $(shell find src/ -maxdepth 1 -type f -regex ".*\.c")
+##############################################################################
+#
+# C file sets
+#
+C_SRCS	:= $(shell find $(SRC)/ -maxdepth 1 -type f -regex ".*\.c")
 C_FILES	:= $(sort $(notdir $(C_SRCS)))
 
-S_SRCS	:= $(shell find src/ -maxdepth 1 -type f -regex ".*\.S")
+##############################################################################
+#
+# Assembly file sets
+#
+S_SRCS	:= $(shell find $(SRC)/ -maxdepth 1 -type f -regex ".*\.S")
 S_FILES	:= $(sort $(notdir $(S_SRCS)))
 
+##############################################################################
+#
+# Object files
+#
 OBJS	:= $(foreach f,$(C_FILES),$(addprefix $(BIN)/,$(subst .c,.o,$(f))))
 OBJS	+= $(foreach f,$(S_FILES),$(addprefix $(BIN)/,$(subst .S,.o,$(f))))
 OBJS	:= $(sort $(OBJS))
 
+##############################################################################
+#
+# Kernel file
+#
 KERNEL	:= $(BIN)/kmain.elf
 
-all: $(OBJS) $(SRC)/link.ld
+##############################################################################
+#
+# Rules
+#
+all: $(OBJS) $(SRC)/$(LINKER_SCRIPT)
 	$(LD) $(LDFLAGS) -o $(KERNEL) $(OBJS)
 	$(MKDIR) $(BIN)/isofiles/boot/grub
 	$(CP) $(KERNEL) $(BIN)/isofiles/boot/
 	$(CP) $(SRC)/grub.cfg $(BIN)/isofiles/boot/grub
 	grub-mkrescue -o $(BIN)/iso.img $(BIN)/isofiles
 
+#
+# Execute using QEMU emulator
+#
 run: all
 	qemu-system-x86_64 -nographic -no-reboot -drive format=raw,file=$(BIN)/iso.img
 
 clean:
 	$(RM) $(BIN)
 
+#
+# Indent pass of the include and src directories
+#
 indent: clean
 	cd $(INC);indent $(INDENT_RULES) *.h
 	cd $(INC)/sys;indent $(INDENT_RULES) *.h
@@ -55,10 +94,16 @@ debug:
 	@echo
 	@for f in $(OBJS); do echo $$f; done
 
+#
+# Assembly source file compilation
+#
 $(BIN)/%.o: $(SRC)/%.S
 	@$(MKDIR) $(BIN)
 	$(CC) $(CFLAGS) -I$(INC) -o $@ $<
 
+#
+# C source file compilation
+#
 $(BIN)/%.o: $(SRC)/%.c
 	@$(MKDIR) $(BIN)
 	$(CC) $(CFLAGS) -I$(INC) -o $@ $<
