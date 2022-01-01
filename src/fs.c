@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <sys/ata.h>
 #include <sys/fs.h>
 #include <sys/isofs.h>
 

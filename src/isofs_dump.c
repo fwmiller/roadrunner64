@@ -1,6 +1,5 @@
 #include <ctype.h>
 #include <stdio.h>
-#include <sys/ata.h>
 #include <sys/isofs.h>
 
 void

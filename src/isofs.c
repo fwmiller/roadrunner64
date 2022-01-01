@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <sys/ata.h>
 #include <sys/isofs.h>
 #include <sys/sys.h>
 

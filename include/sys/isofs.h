@@ -2,6 +2,7 @@
 #define __ISO_9660_H
 
 #include <stdint.h>
+#include <sys/ata.h>
 
 #define RESERVED_SECTORS	0x10
 
@@ -98,6 +99,7 @@ extern uint8_t root_dir[];
 
 void isofs_init();
 int isofs_read_blk(atap_t part, lba_t lba, uint8_t * buf);
+lba_t isofs_search_dir(char *s, uint8_t * dir, int size);
 lba_t isofs_find(const char *path, uint8_t * buf, int size);
 
 #if _DEBUG

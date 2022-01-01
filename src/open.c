@@ -1,5 +1,4 @@
 #include <fcntl.h>
-#include <sys/ata.h>
 #include <sys/isofs.h>
 
 int

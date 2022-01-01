@@ -48,22 +48,11 @@
 #define ENOTCONN	(-41)	/* Not connected */
 #define ENOTSOCK	(-42)	/* Not a socket */
 
-/* Roadrunner/pk specific error codes */
-#define ETIMEDOUT	(-43)	/* Operation timed out */
-#define EBUFINUSE	(-44)	/* Buffer in use */
-#define ENOFSTYPE	(-45)	/* Missing file system type */
-#define EFSMOUNTED	(-46)	/* File system already mounted */
-#define EKMAPDUP	(-47)	/* Duplicate kmap entry */
-#define EPTDUP		(-48)	/* Duplicate page table entry */
-#define EPTCORRUPT	(-49)	/* Corrupt page table entry */
-#define EFILEEOF	(-50)	/* Attempt to read past eof */
-#define EBADCLUST	(-51)	/* Bad cluster address */
-#define EBADFS		(-52)	/* Not a valid file system */
-#define EDEVREAD	(-53)	/* Device read error */
-#define EDEVWRITE	(-54)	/* Device write error */
-#define ENOPCB		(-55)	/* Missing protocol control block */
+/* Roadrunner64 specific error codes */
+#define EDEVREAD	(-43)
+#define EDEVWRITE	(-44)
 
 /*  Must be last */
-#define EMIN		(-56)
+#define EMIN		(-45)
 
 #endif
