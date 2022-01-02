@@ -1,5 +1,4 @@
 #include <sys/io.h>
-#include <sys/mc146818.h>
 
 void
 insb(uint16_t port, uint8_t * dst, int bytes)

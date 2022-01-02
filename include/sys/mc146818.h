@@ -1,28 +1,3 @@
-/* 
- *  Roadrunner/pk
- *    Copyright (C) 1989-2001  Cornfed Systems, Inc.
- *
- *  The Roadrunner/pk operating system is free software; you can
- *  redistribute and/or modify it under the terms of the GNU General
- *  Public License, version 2, as published by the Free Software
- *  Foundation.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public
- *  License along with this program; if not, write to the Free
- *  Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
- *  MA 02111-1307 USA
- *
- *  More information about the Roadrunner/pk operating system of
- *  which this file is a part is available on the World-Wide Web
- *  at: http://www.cornfed.com.
- *
- */
-
 #ifndef __MOTOROLA_146818_H
 #define __MOTOROLA_146818_H
 
@@ -38,6 +13,7 @@
 #define MC146818_MDAY		0x07
 #define MC146818_MON		0x08
 #define MC146818_YEAR		0x09
-#define MC146818_HDTYPE		0x12
+#define MC146818_EXT_MEM_LO	0x30
+#define MC146818_EXT_MEM_HI	0x31
 
 #endif

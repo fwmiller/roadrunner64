@@ -2,6 +2,7 @@
 #include <sys/fs.h>
 #include <sys/io.h>
 #include <sys/sys.h>
+#include <sys/mc146818.h>
 
 void cli();
 
@@ -11,15 +12,15 @@ get_cmos_memsize()
 	unsigned short total;
 	unsigned char lowmem, highmem;
 
-	outb(0x70, 0x30);
-	lowmem = inb(0x71);
-	outb(0x70, 0x31);
-	highmem = inb(0x71);
+	outb(MC146818_ADDR, MC146818_EXT_MEM_LO);
+	lowmem = inb(MC146818_DATA);
+	outb(MC146818_ADDR, MC146818_EXT_MEM_HI);
+	highmem = inb(MC146818_DATA);
 
-	total = lowmem | highmem << 8;
-
+	total = lowmem | (highmem << 8);
+#if _DEBUG
 	printf("Available memory %u MB\r\n", total / 1024);
-
+#endif
 	return total;
 }
 
