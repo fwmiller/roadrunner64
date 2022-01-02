@@ -1,5 +1,5 @@
 #include <ctype.h>
-#include <stdint.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/uart.h>
@@ -49,5 +49,14 @@ cli()
 		get_cmdline(cmdline, CMD_LINE_LEN);
 		if (strlen(cmdline) == 0)
 			continue;
+
+		if (cmdline[0] == '/') {
+			/*
+			 * A full path has been specified as the first
+			 * argument.   Try to load and run the named
+			 * executable
+			 */
+			int fd = open(cmdline, 0);
+		}
 	}
 }

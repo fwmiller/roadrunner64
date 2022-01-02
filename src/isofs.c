@@ -69,8 +69,6 @@ isofs_init()
 	    (pri_vol_desc + sizeof(struct volume_descriptor));
 #if _DEBUG
 	isofs_dump_primary_volume(pri);
-	isofs_dump_directory((uint8_t *) pri->root_dir_entry,
-			     sizeof(pri->root_dir_entry));
 #endif
 	/* Read path table */
 	memset(path_table, 0, ATAPI_SECTOR_SIZE);
@@ -82,7 +80,4 @@ isofs_init()
 	directory_record_t rec = (directory_record_t) pri->root_dir_entry;
 	memset(root_dir, 0, ATAPI_SECTOR_SIZE);
 	isofs_read_blk(atap, rec->lba_le, root_dir);
-#if _DEBUG
-	isofs_dump_directory((uint8_t *) root_dir, ATAPI_SECTOR_SIZE);
-#endif
 }

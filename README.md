@@ -8,11 +8,13 @@ addressing or memory protection.
 There is support for a simple command line interface.
 
 An ATA driver has been added for access to the QEMU virtual machine image
-as the primary hard drive.  A list of the storage devices connected
-to QEMU is presented at boot time.
+as the primary hard drive.  The driver is used to enumerate the ATA
+connected devices at boot time.  The first partition on the first device
+that must be a hard drive on the first ATA controller is used at the
+primary volume.
 
-Support for the QEMU virtual machine image that is an ISO 9660 file system
-has been added.
+Support for access to the ISO9660 file system resident in the QEMU virtual
+machine image has been added.
 
 To run this you will need to have xorriso and QEMU installed on your
 Linux distro.  For Ubuntu you can do this:

@@ -1,3 +1,4 @@
+#include <errno.h>
 #include <fcntl.h>
 #include <sys/isofs.h>
 
@@ -8,7 +9,7 @@ open(const char *pathname, int flags)
 	lba_t lba = isofs_find(pathname, isofs_get_root_dir(),
 			       ATAPI_SECTOR_SIZE);
 	if (lba == 0)
-		return (-1);
+		return ENOENT;
 
 	return 0;
 }

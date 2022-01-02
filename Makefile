@@ -70,7 +70,7 @@ all: $(OBJS) $(SRC)/$(LINKER_SCRIPT)
 # Execute using QEMU emulator
 #
 run: all
-	qemu-system-x86_64 -nographic -no-reboot -drive format=raw,file=$(BIN)/iso.img
+	qemu-system-x86_64 -m size=32 -nographic -no-reboot -drive format=raw,file=$(BIN)/iso.img
 
 clean:
 	$(RM) $(BIN)
