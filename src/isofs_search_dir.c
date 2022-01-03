@@ -5,7 +5,7 @@
 #include <sys/isofs.h>
 
 lba_t
-isofs_search_dir(char *s, uint8_t * dir, int size)
+isofs_search_dir(char *s, uint8_t * dir, int size, int *isdir)
 {
 	directory_record_t rec;
 	char *file_id;
@@ -31,6 +31,11 @@ isofs_search_dir(char *s, uint8_t * dir, int size)
 			printf("isofs_search_dir: found [%s] lba %u\r\n", s,
 			       rec->lba_le);
 #endif
+			if (rec->flags & FILE_FLAGS_DIRECTORY)
+				*isdir = 1;
+			else
+				*isdir = 0;
+
 			return rec->lba_le;
 		}
 	}
