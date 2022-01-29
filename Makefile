@@ -27,18 +27,20 @@ LDFLAGS		:= -nostdlib -Wl,-n,-T,$(SRC)/$(LINKER_SCRIPT) -no-pie
 
 INDENT_RULES := -nbad -bap -nbc -bbo -hnl -br -brs -c33 -cd33 -ncdb -ce -ci4 -cli0 -d0 -di1 -nfc1 -i8 -ip0 -l80 -lp -npcs -nprs -psl -sai -saf -saw -ncs -nsc -sob -nfca -cp33 -ss -ts8 -il1
 
+MAX_DEPTH := 2
+
 ##############################################################################
 #
 # C file sets
 #
-C_SRCS	:= $(shell find $(SRC)/ -maxdepth 1 -type f -regex ".*\.c")
+C_SRCS	:= $(shell find $(SRC)/ -maxdepth $(MAX_DEPTH) -type f -regex ".*\.c")
 C_FILES	:= $(sort $(notdir $(C_SRCS)))
 
 ##############################################################################
 #
 # Assembly file sets
 #
-S_SRCS	:= $(shell find $(SRC)/ -maxdepth 1 -type f -regex ".*\.S")
+S_SRCS	:= $(shell find $(SRC)/ -maxdepth $(MAX_DEPTH) -type f -regex ".*\.S")
 S_FILES	:= $(sort $(notdir $(S_SRCS)))
 
 ##############################################################################
@@ -104,6 +106,10 @@ $(BIN)/%.o: $(SRC)/%.S
 #
 # C source file compilation
 #
+$(BIN)/%.o: $(SRC)/*/%.c
+	@$(MKDIR) $(BIN)
+	$(CC) $(CFLAGS) -I$(INC) -o $@ $<
+
 $(BIN)/%.o: $(SRC)/%.c
 	@$(MKDIR) $(BIN)
 	$(CC) $(CFLAGS) -I$(INC) -o $@ $<
