@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/uart.h>
+#include <unistd.h>
 
 #define PROMPT		"> "
 #define CMD_LINE_LEN	80
@@ -57,6 +58,17 @@ cli()
 			 * executable
 			 */
 			int fd = open(cmdline, 0);
+
+			for (char ch = 0;;) {
+				int len = read(fd, &ch, 1);
+				if (len < 0) {
+					break;
+				}
+				if (len == 0)
+					break;
+
+				printf("%c", ch);
+			}
 		}
 	}
 }

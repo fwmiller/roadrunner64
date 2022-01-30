@@ -1,5 +1,8 @@
 #include <errno.h>
 #include <fcntl.h>
+#if _DEBUG
+#include <stdio.h>
+#endif
 #include <sys/isofs.h>
 
 int

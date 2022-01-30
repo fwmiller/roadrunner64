@@ -4,6 +4,7 @@
 #include <sys/sys.h>
 #include <sys/mc146818.h>
 
+void word_widths();
 void cli();
 
 static unsigned
