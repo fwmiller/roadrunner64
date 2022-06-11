@@ -12,12 +12,13 @@
 #define isgraph(C) (isprint(C) && (C) != ' ')
 #define ispunct(C) (isprint(C) && !((C) != ' ' || isalnum(C)))
 
-#define isxdigit(C)							\
-    ((isdigit(C) ||							\
-      ((C) >= 'a' && (C) <= 'f') ||					\
-      ((C) >= 'A' && (C) <= 'F')) ? 1 : 0)
+#define isxdigit(C)                               \
+    ((isdigit(C) || ((C) >= 'a' && (C) <= 'f') || \
+      ((C) >= 'A' && (C) <= 'F'))                 \
+         ? 1                                      \
+         : 0)
 
-#define toupper(C) (islower(C) ? (C) - 32 : (C))
+#define toupper(C) (islower(C) ? (C) -32 : (C))
 #define tolower(C) (isupper(C) ? (C) + 32 : (C))
 
 #endif

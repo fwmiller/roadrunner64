@@ -220,5 +220,5 @@ p3_table:
 p2_table:
 	.skip 4096
 stack_bottom:
-	.skip 4096 * 2
+	.skip 4096 * 16
 stack_top:

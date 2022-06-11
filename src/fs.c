@@ -2,8 +2,7 @@
 #include <sys/isofs.h>
 
 void
-fs_init()
-{
-	ata_init();
-	isofs_init();
+fs_init() {
+    ata_init();
+    isofs_init();
 }

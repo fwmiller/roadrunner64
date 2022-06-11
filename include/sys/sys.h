@@ -6,6 +6,6 @@
 void word_widths();
 void halt();
 void reboot();
-int load(char *path, char **prog, uint32_t * size, char **start);
+int load(char *path, char **prog, uint32_t *size, char **start);
 
 #endif

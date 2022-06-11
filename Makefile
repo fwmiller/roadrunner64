@@ -81,12 +81,16 @@ clean:
 # Indent pass of the include and src directories
 #
 indent: clean
-	cd $(INC);indent $(INDENT_RULES) *.h
-	cd $(INC)/sys;indent $(INDENT_RULES) *.h
-	cd $(SRC);indent $(INDENT_RULES) *.c
-	cd $(SRC)/ata;indent $(INDENT_RULES) *.c
-	cd $(SRC)/isofs;indent $(INDENT_RULES) *.c
-	rm $(INC)/*~ $(INC)/sys/*~ $(SRC)/*~ $(SRC)/ata/*~ $(SRC)/isofs/*~
+	@cd $(INC);clang-format -i *.h
+	@cd $(INC)/sys;clang-format -i *.h
+	@clang-format -i $(C_SRCS)
+#
+#	cd $(INC);indent $(INDENT_RULES) *.h
+#	cd $(INC)/sys;indent $(INDENT_RULES) *.h
+#	cd $(SRC);indent $(INDENT_RULES) *.c
+#	cd $(SRC)/ata;indent $(INDENT_RULES) *.c
+#	cd $(SRC)/isofs;indent $(INDENT_RULES) *.c
+#	rm $(INC)/*~ $(INC)/sys/*~ $(SRC)/*~ $(SRC)/ata/*~ $(SRC)/isofs/*~
 
 wc: clean
 	wc -l $(INC)/*.h $(INC)/sys/*.h $(SRC)/*.S $(SRC)/*.c
