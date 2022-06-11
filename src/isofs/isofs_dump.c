@@ -82,7 +82,7 @@ isofs_dump_primary_volume(primary_volume_descriptor_t pri) {
     int i;
 
     printf("ISO9660 primary volume\r\n");
-
+#if 0
     printf("system identifier [");
     for (i = 0; i < 32; i++)
         printf("%c", pri->sys_id[i]);
@@ -92,7 +92,7 @@ isofs_dump_primary_volume(primary_volume_descriptor_t pri) {
     for (i = 0; i < 32; i++)
         printf("%c", pri->vol_id[i]);
     printf("]\r\n");
-
+#endif
     printf("%u blks (%u MB)\r\n", pri->vol_space_size_le,
            pri->vol_space_size_le * ATAPI_SECTOR_SIZE / 0x100000);
 

@@ -75,4 +75,7 @@ isofs_init() {
     directory_record_t rec = (directory_record_t) pri->root_dir_entry;
     memset(root_dir, 0, ATAPI_SECTOR_SIZE);
     isofs_read_blk(atap, rec->lba_le, root_dir);
+#if _DEBUG
+    isofs_dump_directory(root_dir, ATAPI_SECTOR_SIZE);
+#endif
 }
