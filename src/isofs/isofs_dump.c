@@ -79,8 +79,9 @@ isofs_dump_flags(directory_record_t rec) {
 
 void
 isofs_dump_primary_volume(primary_volume_descriptor_t pri) {
+#if 0
     int i;
-
+#endif
     printf("ISO9660 primary volume\r\n");
 #if 0
     printf("system identifier [");

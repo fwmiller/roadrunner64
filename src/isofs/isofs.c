@@ -1,3 +1,4 @@
+#include <errno.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/isofs.h>
@@ -30,7 +31,7 @@ isofs_read_blk(atap_t part, lba_t lba, uint8_t* buf) {
     /* Seek to sector */
     result = ata_seek(part->atad, sectorno);
     if (result < 0)
-        return (-1);
+        return result;
 
     /* Read sector data */
     return ata_read(part, buf, ATAPI_SECTOR_SIZE);
@@ -41,7 +42,7 @@ isofs_verify_primary_volume(volume_descriptor_t vol) {
     if (vol->type != VOLUME_DESCRIPTOR_TYPE_PRIMARY || vol->id[0] != 'C' ||
         vol->id[1] != 'D' || vol->id[2] != '0' || vol->id[3] != '0' ||
         vol->id[4] != '1')
-        return (-1);
+        return ENOTISOFS;
     return 0;
 }
 

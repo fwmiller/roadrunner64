@@ -22,5 +22,8 @@ open(const char *pathname, int flags) {
         printf("file ");
     printf("lba %u\r\n", lba);
 #endif
+    if (isdir)
+        return EISDIR;
+
     return 0;
 }

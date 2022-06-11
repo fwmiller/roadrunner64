@@ -1,7 +1,8 @@
 #ifndef __ERRNO_H
 #define __ERRNO_H
 
-#define EFAIL (-1) /* Generic failure */
+#define EFAIL (-1)    /* Generic failure */
+#define ENOTIMPL (-1) /* Not implemented */
 
 /* POSIX.1 error codes */
 #define E2BIG (-2)         /* Argument list too long */
@@ -51,8 +52,9 @@
 /* Roadrunner64 specific error codes */
 #define EDEVREAD (-43)
 #define EDEVWRITE (-44)
+#define ENOTISOFS (-45)
 
 /*  Must be last */
-#define EMIN (-45)
+#define EMIN (-46)
 
 #endif
