@@ -3,11 +3,13 @@
 #if _DEBUG
 #include <stdio.h>
 #endif
+#include <sys/fs.h>
 #include <sys/isofs.h>
 
 int
 open(const char *pathname, int flags) {
     int isdir = 0;
+    int slot = (-1);
 
     /* Locate file in ISO9660 file system on primary volume */
     lba_t lba =
@@ -24,6 +26,14 @@ open(const char *pathname, int flags) {
 #endif
     if (isdir)
         return EISDIR;
+
+    /* Allocate a file descriptor */
+    slot = file_desc_alloc_slot();
+    if (slot < 0)
+        return slot;
+
+    fd_t fd = &(filetab[slot]);
+    fd->lba = lba;
 
     return 0;
 }

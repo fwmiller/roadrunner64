@@ -61,6 +61,19 @@ KERNEL	:= $(BIN)/kmain.elf
 #
 # Rules
 #
+
+NC	:= \033[0m
+BLACK	:= \033[0;30m
+RED	:= \033[0;31m
+GREEN	:= \033[0;32m
+YELLOW	:= \033[0;33m
+BLUE	:= \033[0;34m
+PURPLE	:= \033[0;35m
+CYAN	:= \033[0;36m
+WHITE	:= \033[0;37m
+
+.PHONY: run clean indent wc debug
+
 all: $(OBJS) $(LINKER_SCRIPT)
 	$(LD) $(LDFLAGS) -o $(KERNEL) $(OBJS)
 	$(MKDIR) $(BIN)/isofiles/boot/grub
@@ -107,15 +120,18 @@ debug:
 #
 $(BIN)/%.o: $(SRC)/asm/%.S
 	@$(MKDIR) $(BIN)
-	$(CC) $(CFLAGS) -I$(INC) -o $@ $<
+	@printf "Assembling ${CYAN}$<${NC}\r\n"
+	@$(CC) $(CFLAGS) -I$(INC) -o $@ $<
 
 #
 # C source file compilation
 #
 $(BIN)/%.o: $(SRC)/*/%.c
 	@$(MKDIR) $(BIN)
-	$(CC) $(CFLAGS) -I$(INC) -o $@ $<
+	@printf "Compiling ${CYAN}$<${NC}\r\n"
+	@$(CC) $(CFLAGS) -I$(INC) -o $@ $<
 
 $(BIN)/%.o: $(SRC)/%.c
 	@$(MKDIR) $(BIN)
-	$(CC) $(CFLAGS) -I$(INC) -o $@ $<
+	@printf "Compiling ${CYAN}$<${NC}\r\n"
+	@$(CC) $(CFLAGS) -I$(INC) -o $@ $<
