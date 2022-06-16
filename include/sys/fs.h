@@ -19,7 +19,7 @@ typedef struct file_desc *fd_t;
 extern struct file_desc filetab[];
 
 void fs_init();
-void file_desc_clear(fd_t fd);
+void file_desc_clear(fd_t f);
 int file_desc_alloc_slot();
 
 #endif

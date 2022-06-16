@@ -6,20 +6,20 @@
 struct file_desc filetab[MAX_OPEN_FILES];
 
 void
-file_desc_clear(fd_t fd) {
-    fd->flags = 0;
-    fd->lba = 0;
-    fd->pos = 0;
+file_desc_clear(fd_t f) {
+    f->flags = 0;
+    f->lba = 0;
+    f->pos = 0;
 }
 
 int
 file_desc_alloc_slot() {
     for (int i = 0; i < MAX_OPEN_FILES; i++) {
-        fd_t fd = &(filetab[i]);
-        if (fd->flags & FD_FLAGS_ALLOC)
+        fd_t f = &(filetab[i]);
+        if (f->flags & FD_FLAGS_ALLOC)
             continue;
 
-        fd->flags |= FD_FLAGS_ALLOC;
+        f->flags |= FD_FLAGS_ALLOC;
         return i;
     }
     return ENFILE;

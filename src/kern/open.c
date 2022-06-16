@@ -9,7 +9,7 @@
 int
 open(const char *pathname, int flags) {
     int isdir = 0;
-    int slot = (-1);
+    int fd = (-1);
 
     /* Locate file in ISO9660 file system on primary volume */
     lba_t lba =
@@ -28,12 +28,12 @@ open(const char *pathname, int flags) {
         return EISDIR;
 
     /* Allocate a file descriptor */
-    slot = file_desc_alloc_slot();
-    if (slot < 0)
-        return slot;
+    fd = file_desc_alloc_slot();
+    if (fd < 0)
+        return fd;
 
-    fd_t fd = &(filetab[slot]);
-    fd->lba = lba;
+    fd_t f = &(filetab[fd]);
+    f->lba = lba;
 
-    return 0;
+    return fd;
 }
