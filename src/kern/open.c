@@ -27,7 +27,7 @@ open(const char *pathname, int flags) {
     if (isdir)
         return EISDIR;
 
-    /* Allocate a file descriptor */
+    /* Allocate a file descriptor slot */
     fd = file_desc_alloc_slot();
     if (fd < 0)
         return fd;

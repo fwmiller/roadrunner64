@@ -85,10 +85,10 @@ all: $(OBJS) $(LINKER_SCRIPT)
 # Execute using QEMU emulator
 #
 run: all
-	qemu-system-x86_64 -m size=4 -nographic -no-reboot -drive format=raw,file=$(BIN)/iso.img
+	@qemu-system-x86_64 -m size=4 -nographic -no-reboot -drive format=raw,file=$(BIN)/iso.img
 
 clean:
-	$(RM) $(BIN)
+	@$(RM) $(BIN)
 
 #
 # Indent pass of the include and src directories
@@ -97,13 +97,6 @@ indent: clean
 	@cd $(INC);clang-format -i *.h
 	@cd $(INC)/sys;clang-format -i *.h
 	@clang-format -i $(C_SRCS)
-#
-#	cd $(INC);indent $(INDENT_RULES) *.h
-#	cd $(INC)/sys;indent $(INDENT_RULES) *.h
-#	cd $(SRC);indent $(INDENT_RULES) *.c
-#	cd $(SRC)/ata;indent $(INDENT_RULES) *.c
-#	cd $(SRC)/isofs;indent $(INDENT_RULES) *.c
-#	rm $(INC)/*~ $(INC)/sys/*~ $(SRC)/*~ $(SRC)/ata/*~ $(SRC)/isofs/*~
 
 wc: clean
 	wc -l $(INC)/*.h $(INC)/sys/*.h $(SRC)/*.S $(SRC)/*.c
