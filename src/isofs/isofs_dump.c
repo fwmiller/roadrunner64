@@ -144,6 +144,7 @@ isofs_dump_directory(uint8_t *buf, int size) {
         /* File id */
         isofs_dump_file_id(rec);
         printf("\r\n");
+        bufdump(rec, rec->dir_rec_len);
 #if 0
 		/* File creation time and date */
 		isofs_dump_record_date(rec);

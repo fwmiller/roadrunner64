@@ -26,8 +26,9 @@ isofs_search_dir(char *s, uint8_t *dir, int size, int *isdir) {
 
         file_id = ((char *) rec) + sizeof(struct directory_record);
         if (strncmp(s, file_id, rec->file_id_len) == 0) {
-#if _DEBUG
-            printf("isofs_search_dir: found [%s] lba %u\r\n", s, rec->lba_le);
+#if 1
+            printf("isofs_search_dir: found [%s] lba %u size %u\r\n", s,
+                   rec->lba_le, rec->size_le);
 #endif
             if (rec->flags & FILE_FLAGS_DIRECTORY)
                 *isdir = 1;
