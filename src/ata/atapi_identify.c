@@ -1,5 +1,5 @@
 #include <errno.h>
-#if _DEBUG
+#if _DEBUG_ATA
 #include <stdio.h>
 #endif
 #include <string.h>
@@ -29,7 +29,7 @@ atapi_identify(atad_t atad, char *drvstr) {
     /* Read parameter data */
     insw(atad->atac->iobase + ATA_DATA, (void *) &(atad->param),
          SECTOR_SIZE / 2);
-#if _DEBUG
+#if _DEBUG_ATA
     ata_convert_string(atad->param.model, 20);
     printf("%s: ATAPI ", drvstr);
     if (((atad->param.config >> 8) & 0x1f) == 5)

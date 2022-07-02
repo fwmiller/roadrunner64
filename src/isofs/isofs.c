@@ -22,7 +22,7 @@ isofs_get_root_dir() {
 int
 isofs_read_blk(atap_t part, lba_t lba, uint8_t* buf) {
     int result;
-#if _DEBUG
+#if _DEBUG_ISOFS
     printf("isofs_read_blk: blkno %u\r\n", lba);
 #endif
     /* Convert lba to sector */
@@ -63,20 +63,20 @@ isofs_init() {
     }
     pri = (primary_volume_descriptor_t)(pri_vol_desc +
                                         sizeof(struct volume_descriptor));
-#if _DEBUG
+#if _DEBUG_ISOFS
     isofs_dump_primary_volume(pri);
 #endif
     /* Read path table */
     memset(path_table, 0, ATAPI_SECTOR_SIZE);
     isofs_read_blk(atap, pri->path_table_loc_le, path_table);
-#if _DEBUG
+#if _DEBUG_ISOFS
     isofs_dump_path_table(pri, path_table);
 #endif
     /* Read / directory */
     directory_record_t rec = (directory_record_t) pri->root_dir_entry;
     memset(root_dir, 0, ATAPI_SECTOR_SIZE);
     isofs_read_blk(atap, rec->lba_le, root_dir);
-#if _DEBUG
+#if _DEBUG_ISOFS
     isofs_dump_directory(root_dir, ATAPI_SECTOR_SIZE);
 #endif
 }

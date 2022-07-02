@@ -102,7 +102,7 @@ lba_t isofs_search_dir(char *s, uint8_t *dir, int dirsize, int *isdir,
 lba_t isofs_find(const char *path, uint8_t *rootdir, int dirsize, int *isdir,
                  int *filesize);
 
-#if _DEBUG
+#if _DEBUG_ISOFS
 void isofs_dump_primary_volume(primary_volume_descriptor_t pri);
 void isofs_dump_path_table(primary_volume_descriptor_t pri, uint8_t *buf);
 void isofs_dump_directory(uint8_t *buf, int size);

@@ -1,5 +1,5 @@
 #include <errno.h>
-#if _DEBUG
+#if _DEBUG_ATA
 #include <stdio.h>
 #endif
 #include <sys/ata.h>
@@ -52,7 +52,7 @@ ata_identify(atad_t atad, char *drvstr) {
         return EFAIL;
 
     ata_convert_string(atad->param.model, 20);
-#if _DEBUG
+#if _DEBUG_ATA
     printf("%s: ATA hard disk\r\n", drvstr);
     printf("%s: %s\r\n", drvstr, atad->param.model);
     printf("%s: %u blks (%d MB) %u trks %u hds %u sec/trk\r\n", drvstr,

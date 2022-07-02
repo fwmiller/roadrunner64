@@ -1,4 +1,4 @@
-#if _DEBUG
+#if _DEBUG_ISOFS
 #include <stdio.h>
 #endif
 #include <string.h>
@@ -34,7 +34,7 @@ isofs_find(const char *path, uint8_t *rootdir, int dirsize, int *isdir,
     lba_t lba = 0;
     int result;
 
-#if _DEBUG
+#if _DEBUG_ISOFS
     printf("isofs_find: path [%s]\r\n", path);
 #endif
     for (int pos = 0;;) {
@@ -43,7 +43,7 @@ isofs_find(const char *path, uint8_t *rootdir, int dirsize, int *isdir,
 
         memset(elem, 0, 80);
         nextelem(path, &pos, elem);
-#if _DEBUG
+#if _DEBUG_ISOFS
         printf("isofs_find: elem [%s]\r\n", elem);
 #endif
         lba = isofs_search_dir(elem, dir, dirsize, isdir, filesize);

@@ -27,7 +27,7 @@ read_parttab(atad_t atad) {
         atap->sectors = atad->parttab[part].size;
         atap->offset = atad->parttab[part].off;
     }
-#if _DEBUG
+#if _DEBUG_ATA
     dump_parttab(atad->parttab);
 #endif
 }
