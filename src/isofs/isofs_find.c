@@ -26,7 +26,8 @@ nextelem(const char *ln, int *pos, char *arg) {
  * directories for a file or directory
  */
 lba_t
-isofs_find(const char *path, uint8_t *rootdir, int size, int *isdir) {
+isofs_find(const char *path, uint8_t *rootdir, int dirsize, int *isdir,
+           int *filesize) {
     uint8_t *dir = rootdir;
     uint8_t buf[ATAPI_SECTOR_SIZE];
     char elem[80];
@@ -45,14 +46,14 @@ isofs_find(const char *path, uint8_t *rootdir, int size, int *isdir) {
 #if _DEBUG
         printf("isofs_find: elem [%s]\r\n", elem);
 #endif
-        lba = isofs_search_dir(elem, dir, size, isdir);
+        lba = isofs_search_dir(elem, dir, dirsize, isdir, filesize);
         if (lba == 0)
             return 0;
 
         /* Read next directory */
         dir = buf;
-        size = ATAPI_SECTOR_SIZE;
-        memset(buf, 0, size);
+        dirsize = ATAPI_SECTOR_SIZE;
+        memset(buf, 0, dirsize);
         atap_t atap = ata_get_primary_partition();
         result = isofs_read_blk(atap, lba, buf);
         if (result < 0)

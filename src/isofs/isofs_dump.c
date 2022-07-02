@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <sys/isofs.h>
 
+void bufdump(char *buf, int size);
+
 void
 isofs_dump_file_id(directory_record_t rec) {
     char *s = ((char *) rec) + sizeof(struct directory_record);
@@ -143,8 +145,8 @@ isofs_dump_directory(uint8_t *buf, int size) {
 
         /* File id */
         isofs_dump_file_id(rec);
-        printf("\r\n");
-        bufdump(rec, rec->dir_rec_len);
+        printf(" size %u\r\n", rec->size_le);
+        bufdump((char *) rec, rec->dir_rec_len);
 #if 0
 		/* File creation time and date */
 		isofs_dump_record_date(rec);

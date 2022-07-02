@@ -121,7 +121,7 @@ $(BIN)/%.o: $(SRC)/asm/%.S
 #
 $(BIN)/%.o: $(SRC)/*/%.c
 	@$(MKDIR) $(BIN)
-	@printf "Compiling ${CYAN}$<${NC}\r\n"
+	@printf "Compiling  ${CYAN}$<${NC}\r\n"
 	@$(CC) $(CFLAGS) -I$(INC) -o $@ $<
 
 $(BIN)/%.o: $(SRC)/%.c

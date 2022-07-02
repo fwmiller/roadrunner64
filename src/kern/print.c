@@ -190,7 +190,7 @@ bufdump(char *buf, int size) {
             printf("%02x ", line[j]);
         printf(" ");
         for (j = 0; j < LEN; j++)
-            if (isprint(line[j]))
+            if (isprint(line[j]) && line[i] >= 0x20)
                 printf("%c", (char) line[j]);
             else
                 printf(".");

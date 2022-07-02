@@ -97,8 +97,10 @@ uint8_t *isofs_get_root_dir();
 
 void isofs_init();
 int isofs_read_blk(atap_t part, lba_t lba, uint8_t *buf);
-lba_t isofs_search_dir(char *s, uint8_t *dir, int size, int *isdir);
-lba_t isofs_find(const char *path, uint8_t *buf, int size, int *isdir);
+lba_t isofs_search_dir(char *s, uint8_t *dir, int dirsize, int *isdir,
+                       int *filesize);
+lba_t isofs_find(const char *path, uint8_t *rootdir, int dirsize, int *isdir,
+                 int *filesize);
 
 #if _DEBUG
 void isofs_dump_primary_volume(primary_volume_descriptor_t pri);
