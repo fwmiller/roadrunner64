@@ -39,6 +39,7 @@ open(const char *pathname, int flags) {
 
     fd_t f = &(filetab[fd]);
     f->lba = lba;
+    f->size = filesize;
 
     return fd;
 }

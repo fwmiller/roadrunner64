@@ -1,5 +1,6 @@
 #include <errno.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/fs.h>
 #include <sys/isofs.h>
 
@@ -9,7 +10,9 @@ void
 file_desc_clear(fd_t f) {
     f->flags = 0;
     f->lba = 0;
+    f->size = 0;
     f->pos = 0;
+    memset(f->buf, 0, ATAPI_SECTOR_SIZE);
 }
 
 int
