@@ -10,9 +10,7 @@
 ssize_t
 read(int fd, void *buf, size_t count) {
     fd_t f;
-    int n = 0;
-    int nleft = count;
-    int bufpos, len, result;
+    int n, nleft, bufpos, len, result;
 
     if (buf == NULL)
         return EFAIL;
@@ -22,26 +20,35 @@ read(int fd, void *buf, size_t count) {
 
     f = &(filetab[fd]);
 
-    /* Read the block containing the file position */
-    lba_t lba = f->lba + (f->pos / ATAPI_SECTOR_SIZE);
-    result = isofs_read_blk(ata_get_primary_partition(), lba, f->buf);
-    if (result < 0) {
+    for (n = 0, nleft = count; f->pos < f->size && nleft > 0;) {
 #if _DEBUG
-        printf("read: isofs_read_blk() failed\r\n");
+        printf("\r\nread: f->pos %d f->size %d f->lba %u\r\n", f->pos,
+               f->size, f->lba);
+        printf("read: n %d nleft %d\r\n", f->pos, n, nleft);
 #endif
-        return result;
-    }
-    /* Copy data from file buffer */
-    bufpos = f->pos % ATAPI_SECTOR_SIZE;
-    len = ATAPI_SECTOR_SIZE - bufpos;
-    if (len >= nleft)
+        /* Read the block containing the file position */
+        lba_t lba = f->lba + (f->pos / ATAPI_SECTOR_SIZE);
+        result = isofs_read_blk(ata_get_primary_partition(), lba, f->buf);
+        if (result < 0) {
+#if _DEBUG
+            printf("read: isofs_read_blk() lba %u failed\r\n", lba);
+#endif
+            return result;
+        }
+        /* Copy data from file buffer */
+        bufpos = f->pos % ATAPI_SECTOR_SIZE;
         len = nleft;
-    memcpy(buf + n, f->buf + bufpos, len);
+        if (len > (ATAPI_SECTOR_SIZE - bufpos))
+            len = ATAPI_SECTOR_SIZE - bufpos;
+#if _DEBUG
+        printf("read: bufpos %d len %d\r\n", bufpos, len);
+#endif
+        memcpy(buf + n, f->buf + bufpos, len);
 
-    /*
-     * Advance file descriptor position checking whether enough
-     * data has been read or the end of file has been reached
-     */
-
-    return EFAIL;
+        /* Update various state variables */
+        f->pos += len;
+        n += len;
+        nleft -= len;
+    }
+    return (ssize_t) n;
 }

@@ -59,10 +59,10 @@ cli() {
 
             for (char ch = 0;;) {
                 int len = read(fd, &ch, 1);
-                if (len < 0) {
-                    break;
-                }
-                if (len == 0)
+#if _DEBUG
+                printf("len %d\r\n", len);
+#endif
+                if (len <= 0)
                     break;
 
                 printf("%c", ch);
