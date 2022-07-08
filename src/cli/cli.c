@@ -2,6 +2,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/cli.h>
 #include <sys/uart.h>
 #include <unistd.h>
 
@@ -41,6 +42,8 @@ get_cmdline(char *cmdline, int len) {
 void
 cli() {
     char cmdline[CMD_LINE_LEN];
+    char arg[CMD_LINE_LEN];
+    int pos;
 
     for (;;) {
         printf(PROMPT);
@@ -48,7 +51,7 @@ cli() {
         get_cmdline(cmdline, CMD_LINE_LEN);
         if (strlen(cmdline) == 0)
             continue;
-
+#if 0
         if (cmdline[0] == '/') {
             /*
              * A full path has been specified as the first
@@ -59,12 +62,28 @@ cli() {
 
             for (char ch = 0;;) {
                 int len = read(fd, &ch, 1);
-#if _DEBUG
-                printf("len %d\r\n", len);
-#endif
                 if (len <= 0)
                     break;
 
+                printf("%c", ch);
+            }
+        }
+#endif
+        pos = 0;
+        memset(arg, 0, CMD_LINE_LEN);
+        nextarg(cmdline, &pos, " ", arg);
+
+        printf("cmd [%s]\r\n", arg);
+        if (strncmp(arg, "cat", 3) == 0) {
+            memset(arg, 0, CMD_LINE_LEN);
+            nextarg(cmdline, &pos, " ", arg);
+
+            int fd = open(arg, 0);
+
+            for (char ch = 0;;) {
+                int len = read(fd, &ch, 1);
+                if (len <= 0)
+                    break;
                 printf("%c", ch);
             }
         }
