@@ -79,10 +79,10 @@ cli() {
             nextarg(cmdline, &pos, " ", arg);
 
             int fd = open(arg, 0);
-	    if (fd < 0) {
-		printf("open %s failed (%d)\r\n", arg, fd);
-		continue;
-	    }
+            if (fd < 0) {
+                printf("open %s failed (%d)\r\n", arg, fd);
+                continue;
+            }
 
             for (char ch = 0;;) {
                 int len = read(fd, &ch, 1);

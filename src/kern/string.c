@@ -80,7 +80,6 @@ memcpy(void *dest, void *src, size_t n) {
 }
 
 char *
-strerror(int errno)
-{
-	return NULL;
+strerror(int errno) {
+    return NULL;
 }
