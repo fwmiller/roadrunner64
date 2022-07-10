@@ -1,6 +1,7 @@
 #ifndef __ERRNO_H
 #define __ERRNO_H
 
+#define SUCCESS 0     /* Generic success */
 #define EFAIL (-1)    /* Generic failure */
 #define ENOTIMPL (-1) /* Not implemented */
 

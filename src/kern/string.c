@@ -78,8 +78,3 @@ memcpy(void *dest, void *src, size_t n) {
 
     return dest;
 }
-
-char *
-strerror(int errno) {
-    return NULL;
-}
