@@ -1,8 +1,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <sys/isofs.h>
-
-void bufdump(char *buf, int size);
+#include <sys/sys.h>
 
 void
 isofs_dump_file_id(directory_record_t rec) {

@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+void bufdump(char *buf, int size);
+
 void word_widths();
 void halt();
 void reboot();

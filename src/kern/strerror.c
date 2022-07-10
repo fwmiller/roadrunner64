@@ -3,7 +3,7 @@
 
 char*
 strerror(int errno) {
-    switch (-errno) {
+    switch (errno) {
     case SUCCESS:
         return "Success";
     case EFAIL:
