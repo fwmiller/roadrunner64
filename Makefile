@@ -2,34 +2,35 @@
 #
 # Directories
 #
-INC	:= include
-SRC	:= src
-BIN	:= build
+INC		:= include
+SRC		:= src
+BIN		:= build
+ISOFILES	:= $(BIN)/isofiles
 
 #
 # Tools
 #
-MKDIR	:= mkdir -p
-CC	:= gcc
-LD	:= gcc
-CP	:= cp
-RM	:= rm -fr
+MKDIR		:= mkdir -p
+CC		:= gcc
+LD		:= gcc
+CP		:= cp
+RM		:= rm -fr
 
 ##############################################################################
 #
 # Tool options
 #
-CFLAGS	:= -c -Wall -m64 -Og -nostdinc -ffreestanding
-#CFLAGS	+= -D_DEBUG
-#CFLAGS	+= -D_DEBUG_ATA
-#CFLAGS	+= -D_DEBUG_ISOFS
+CFLAGS		:= -c -Wall -m64 -Og -nostdinc -ffreestanding
+#CFLAGS		+= -D_DEBUG
+#CFLAGS		+= -D_DEBUG_ATA
+#CFLAGS		+= -D_DEBUG_ISOFS
 
 LINKER_SCRIPT	:= $(SRC)/kern/link.ld
 LDFLAGS		:= -nostdlib -Wl,-n,-T,$(LINKER_SCRIPT) -no-pie
 
-INDENT_RULES := -nbad -bap -nbc -bbo -hnl -br -brs -c33 -cd33 -ncdb -ce -ci4 -cli0 -d0 -di1 -nfc1 -i8 -ip0 -l80 -lp -npcs -nprs -psl -sai -saf -saw -ncs -nsc -sob -nfca -cp33 -ss -ts8 -il1
+INDENT_RULES	:= -nbad -bap -nbc -bbo -hnl -br -brs -c33 -cd33 -ncdb -ce -ci4 -cli0 -d0 -di1 -nfc1 -i8 -ip0 -l80 -lp -npcs -nprs -psl -sai -saf -saw -ncs -nsc -sob -nfca -cp33 -ss -ts8 -il1
 
-MAX_DEPTH := 2
+MAX_DEPTH	:= 2
 
 ##############################################################################
 #
@@ -78,10 +79,11 @@ WHITE	:= \033[0;37m
 
 all: $(OBJS) $(LINKER_SCRIPT)
 	$(LD) $(LDFLAGS) -o $(KERNEL) $(OBJS)
-	$(MKDIR) $(BIN)/isofiles/boot/grub
-	$(CP) $(KERNEL) $(BIN)/isofiles/boot/
-	$(CP) $(SRC)/kern/grub.cfg $(BIN)/isofiles/boot/grub
-	grub-mkrescue -o $(BIN)/iso.img $(BIN)/isofiles
+	$(MKDIR) $(ISOFILES)/boot/grub
+	$(CP) $(KERNEL) $(ISOFILES)/boot
+	$(CP) $(SRC)/kern/grub.cfg $(ISOFILES)/boot/grub
+	$(CP) README.md $(ISOFILES)
+	grub-mkrescue -o $(BIN)/iso.img $(ISOFILES)
 
 #
 # Execute using QEMU emulator
