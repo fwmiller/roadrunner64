@@ -110,6 +110,13 @@ cli() {
                 printf("%08x  ", i);
                 bufdump(buf, 16);
             }
+        } else if (strncmp(arg, "help", 4) == 0) {
+            printf("\r\n");
+            printf("cat <filename>\r\n");
+            printf("  Print file contents as text\r\n");
+            printf("hexdump <filename>\r\n");
+            printf("  Print file contents as hexadecimal values\r\n");
+            printf("\r\n");
         }
     }
 }
