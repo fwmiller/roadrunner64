@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include <dirent.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
@@ -110,6 +111,17 @@ cli() {
                 printf("%08x  ", i);
                 bufdump(buf, 16);
             }
+
+        } else if (strncmp(arg, "ls", 2) == 0) {
+            memset(arg, 0, CMD_LINE_LEN);
+            nextarg(cmdline, &pos, " ", arg);
+
+            DIR *dir = opendir(arg);
+            if (dir == NULL) {
+                printf("open %s failed\r\n", arg);
+                continue;
+            }
+
         } else if (strncmp(arg, "help", 4) == 0) {
             printf("\r\n");
             printf("cat <filename>\r\n");
