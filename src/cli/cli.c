@@ -121,6 +121,9 @@ cli() {
                 printf("open %s failed\r\n", arg);
                 continue;
             }
+            struct dirent *de;
+            while ((de = readdir(dir)) != NULL)
+                ;
 
         } else if (strncmp(arg, "help", 4) == 0) {
             printf("\r\n");

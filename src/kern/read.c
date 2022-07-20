@@ -18,13 +18,15 @@ read(int fd, void *buf, size_t count) {
     if (fd < 0 || fd >= MAX_OPEN_FILES)
         return EBADF;
 
+    printf("read: count %u\r\n", count);
+
     f = &(filetab[fd]);
 
     for (n = 0, nleft = count; f->pos < f->size && nleft > 0;) {
 #if _DEBUG
         printf("\r\nread: f->pos %d f->size %d f->lba %u\r\n", f->pos,
                f->size, f->lba);
-        printf("read: n %d nleft %d\r\n", f->pos, n, nleft);
+        printf("read: n %d nleft %d\r\n", n, nleft);
 #endif
         /* Read the block containing the file position */
         lba_t lba = f->lba + (f->pos / ATAPI_SECTOR_SIZE);

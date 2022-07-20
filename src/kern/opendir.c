@@ -1,4 +1,7 @@
 #include <dirent.h>
+#if _DEBUG
+#include <stdio.h>
+#endif
 #include <stdlib.h>
 #include <sys/isofs.h>
 

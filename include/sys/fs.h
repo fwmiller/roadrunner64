@@ -9,6 +9,7 @@
 #define FD_FLAGS_ALLOC 0x02
 
 struct file_desc {
+    int fd;
     uint8_t flags;
     lba_t lba;
     unsigned size;

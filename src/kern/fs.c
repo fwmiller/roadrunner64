@@ -8,6 +8,7 @@ struct file_desc filetab[MAX_OPEN_FILES];
 
 void
 file_desc_clear(fd_t f) {
+    f->fd = (-1);
     f->flags = 0;
     f->lba = 0;
     f->size = 0;
@@ -23,6 +24,7 @@ file_desc_alloc_slot() {
             continue;
 
         f->flags |= FD_FLAGS_ALLOC;
+        f->fd = i;
         return i;
     }
     return ENFILE;

@@ -146,29 +146,29 @@ isofs_dump_directory(uint8_t *buf, int size) {
         isofs_dump_file_id(rec);
         printf(" size %u\r\n", rec->size_le);
         bufdump((char *) rec, rec->dir_rec_len);
-#if 0
-		/* File creation time and date */
-		isofs_dump_record_date(rec);
-		printf("\r\n");
+#if _DEBUG
+        /* File creation time and date */
+        isofs_dump_record_date(rec);
+        printf("\r\n");
 
-		printf("dir_rec_len %u ", rec->dir_rec_len);
-		printf("ext_att_rec_len %u ", rec->ext_att_rec_len);
-		printf("file_id_len %u\r\n", rec->file_id_len);
+        printf("dir_rec_len %u ", rec->dir_rec_len);
+        printf("ext_att_rec_len %u ", rec->ext_att_rec_len);
+        printf("file_id_len %u\r\n", rec->file_id_len);
 
-		printf("lba %u ", rec->lba_le);
-		printf("size %u ", rec->size_le);
+        printf("lba %u ", rec->lba_le);
+        printf("size %u ", rec->size_le);
 
-		printf("flags 0x%02x ", rec->flags);
-		if (rec->flags > 0) {
-			printf("(");
-			isofs_dump_flags(rec);
-			printf(")");
-		}
-		printf("\r\n");
+        printf("flags 0x%02x ", rec->flags);
+        if (rec->flags > 0) {
+            printf("(");
+            isofs_dump_flags(rec);
+            printf(")");
+        }
+        printf("\r\n");
 
-		printf("unit_size %u ", rec->unit_size);
-		printf("interleave_gap_size %u ", rec->interleave_gap_size);
-		printf("vol_seqno %u\r\n", rec->vol_seqno_le);
+        printf("unit_size %u ", rec->unit_size);
+        printf("interleave_gap_size %u ", rec->interleave_gap_size);
+        printf("vol_seqno %u\r\n", rec->vol_seqno_le);
 #endif
         pos += rec->dir_rec_len;
     }
