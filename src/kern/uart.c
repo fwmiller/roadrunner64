@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <sys/io.h>
 #include <sys/uart.h>
 
@@ -7,9 +8,16 @@
 
 int
 uart_getchar() {
+    int ch;
+
     while (!(inb(COM_RX_STATUS) & 0x01))
         ;
-    return (int) inb(COM_RX_FIFO);
+    ch = (int) inb(COM_RX_FIFO);
+#if 0
+    if (!isprint(ch))
+	printf("[%02x]", ch);
+#endif
+    return ch;
 }
 
 void
