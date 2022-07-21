@@ -18,10 +18,7 @@ read(int fd, void *buf, size_t count) {
     if (fd < 0 || fd >= MAX_OPEN_FILES)
         return EBADF;
 
-    printf("read: count %u\r\n", count);
-
     f = &(filetab[fd]);
-
     for (n = 0, nleft = count; f->pos < f->size && nleft > 0;) {
 #if _DEBUG
         printf("\r\nread: f->pos %d f->size %d f->lba %u\r\n", f->pos,

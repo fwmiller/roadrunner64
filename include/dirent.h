@@ -3,6 +3,10 @@
 
 #include <sys/fs.h>
 
+#define DT_UNDEF 0
+#define DT_REG 1
+#define DT_DIR 2
+
 #define DE_NAME_LEN 256
 
 struct dirent {

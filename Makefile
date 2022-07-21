@@ -21,9 +21,9 @@ RM		:= rm -fr
 # Tool options
 #
 CFLAGS		:= -c -Wall -m64 -Og -nostdinc -ffreestanding
-CFLAGS		+= -D_DEBUG
-CFLAGS		+= -D_DEBUG_ATA
-CFLAGS		+= -D_DEBUG_ISOFS
+#CFLAGS		+= -D_DEBUG
+#CFLAGS		+= -D_DEBUG_ATA
+#CFLAGS		+= -D_DEBUG_ISOFS
 
 LINKER_SCRIPT	:= $(SRC)/kern/link.ld
 LDFLAGS		:= -nostdlib -Wl,-n,-T,$(LINKER_SCRIPT) -no-pie

@@ -38,5 +38,5 @@ opendir(const char *name) {
     f->lba = lba;
     f->size = filesize;
 
-    return f;
+    return (DIR *) f;
 }

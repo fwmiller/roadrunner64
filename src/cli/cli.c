@@ -122,8 +122,14 @@ cli() {
                 continue;
             }
             struct dirent *de;
-            while ((de = readdir(dir)) != NULL)
-                ;
+            while ((de = readdir(dir)) != NULL) {
+                printf("%s", de->d_name);
+                if (de->d_type == DT_DIR) {
+                    printf("/");
+                }
+                printf(" ");
+            }
+            printf("\r\n");
 
         } else if (strncmp(arg, "help", 4) == 0) {
             printf("\r\n");
@@ -131,6 +137,8 @@ cli() {
             printf("  Print file contents as text\r\n");
             printf("hexdump <filename>\r\n");
             printf("  Print file contents as hexadecimal values\r\n");
+            printf("ls <directory>\r\n");
+            printf("  List the contents of a directory\r\n");
             printf("\r\n");
         }
     }
