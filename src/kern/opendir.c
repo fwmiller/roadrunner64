@@ -3,6 +3,7 @@
 #include <stdio.h>
 #endif
 #include <stdlib.h>
+#include <string.h>
 #include <sys/isofs.h>
 
 DIR *
@@ -10,6 +11,18 @@ opendir(const char *name) {
     int isdir = 0;
     int filesize = 0;
     int fd = (-1);
+
+    /* Check for root directory */
+    if (strcmp(name, "/") == 0) {
+        fd = file_desc_alloc_slot();
+        if (fd < 0)
+            return NULL;
+
+        fd_t f = &(filetab[fd]);
+        f->flags |= FD_FLAGS_ISROOTDIR;
+        return (DIR *) f;
+    }
+    /* Not root directory */
 
     /* Locate file in ISO9660 file system on primary volume */
     lba_t lba = isofs_find(name, isofs_get_root_dir(), ATAPI_SECTOR_SIZE,

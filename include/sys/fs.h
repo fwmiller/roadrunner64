@@ -5,8 +5,9 @@
 
 #define MAX_OPEN_FILES 16
 
-#define FD_FLAGS_ISDIR 0x01
-#define FD_FLAGS_ALLOC 0x02
+#define FD_FLAGS_ALLOC 0x01
+#define FD_FLAGS_ISROOTDIR 0x02
+#define FD_FLAGS_ISDIR 0x04
 
 struct file_desc {
     int fd;
