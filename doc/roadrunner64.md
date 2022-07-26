@@ -55,4 +55,12 @@ compatible, i.e. open/close/read/write, interface.
 
 ### Command Line Interface
 
-The system includes a simple command line interface.
+The system includes a simple Command Line Interface (CLI).
+
+The CLI provides a path oriented view of the ISO9660 file system.
+
+| Command | Description                                                    |
+| ------- | -------------------------------------------------------------- |
+| cat     | Dumps the contents of a file as text                           |
+| hexdump | Dumps the contents of a file as sequence of hexadecimal values |
+| ls      | List the contents of a directory                               |
