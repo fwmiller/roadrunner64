@@ -21,6 +21,10 @@ One you have these installed you can type:
 
 ```
 $ make run
+...
+Roadrunner 64-bit
+Type ctrl-a x to exit
+>
 ```
 
 The 64-bit long mode boot code is based on

@@ -17,9 +17,12 @@ opendir(const char *name) {
         fd = file_desc_alloc_slot();
         if (fd < 0)
             return NULL;
-
+#if _DEBUG
+        printf("found root directory\r\n");
+#endif
         fd_t f = &(filetab[fd]);
         f->flags |= FD_FLAGS_ISROOTDIR;
+        f->size = isofs_get_root_dir_size();
         return (DIR *) f;
     }
     /* Not root directory */

@@ -82,7 +82,7 @@ cli() {
 
             int fd = open(arg, 0);
             if (fd < 0) {
-                printf("open %s failed (%s)\r\n", arg, strerror(fd));
+                printf("open file %s failed (%s)\r\n", arg, strerror(fd));
                 continue;
             }
 
@@ -99,7 +99,7 @@ cli() {
 
             int fd = open(arg, 0);
             if (fd < 0) {
-                printf("open %s failed (%s)\r\n", arg, strerror(fd));
+                printf("open file %s failed (%s)\r\n", arg, strerror(fd));
                 continue;
             }
 
@@ -119,7 +119,7 @@ cli() {
 
             DIR *dir = opendir(arg);
             if (dir == NULL) {
-                printf("open %s failed\r\n", arg);
+                printf("open directory %s failed\r\n", arg);
                 continue;
             }
             struct dirent *de;

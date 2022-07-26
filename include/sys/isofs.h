@@ -94,6 +94,7 @@ typedef struct path_table_record *path_table_record_t;
 typedef struct directory_record *directory_record_t;
 
 uint8_t *isofs_get_root_dir();
+int isofs_get_root_dir_size();
 
 void isofs_init();
 int isofs_read_blk(atap_t part, lba_t lba, uint8_t *buf);

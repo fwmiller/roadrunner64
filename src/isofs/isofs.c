@@ -15,6 +15,16 @@ isofs_get_root_dir() {
     return root_dir;
 }
 
+int
+isofs_get_root_dir_size() {
+    primary_volume_descriptor_t pri;
+    pri = (primary_volume_descriptor_t)(pri_vol_desc +
+                                        sizeof(struct volume_descriptor));
+    directory_record_t dr;
+    dr = (directory_record_t) pri->root_dir_entry;
+    return dr->size_le;
+}
+
 /*
  * buf must be at least ATAPI_SECTOR_SIZE = 2048 bytes and is assumed to
  * be zeroed

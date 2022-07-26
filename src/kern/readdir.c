@@ -7,6 +7,24 @@
 
 static struct dirent de;
 
+static void
+load_directory_entry(directory_record_t dr) {
+    if (dr->flags & FILE_FLAGS_DIRECTORY)
+        de.d_type = DT_DIR;
+    else
+        de.d_type = DT_REG;
+
+    de.d_size = dr->size_le;
+
+    char *name = ((char *) dr) + sizeof(struct directory_record);
+    if (name[0] == 0)
+        memcpy(de.d_name, ".", 1);
+    else if (name[0] == 1)
+        memcpy(de.d_name, "..", 2);
+    else
+        memcpy(de.d_name, name, dr->file_id_len);
+}
+
 struct dirent *
 readdir(DIR *dirp) {
     fd_t f = (fd_t) dirp;
@@ -27,23 +45,6 @@ readdir(DIR *dirp) {
 #if _DEBUG
     isofs_dump_directory(buf, (int) buf[0]);
 #endif
-
-    /* Load the directory entry record */
-    directory_record_t dr = (directory_record_t) buf;
-    if (dr->flags & FILE_FLAGS_DIRECTORY)
-        de.d_type = DT_DIR;
-    else
-        de.d_type = DT_REG;
-
-    de.d_size = dr->size_le;
-
-    char *name = (char *) buf + sizeof(struct directory_record);
-    if (name[0] == 0)
-        memcpy(de.d_name, ".", 1);
-    else if (name[0] == 1)
-        memcpy(de.d_name, "..", 2);
-    else
-        memcpy(de.d_name, name, dr->file_id_len);
-
+    load_directory_entry((directory_record_t) buf);
     return &de;
 }
