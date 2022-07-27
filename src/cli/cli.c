@@ -1,15 +1,13 @@
 #include <ctype.h>
-#include <dirent.h>
-#include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/cli.h>
-#include <sys/sys.h>
 #include <sys/uart.h>
-#include <unistd.h>
 
-#define PROMPT "> "
-#define CMD_LINE_LEN 80
+void cmd_cat(char *cmdline, int *pos);
+void cmd_help();
+void cmd_hexdump(char *cmdline, int *pos);
+void cmd_ls(char *cmdline, int *pos);
 
 static int
 get_cmdline(char *cmdline, int len) {
@@ -76,71 +74,16 @@ cli() {
         memset(arg, 0, CMD_LINE_LEN);
         nextarg(cmdline, &pos, " ", arg);
 
-        if (strncmp(arg, "cat", 3) == 0) {
-            memset(arg, 0, CMD_LINE_LEN);
-            nextarg(cmdline, &pos, " ", arg);
+        if (strcmp(arg, "cat") == 0)
+            cmd_cat(cmdline, &pos);
 
-            int fd = open(arg, 0);
-            if (fd < 0) {
-                printf("open file %s failed (%s)\r\n", arg, strerror(fd));
-                continue;
-            }
+        else if (strcmp(arg, "hexdump") == 0)
+            cmd_hexdump(cmdline, &pos);
 
-            for (char ch = 0;;) {
-                int len = read(fd, &ch, 1);
-                if (len <= 0)
-                    break;
-                printf("%c", ch);
-            }
+        else if (strcmp(arg, "ls") == 0)
+            cmd_ls(cmdline, &pos);
 
-        } else if (strncmp(arg, "hexdump", 7) == 0) {
-            memset(arg, 0, CMD_LINE_LEN);
-            nextarg(cmdline, &pos, " ", arg);
-
-            int fd = open(arg, 0);
-            if (fd < 0) {
-                printf("open file %s failed (%s)\r\n", arg, strerror(fd));
-                continue;
-            }
-
-            char buf[16];
-            memset(buf, 0, 16);
-            for (int i = 0;; i += 16) {
-                int len = read(fd, buf, 16);
-                if (len <= 0)
-                    break;
-                printf("%08x  ", i);
-                bufdump(buf, 16);
-            }
-
-        } else if (strncmp(arg, "ls", 2) == 0) {
-            memset(arg, 0, CMD_LINE_LEN);
-            nextarg(cmdline, &pos, " ", arg);
-
-            DIR *dir = opendir(arg);
-            if (dir == NULL) {
-                printf("open directory %s failed\r\n", arg);
-                continue;
-            }
-            struct dirent *de;
-            while ((de = readdir(dir)) != NULL) {
-                printf("%s", de->d_name);
-                if (de->d_type == DT_DIR) {
-                    printf("/");
-                }
-                printf(" ");
-            }
-            printf("\r\n");
-
-        } else if (strncmp(arg, "help", 4) == 0) {
-            printf("\r\n");
-            printf("cat <filename>\r\n");
-            printf("  Print file contents as text\r\n");
-            printf("hexdump <filename>\r\n");
-            printf("  Print file contents as hexadecimal values\r\n");
-            printf("ls <directory>\r\n");
-            printf("  List the contents of a directory\r\n");
-            printf("\r\n");
-        }
+        else if (strcmp(arg, "help") == 0)
+            cmd_help();
     }
 }
