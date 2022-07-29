@@ -1,44 +1,15 @@
-#include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/cli.h>
-#include <sys/uart.h>
+
+static char pwd[CMD_LINE_LEN];
+
+int get_cmdline(char *cmdline, int len);
 
 void cmd_cat(char *cmdline, int *pos);
 void cmd_help();
 void cmd_hexdump(char *cmdline, int *pos);
 void cmd_ls(char *cmdline, int *pos);
-
-static int
-get_cmdline(char *cmdline, int len) {
-    int pos;
-    char ch;
-
-    memset(cmdline, 0, len);
-    for (pos = 0;;) {
-        ch = uart_getchar();
-
-        if (!isprint(ch) && ch != '\r' && ch != '\n' && ch != '\b' &&
-            ch != 0x7f)
-            continue;
-
-        if (ch == '\n' || ch == '\r') {
-            printf("\r\n");
-            break;
-        }
-        if ((ch == '\b' || ch == 0x7f) && pos > 0) {
-            cmdline[--pos] = '\0';
-            printf("\b \b");
-
-        } else if (ch != '\b' && ch != '\r' && ch != 0x7f) {
-            cmdline[pos++] = ch;
-            printf("%c", ch);
-            if (pos == len - 1)
-                break;
-        }
-    }
-    return pos;
-}
 
 void
 cli() {
@@ -46,7 +17,11 @@ cli() {
     char arg[CMD_LINE_LEN];
     int pos;
 
+    memset(pwd, 0, CMD_LINE_LEN);
+    strcpy(pwd, "/");
+
     for (;;) {
+        printf(pwd);
         printf(PROMPT);
 
         get_cmdline(cmdline, CMD_LINE_LEN);
@@ -82,6 +57,9 @@ cli() {
 
         else if (strcmp(arg, "ls") == 0)
             cmd_ls(cmdline, &pos);
+
+        else if (strcmp(arg, "pwd") == 0)
+            printf("%s\r\n", pwd);
 
         else if (strcmp(arg, "help") == 0)
             cmd_help();

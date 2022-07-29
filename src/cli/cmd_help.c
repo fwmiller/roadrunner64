@@ -12,4 +12,7 @@ cmd_help() {
     printf("ls <directory>\r\n");
     printf("  List the contents of a directory\r\n");
     printf("\r\n");
+    printf("pwd\r\n");
+    printf("  Print the current/working directory\r\n");
+    printf("\r\n");
 }
