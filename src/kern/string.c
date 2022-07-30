@@ -64,6 +64,12 @@ strcpy(char *dst, const char *src) {
     return dst;
 }
 
+char *
+strcat(char *dest, const char *src)
+{
+	return NULL;
+}
+
 void *
 memset(void *b, int c, size_t n) {
     int i;
