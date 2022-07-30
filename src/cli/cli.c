@@ -9,7 +9,7 @@ int get_cmdline(char *cmdline, int len);
 void cmd_cat(char *cmdline, int *pos);
 void cmd_help();
 void cmd_hexdump(char *cmdline, int *pos);
-void cmd_ls(char *cmdline, int *pos);
+void cmd_ls(char *pwd, char *cmdline, int *pos);
 
 void
 cli() {
@@ -56,7 +56,7 @@ cli() {
             cmd_hexdump(cmdline, &pos);
 
         else if (strcmp(arg, "ls") == 0)
-            cmd_ls(cmdline, &pos);
+            cmd_ls(pwd, cmdline, &pos);
 
         else if (strcmp(arg, "pwd") == 0)
             printf("%s\r\n", pwd);
