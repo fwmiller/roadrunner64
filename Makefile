@@ -62,6 +62,12 @@ KERNEL	:= $(BIN)/kmain.elf
 
 ##############################################################################
 #
+# Boot image file
+#
+BOOT_IMG := $(BIN)/iso.img
+
+##############################################################################
+#
 # Rules
 #
 
@@ -78,12 +84,15 @@ WHITE	:= \033[0;37m
 .PHONY: run clean indent wc debug
 
 all: $(OBJS) $(LINKER_SCRIPT)
-	$(LD) $(LDFLAGS) -o $(KERNEL) $(OBJS)
-	$(MKDIR) $(ISOFILES)/boot/grub
-	$(CP) $(KERNEL) $(ISOFILES)/boot
-	$(CP) $(SRC)/kern/grub.cfg $(ISOFILES)/boot/grub
-	$(CP) README.md $(ISOFILES)
-	grub-mkrescue -o $(BIN)/iso.img $(ISOFILES)
+	@printf "Linking ${CYAN}$(KERNEL)${NC}\r\n"
+	@$(LD) $(LDFLAGS) -o $(KERNEL) $(OBJS)
+	@printf "Setup target file system ${CYAN}$(ISOFILES)${NC}\r\n"
+	@$(MKDIR) $(ISOFILES)/boot/grub
+	@$(CP) $(KERNEL) $(ISOFILES)/boot
+	@$(CP) $(SRC)/kern/grub.cfg $(ISOFILES)/boot/grub
+	@$(CP) README.md $(ISOFILES)
+	@printf "Create boot image ${CYAN}$(BOOT_IMG)${NC}\r\n"
+	@grub-mkrescue -o $(BOOT_IMG) $(ISOFILES)
 
 #
 # Execute using QEMU emulator

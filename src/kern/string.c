@@ -65,9 +65,11 @@ strcpy(char *dst, const char *src) {
 }
 
 char *
-strcat(char *dest, const char *src)
-{
-	return NULL;
+strcat(char *dest, const char *src) {
+    if (dest == NULL || src == NULL)
+        return NULL;
+    strcpy(dest + strlen(dest), src);
+    return dest;
 }
 
 void *
