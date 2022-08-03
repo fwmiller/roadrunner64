@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/cli.h>
-#include <sys/path.h>
 
 void
 cmd_ls(char *pwd, char *cmdline, int *pos) {
@@ -17,7 +16,9 @@ cmd_ls(char *pwd, char *cmdline, int *pos) {
     else if (strlen(arg) > 0 && arg[0] != '/') {
         char tmp[CMD_LINE_LEN];
         memset(tmp, 0, CMD_LINE_LEN);
-        path_cat(pwd, arg, tmp);
+        strcpy(tmp, pwd);
+        strcat(tmp, "/");
+        strcat(tmp, arg);
         memset(arg, 0, CMD_LINE_LEN);
         strcpy(arg, tmp);
     }

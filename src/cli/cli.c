@@ -6,9 +6,9 @@ static char pwd[CMD_LINE_LEN];
 
 int get_cmdline(char *cmdline, int len);
 
-void cmd_cat(char *cmdline, int *pos);
+void cmd_cat(char *pwd, char *cmdline, int *pos);
 void cmd_help();
-void cmd_hexdump(char *cmdline, int *pos);
+void cmd_hexdump(char *pwd, char *cmdline, int *pos);
 void cmd_ls(char *pwd, char *cmdline, int *pos);
 
 void
@@ -50,10 +50,10 @@ cli() {
         nextarg(cmdline, &pos, " ", arg);
 
         if (strcmp(arg, "cat") == 0)
-            cmd_cat(cmdline, &pos);
+            cmd_cat(pwd, cmdline, &pos);
 
         else if (strcmp(arg, "hexdump") == 0)
-            cmd_hexdump(cmdline, &pos);
+            cmd_hexdump(pwd, cmdline, &pos);
 
         else if (strcmp(arg, "ls") == 0)
             cmd_ls(pwd, cmdline, &pos);

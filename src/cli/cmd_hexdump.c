@@ -7,15 +7,27 @@
 #include <unistd.h>
 
 void
-cmd_hexdump(char *cmdline, int *pos) {
+cmd_hexdump(char *pwd, char *cmdline, int *pos) {
     char arg[CMD_LINE_LEN];
 
     memset(arg, 0, CMD_LINE_LEN);
     nextarg(cmdline, pos, " ", arg);
 
+    if (strlen(arg) == 0)
+        strcpy(arg, pwd);
+
+    else if (strlen(arg) > 0 && arg[0] != '/') {
+        char tmp[CMD_LINE_LEN];
+        memset(tmp, 0, CMD_LINE_LEN);
+        strcpy(tmp, pwd);
+        strcat(tmp, "/");
+        strcat(tmp, arg);
+        memset(arg, 0, CMD_LINE_LEN);
+        strcpy(arg, tmp);
+    }
     int fd = open(arg, 0);
     if (fd < 0) {
-        printf("open file %s failed (%s)\r\n", arg, strerror(fd));
+        printf("open file %s failed\r\n", arg);
         return;
     }
     char buf[16];
