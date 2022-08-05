@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/cli.h>
+#include <sys/path.h>
 #include <sys/sys.h>
 #include <unistd.h>
 
@@ -17,13 +18,8 @@ cmd_hexdump(char *pwd, char *cmdline, int *pos) {
         strcpy(arg, pwd);
 
     else if (strlen(arg) > 0 && arg[0] != '/') {
-        char tmp[CMD_LINE_LEN];
-        memset(tmp, 0, CMD_LINE_LEN);
-        strcpy(tmp, pwd);
-        strcat(tmp, "/");
-        strcat(tmp, arg);
-        memset(arg, 0, CMD_LINE_LEN);
-        strcpy(arg, tmp);
+        path_prepend(pwd, arg);
+        path_eval(arg);
     }
     int fd = open(arg, 0);
     if (fd < 0) {
