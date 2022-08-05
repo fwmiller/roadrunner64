@@ -8,6 +8,7 @@ struct file_desc filetab[MAX_OPEN_FILES];
 
 void
 file_desc_clear(fd_t f) {
+    memset(f->path, 0, PATH_LEN);
     f->fd = (-1);
     f->flags = 0;
     f->lba = 0;

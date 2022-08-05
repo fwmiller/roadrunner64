@@ -51,6 +51,7 @@ opendir(const char *name) {
 
     fd_t f = &(filetab[fd]);
     f->flags |= FD_FLAGS_ISDIR;
+    strcpy(f->path, name);
     f->lba = lba;
     f->size = filesize;
 

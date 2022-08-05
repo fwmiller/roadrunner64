@@ -15,4 +15,7 @@ cmd_help() {
     printf("pwd\r\n");
     printf("  Print the current/working directory\r\n");
     printf("\r\n");
+    printf("ft\r\n");
+    printf("  Print the open file table\r\n");
+    printf("\r\n");
 }

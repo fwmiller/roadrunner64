@@ -10,6 +10,7 @@ void cmd_cat(char *pwd, char *cmdline, int *pos);
 void cmd_help();
 void cmd_hexdump(char *pwd, char *cmdline, int *pos);
 void cmd_ls(char *pwd, char *cmdline, int *pos);
+void cmd_ft();
 
 void
 cli() {
@@ -60,6 +61,9 @@ cli() {
 
         else if (strcmp(arg, "pwd") == 0)
             printf("%s\r\n", pwd);
+
+        else if (strcmp(arg, "ft") == 0)
+            cmd_ft();
 
         else if (strcmp(arg, "help") == 0)
             cmd_help();

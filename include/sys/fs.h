@@ -9,7 +9,10 @@
 #define FD_FLAGS_ISROOTDIR 0x02
 #define FD_FLAGS_ISDIR 0x04
 
+#define PATH_LEN 128
+
 struct file_desc {
+    char path[PATH_LEN];
     int fd;
     uint8_t flags;
     lba_t lba;

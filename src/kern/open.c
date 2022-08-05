@@ -3,6 +3,7 @@
 #if _DEBUG
 #include <stdio.h>
 #endif
+#include <string.h>
 #include <sys/fs.h>
 #include <sys/isofs.h>
 
@@ -38,6 +39,7 @@ open(const char *pathname, int flags) {
         return fd;
 
     fd_t f = &(filetab[fd]);
+    strcpy(f->path, pathname);
     f->lba = lba;
     f->size = filesize;
 
