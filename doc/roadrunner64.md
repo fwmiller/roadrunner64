@@ -53,7 +53,7 @@ that is running in the QEMU virtual machine.
 Access to the file system is provided programmatically with a POSIX
 compatible, i.e. open/close/read/write, interface.
 
-### Command Line Interface
+### The Roadrunner Shell
 
 The system includes a simple Command Line Interface (CLI).
 
@@ -64,3 +64,6 @@ The CLI provides a path oriented view of the ISO9660 file system.
 | cat     | Dumps the contents of a file as text                           |
 | hexdump | Dumps the contents of a file as sequence of hexadecimal values |
 | ls      | List the contents of a directory                               |
+| pwd     | Print the current/working directory                            |
+| cd      | Change the current/working directory                           |
+| ft      | Print the open file table                                      |
