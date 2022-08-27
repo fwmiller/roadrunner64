@@ -2,6 +2,48 @@
 #include <string.h>
 #include <sys/cli.h>
 
+static char *
+path_eval_dirs(char *path) {
+    int i, j;
+
+    char tmp[CMD_LINE_LEN];
+    memset(tmp, 0, CMD_LINE_LEN);
+
+    int len = strlen(path);
+    for (i = 0, j = 0; i < len; i++) {
+        if (path[i] == '/' && i + 1 < len && path[i + 1] == '.') {
+            /* "/." in the path */
+
+            if (i + 2 >= len)) {
+                    /* "/." at end of path */
+                }
+            else if (path[i + 2] == '/') {
+                /* "/./" in the path */
+
+            } else if (path[i + 2] == '.') {
+                /* "/.." in the path */
+
+                if (i + 3 >= len)) {
+                        /* "/.." at end of path */
+                    }
+
+                else if (path[i + 3] == '/') {
+                    /* "/../" in the path */
+
+                } else {
+                    /* "/.." with something else after it in the path */
+                    /* This is an error case */
+                }
+            }
+        } else {
+            /* "/." with something else after it in the path */
+            /* This is an error case */
+        }
+    }
+    tmp[j++] = path[i];
+}
+}
+
 char *
 path_eval(char *path) {
     int sep = 0;
