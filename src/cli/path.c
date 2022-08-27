@@ -1,3 +1,6 @@
+#if 1
+#include <stdio.h>
+#endif
 #include <stdlib.h>
 #include <string.h>
 #include <sys/cli.h>
@@ -13,35 +16,37 @@ path_eval_dirs(char *path) {
     for (i = 0, j = 0; i < len; i++) {
         if (path[i] == '/' && i + 1 < len && path[i + 1] == '.') {
             /* "/." in the path */
+            if (i + 2 >= len) {
+                /* "/." at end of path */
 
-            if (i + 2 >= len)) {
-                    /* "/." at end of path */
-                }
-            else if (path[i + 2] == '/') {
+            } else if (path[i + 2] == '/') {
                 /* "/./" in the path */
 
             } else if (path[i + 2] == '.') {
                 /* "/.." in the path */
+                if (i + 3 >= len) {
+                    /* "/.." at end of path */
 
-                if (i + 3 >= len)) {
-                        /* "/.." at end of path */
-                    }
-
-                else if (path[i + 3] == '/') {
+                } else if (path[i + 3] == '/') {
                     /* "/../" in the path */
 
                 } else {
                     /* "/.." with something else after it in the path */
                     /* This is an error case */
                 }
+            } else {
+                /* "/." with something else after it in the path */
+                /* This is an error case */
             }
-        } else {
-            /* "/." with something else after it in the path */
-            /* This is an error case */
         }
+        tmp[j++] = path[i];
     }
-    tmp[j++] = path[i];
-}
+    memset(path, 0, CMD_LINE_LEN);
+    strcpy(path, tmp);
+#if 1
+    printf("path_eval_dirs: %s\r\n", path);
+#endif
+    return path;
 }
 
 char *
@@ -79,9 +84,9 @@ path_eval(char *path) {
     }
     memset(path, 0, CMD_LINE_LEN);
     strcpy(path, tmp);
-
+#if 1
     printf("path_eval: %s\r\n", path);
-
+#endif
     return path;
 }
 
