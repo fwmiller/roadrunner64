@@ -10,6 +10,8 @@ Support for access to the ISO9660 file system resident in the QEMU virtual machi
 
 The OS provides a single application environment within a QEMU virtual machine.
 
+<p align="center"><img src="doc/Roadrunner64.png"></p>
+
 To run this you will need to have xorriso and QEMU installed on your Linux distro.  For Ubuntu you can do this:
 
 ```
