@@ -5,7 +5,7 @@
 #include <sys/sys.h>
 
 void word_widths();
-void cli();
+void shell();
 
 static unsigned
 get_cmos_memsize() {
@@ -33,5 +33,5 @@ kmain() {
     fs_init();
 
     printf("Type ctrl-a x to exit\r\n");
-    cli();
+    shell();
 }
