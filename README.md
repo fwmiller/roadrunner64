@@ -6,7 +6,8 @@ machines that support 64-bit addressing and data types.  The kernel boots
 the processor into 64-bit long mode with a flat memory model and no virtual
 addressing or memory protection.
 
-Users interact with through the Roadrunner shell command line interface.
+Users interact with the operating system through the Roadrunner shell
+command line interface.
 
 The kernel includes an ATA driver to access the QEMU virtual machine image
 as the primary hard drive.  The driver is used to enumerate the ATA
