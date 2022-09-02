@@ -18,9 +18,12 @@ path_eval_dirs(char *path) {
             /* "/." in the path */
             if (i + 2 >= len) {
                 /* "/." at end of path */
+                break;
 
             } else if (path[i + 2] == '/') {
                 /* "/./" in the path */
+                i += 2;
+                continue;
 
             } else if (path[i + 2] == '.') {
                 /* "/.." in the path */
@@ -29,14 +32,7 @@ path_eval_dirs(char *path) {
 
                 } else if (path[i + 3] == '/') {
                     /* "/../" in the path */
-
-                } else {
-                    /* "/.." with something else after it in the path */
-                    /* This is an error case */
                 }
-            } else {
-                /* "/." with something else after it in the path */
-                /* This is an error case */
             }
         }
         tmp[j++] = path[i];

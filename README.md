@@ -1,7 +1,7 @@
 # Roadrunner64
 
 
-Roadrunner64 single-user, single-threaded operating system for Intel
+Roadrunner64 single-user, single-threaded operating system for Intel x86_64
 machines that support 64-bit addressing and data types.  The kernel boots
 the processor into 64-bit long mode with a flat memory model and no virtual
 addressing or memory protection.
@@ -22,7 +22,8 @@ open/close/read/write interface.
 
 <p align="center"><img width="480px" src="doc/Roadrunner64.png"></p>
 
-To run this you will need to have xorriso and QEMU installed on your Linux distro.  For Ubuntu you can do this:
+To run Roadrunner64 you will need to have xorriso and QEMU installed on
+your Linux distro.  For Ubuntu you can do this:
 
 ```
 $ sudo apt-get install xorriso qemu
@@ -35,7 +36,7 @@ $ make run
 ...
 Roadrunner 64-bit
 Type ctrl-a x to exit
->
+/>
 ```
 
 The 64-bit long mode boot code is based on
