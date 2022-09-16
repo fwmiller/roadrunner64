@@ -18,8 +18,8 @@ cmd_hexdump(char *pwd, char *cmdline, int *pos) {
         strcpy(arg, pwd);
 
     else if (strlen(arg) > 0 && arg[0] != '/') {
-        path_prepend(pwd, arg);
-        path_eval(arg);
+        path_prepend(pwd, arg, CMD_LINE_LEN);
+        path_eval(arg, CMD_LINE_LEN);
     }
     int fd = open(arg, 0);
     if (fd < 0) {

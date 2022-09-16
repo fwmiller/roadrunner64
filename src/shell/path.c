@@ -1,99 +1,67 @@
-#if 1
+#if _DEBUG_SHELL
 #include <stdio.h>
 #endif
 #include <stdlib.h>
 #include <string.h>
 #include <sys/shell.h>
 
-static char *
-path_eval_dirs(char *path) {
+#define PATH_ELEMENTS 8
+#define PATH_ELEMENT_LEN 32
+
+typedef char path_elements[PATH_ELEMENTS][PATH_ELEMENT_LEN];
+
+static void
+path_break(char *path, int pathbufsize, path_elements elem, int *elemidx) {
+    int sep = 1;
     int i, j;
 
-    char tmp[CMD_LINE_LEN];
-    memset(tmp, 0, CMD_LINE_LEN);
-
-    int len = strlen(path);
-    for (i = 0, j = 0; i < len; i++) {
-        if (path[i] == '/' && i + 1 < len && path[i + 1] == '.') {
-            /* "/." in the path */
-            if (i + 2 >= len) {
-                /* "/." at end of path */
-                break;
-
-            } else if (path[i + 2] == '/') {
-                /* "/./" in the path */
-                i += 2;
-                continue;
-
-            } else if (path[i + 2] == '.') {
-                /* "/.." in the path */
-                if (i + 3 >= len) {
-                    /* "/.." at end of path */
-
-                } else if (path[i + 3] == '/') {
-                    /* "/../" in the path */
-                }
+    /* Break path into list of elements */
+    for (i = 1, j = 0; i < pathbufsize; i++) {
+        if (path[i] == '/') {
+            if (!sep && *elemidx < PATH_ELEMENTS - 1) {
+                (*elemidx)++;
+                j = 0;
             }
+            sep = 1;
+        } else {
+            sep = 0;
+            elem[*elemidx][j++] = path[i];
         }
-        tmp[j++] = path[i];
     }
-    memset(path, 0, CMD_LINE_LEN);
-    strcpy(path, tmp);
-#if 1
-    printf("path_eval_dirs: %s\r\n", path);
-#endif
-    return path;
 }
 
 char *
-path_eval(char *path) {
-    int sep = 0;
-    int i, j;
+path_eval(char *path, int pathbufsize) {
+    path_elements elem;
+    int elemidx = 0;
 
-    if (path == NULL)
+#if _DEBUG_SHELL
+    printf("path [%s] pathbufsize %d\r\n", path, pathbufsize);
+#endif
+    memset(elem, 0, sizeof(path_elements));
+
+    if (path[0] != '/')
         return NULL;
 
-    char tmp[CMD_LINE_LEN];
-    memset(tmp, 0, CMD_LINE_LEN);
+    path_break(path, pathbufsize, elem, &elemidx);
 
-    int len = strlen(path);
-    for (i = 0, j = 0; i < len; i++) {
-        if (path[i] == '/') {
-            /* Skip over multiple '/' separators */
-            if (sep)
-                continue;
-            else {
-                tmp[j++] = path[i];
-                sep = 1;
-            }
-
-        } else if (path[i] == '.') {
-            /* Collapse '.' and '..' path elements */
-            if (sep && i > 0 && path[i - 1] != '/')
-                sep = 0;
-
-        } else {
-            if (sep)
-                sep = 0;
-            tmp[j++] = path[i];
-        }
-    }
-    memset(path, 0, CMD_LINE_LEN);
-    strcpy(path, tmp);
-#if 1
-    printf("path_eval: %s\r\n", path);
+#if _DEBUG_SHELL
+    for (int i = 0; i <= elemidx; i++)
+        printf("[%s]\r\n", elem[i]);
 #endif
+    /* Evaluate . and .. commands */
+
     return path;
 }
 
 char *
-path_prepend(char *pre, char *path) {
+path_prepend(char *pre, char *path, int pathbufsize) {
     char tmp[CMD_LINE_LEN];
     memset(tmp, 0, CMD_LINE_LEN);
     strcpy(tmp, pre);
     strcat(tmp, "/");
     strcat(tmp, path);
-    memset(path, 0, CMD_LINE_LEN);
+    memset(path, 0, pathbufsize);
     strcpy(path, tmp);
     return path;
 }

@@ -16,8 +16,8 @@ cmd_cd(char *pwd, int pwdlen, char *cmdline, int *pos) {
         return;
 
     else if (strlen(arg) > 0 && arg[0] != '/') {
-        path_prepend(pwd, arg);
-        path_eval(arg);
+        path_prepend(pwd, arg, CMD_LINE_LEN);
+        path_eval(arg, CMD_LINE_LEN);
     }
     /* Try to open directory */
 #if 0
