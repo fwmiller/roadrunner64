@@ -25,10 +25,15 @@ cmd_ls(char *pwd, char *cmdline, int *pos) {
     }
     struct dirent *de;
     while ((de = readdir(dir)) != NULL) {
+        if (strcmp((char *) de->d_name, ".") == 0 ||
+            strcmp((char *) de->d_name, "..") == 0)
+            continue;
+
+        if (de->d_type == DT_DIR)
+            printf("%s", CYAN);
         printf("%s", de->d_name);
-        if (de->d_type == DT_DIR) {
-            printf("/");
-        }
+        if (de->d_type == DT_DIR)
+            printf("%s", NC);
         printf(" ");
     }
     printf("\r\n");
