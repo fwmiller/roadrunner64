@@ -28,4 +28,6 @@ cmd_cd(char *pwd, int pwdlen, char *cmdline, int *pos) {
     }
 #endif
     /* Update the pwd */
+    memset(pwd, 0, pwdlen);
+    strcpy(pwd, arg);
 }
