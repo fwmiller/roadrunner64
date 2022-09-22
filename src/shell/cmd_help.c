@@ -13,13 +13,15 @@ cmd_help() {
     printf("  List the contents of a directory\r\n");
     printf("\r\n");
     printf("pwd\r\n");
-    printf("  Print the current/working directory\r\n");
+    printf("  Print the current/working directory.  pwd is also \r\n");
+    printf("  displayed with the command prompt\r\n");
     printf("\r\n");
-    printf("cd\r\n");
+    printf("cd <directory>\r\n");
     printf("  Change the current/working directory\r\n");
     printf("\r\n");
     printf("ft\r\n");
     printf("  Print the open file table\r\n");
+    printf("\r\n");
     printf("stack\r\n");
     printf("  Print execution stack state\r\n");
     printf("\r\n");
