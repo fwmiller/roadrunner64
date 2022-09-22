@@ -2,10 +2,10 @@
 #include <sys/fs.h>
 #include <sys/io.h>
 #include <sys/mc146818.h>
+#include <sys/pci.h>
 #include <sys/sys.h>
 
 void word_widths();
-void pci_init();
 void shell();
 
 static unsigned

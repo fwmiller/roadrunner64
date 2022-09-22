@@ -1,61 +1,74 @@
 #if _DEBUG_PCI
 #include <stdio.h>
 #endif
-#include <stdint.h>
 #include <sys/io.h>
+#include <sys/pci.h>
 
-#define PCI_SLOTS 32
+struct pci_func pcitab[PCI_TAB_SIZE];
+int pcifuncs = 0;
 
-/* Ports for access to PCI config space */
-#define PCI_CONFIG_ADDR 0xcf8
-#define PCI_CONFIG_DATA 0xcfc
+static void
+pci_scan_bus(int bus, int *pcifunc) {
+    uint32_t dword, iobase;
+    uint16_t vendorid, deviceid;
+    uint8_t class, subclass, intrpin;
+    int dev, intrline, i;
 
-/* PCI config space register offsets */
-#define PCI_CONFIG_VENDOR 0
-#define PCI_CONFIG_CMD_STAT 1
-#define PCI_CONFIG_CLASS_REV 2
-#define PCI_CONFIG_HDR_TYPE 3
-#define PCI_CONFIG_BASE_ADDR_0 4
-#define PCI_CONFIG_BASE_ADDR_1 5
-#define PCI_CONFIG_BASE_ADDR_2 6
-#define PCI_CONFIG_BASE_ADDR_3 7
-#define PCI_CONFIG_BASE_ADDR_4 8
-#define PCI_CONFIG_BASE_ADDR_5 9
-#define PCI_CONFIG_CIS 10
-#define PCI_CONFIG_SUBSYSTEM 11
-#define PCI_CONFIG_ROM 12
-#define PCI_CONFIG_CAPABILITIES 13
-#define PCI_CONFIG_INTR 15
+    for (dev = 0; dev < PCI_SLOTS; dev++) {
+        /* Function and vendor ids */
+        dword = pci_config_read(bus, dev, 0, PCI_CONFIG_VENDOR);
+        vendorid = dword & 0xffff;
+        deviceid = dword >> 16;
 
-static uint32_t
-pci_config_read(int bus, int dev, int func, int dword) {
-    outl(PCI_CONFIG_ADDR, ((uint32_t) 0x80000000 | (bus << 16) | (dev << 11) |
-                           (func << 8) | (dword << 2)));
-    return inl(PCI_CONFIG_DATA);
-}
-
-static int
-pci_device_count(int bus) {
-    uint32_t vendorid;
-    int devcnt = 0;
-
-#if _DEBUG_PCI
-    printf("pci bus %d\r\n", bus);
-#endif
-    for (int dev = 0; dev < PCI_SLOTS; dev++) {
-        vendorid = pci_config_read(bus, dev, 0, PCI_CONFIG_VENDOR) & 0xffff;
         if (vendorid != 0xffff) {
-            devcnt++;
 #if _DEBUG_PCI
-            printf("vendorid 0x%08x\r\n", vendorid);
+            printf("bus %d dev %d ", bus, dev);
+            printf("vendorid 0x%08x ", vendorid);
 #endif
+            /* Function class code */
+            dword = pci_config_read(bus, dev, 0, PCI_CONFIG_CLASS_REV);
+            class = dword >> 24;
+            subclass = (dword >> 16) & 0xff;
+#if _DEBUG_PCI
+            printf("class 0x%02x subclass 0x%02x", class, subclass);
+#endif
+            /* Function iobase addresses */
+            for (iobase = 0, i = 0; i < 6; i++) {
+                dword =
+                    pci_config_read(bus, dev, 0, PCI_CONFIG_BASE_ADDR_0 + i);
+                if (dword & 0x01) {
+                    iobase = dword & 0xfffffffc;
+#if _DEBUG_PCI
+                    printf(" iobase 0x%x", iobase);
+#endif
+                }
+            }
+            /* Function interrupt line */
+            dword = pci_config_read(bus, dev, 0, PCI_CONFIG_INTR);
+            intrpin = (uint8_t)(dword >> 8) & 0xff;
+            intrline = dword & 0xff;
+#if _DEBUG_PCI
+            if (intrpin > 0 && intrpin < 5 && intrline < 32)
+                printf(" irq %d", intrline);
+            printf(" \n");
+#endif
+
+            /* Fill in pci device table entry */
+            pcitab[*pcifunc].bus = bus;
+            pcitab[*pcifunc].dev = dev;
+            pcitab[*pcifunc].func = 0;
+            pcitab[*pcifunc].vendorid = (uint16_t) vendorid;
+            pcitab[*pcifunc].deviceid = deviceid;
+            pcitab[*pcifunc].iobase = iobase;
+            pcitab[*pcifunc].irq = intrline;
+
+            (*pcifunc)++;
         }
     }
-    return devcnt;
 }
 
 void
 pci_init() {
     for (int i = 0; i < 4; i++)
-        pci_device_count(i);
+        pci_scan_bus(i, &pcifuncs);
 }
