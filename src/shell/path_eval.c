@@ -18,7 +18,11 @@ struct path_element {
 typedef struct path_element *path_element_t;
 typedef struct path_element path_elements[PATH_ELEMENTS];
 
-/* Break path into list of elements */
+/*
+ * The path is broken into the array of strings in the elem parameter.
+ * The index of the last element in the array is returned through the
+ * reference parameter elemidx
+ */
 static void
 path_break(char *path, int pathbufsize, path_elements elem, int *elemidx) {
     int sep = 1;
@@ -38,7 +42,10 @@ path_break(char *path, int pathbufsize, path_elements elem, int *elemidx) {
     }
 }
 
-/* Assemble list of elements into a path */
+/*
+ * The element strings are reassembled into a normal form path string
+ * excluding those that were previously flagged during the path evaluation
+ */
 static void
 path_assemble(path_elements elem, int elemidx, char *path, int pathbufsize) {
     memset(path, 0, pathbufsize);
@@ -49,16 +56,21 @@ path_assemble(path_elements elem, int elemidx, char *path, int pathbufsize) {
         }
 }
 
-/* Evaluate the . and .. commands in a path */
+/*
+ * Evaluate full path taking actions to remove multiple separators and
+ * executing the . and .. path elements for directory tree traversal
+ */
 char *
 path_eval(char *path, int pathbufsize) {
     path_elements elem;
     int elemidx = 0;
 
-    if (path[0] != '/')
+    if (path == NULL || path[0] != '/')
         return NULL;
 
     memset(elem, 0, PATH_ELEMENTS * sizeof(struct path_element));
+
+    /* Break the input path into its elements strings */
     path_break(path, pathbufsize, elem, &elemidx);
 
     /* Evaluate . and .. commands */
@@ -68,8 +80,13 @@ path_eval(char *path, int pathbufsize) {
             elem[i].flags |= PF_EXCLUDE;
 
         } else if (strcmp(elem[i].element, "..") == 0) {
-            /* Exclude current and previous path element */
+            /* Exclude current and previous path elements */
             elem[i].flags |= PF_EXCLUDE;
+
+            /*
+             * Need to search backwards for the previous path element that
+             * is not already excluded
+             */
             for (int j = i; j >= 0; j--)
                 if (!(elem[j].flags & PF_EXCLUDE)) {
                     elem[j].flags |= PF_EXCLUDE;
@@ -77,11 +94,13 @@ path_eval(char *path, int pathbufsize) {
                 }
         }
     }
+    /* Reassemble the normalized path after evaluation */
     path_assemble(elem, elemidx + 1, path, pathbufsize);
+
     if (strlen(path) == 0)
         strcat(path, "/");
 #if _DEBUG_SHELL
-    printf("eval path [%s]\r\n", path);
+    printf("path_eval: [%s]\r\n", path);
 #endif
     return path;
 }

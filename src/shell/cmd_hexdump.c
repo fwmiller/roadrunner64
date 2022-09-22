@@ -19,6 +19,9 @@ cmd_hexdump(char *pwd, char *cmdline, int *pos) {
 
     else if (strlen(arg) > 0 && arg[0] != '/') {
         path_prepend(pwd, arg, CMD_LINE_LEN);
+#if _DEBUG_SHELL
+        printf("cmd_hexdump: path [%s]\r\n", arg);
+#endif
         path_eval(arg, CMD_LINE_LEN);
     }
     int fd = open(arg, 0);

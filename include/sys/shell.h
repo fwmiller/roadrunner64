@@ -24,4 +24,6 @@ void cmd_ls(char *pwd, char *cmdline, int *pos);
 void cmd_cd(char *pwd, int pwdlen, char *cmdline, int *pos);
 void cmd_ft();
 
+void set_color(char *color);
+
 #endif

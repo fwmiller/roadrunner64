@@ -8,6 +8,7 @@ void
 cmd_ls(char *pwd, char *cmdline, int *pos) {
     char arg[CMD_LINE_LEN];
 
+    /* Get the directory path ready */
     memset(arg, 0, CMD_LINE_LEN);
     nextarg(cmdline, pos, " ", arg);
 
@@ -16,8 +17,13 @@ cmd_ls(char *pwd, char *cmdline, int *pos) {
 
     else if (strlen(arg) > 0 && arg[0] != '/') {
         path_prepend(pwd, arg, CMD_LINE_LEN);
+#if _DEBUG_SHELL
+        printf("cmd_ls: path [%s]\r\n", arg);
+#endif
         path_eval(arg, CMD_LINE_LEN);
     }
+
+    /* Gather and display the directory elements */
     DIR *dir = opendir(arg);
     if (dir == NULL) {
         printf("open directory %s failed\r\n", arg);
@@ -30,10 +36,10 @@ cmd_ls(char *pwd, char *cmdline, int *pos) {
             continue;
 
         if (de->d_type == DT_DIR)
-            printf("%s", CYAN);
+            set_color(CYAN);
         printf("%s", de->d_name);
         if (de->d_type == DT_DIR)
-            printf("%s", NC);
+            set_color(NC);
         printf(" ");
     }
     printf("\r\n");

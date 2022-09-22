@@ -5,6 +5,12 @@
 static char pwd[CMD_LINE_LEN];
 
 void
+set_color(char *color) {
+    if (color != NULL)
+        printf("%s", color);
+}
+
+void
 shell() {
     char cmdline[CMD_LINE_LEN];
     char arg[CMD_LINE_LEN];
