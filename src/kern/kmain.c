@@ -5,6 +5,7 @@
 #include <sys/sys.h>
 
 void word_widths();
+void pci_init();
 void shell();
 
 static unsigned
@@ -30,6 +31,7 @@ kmain() {
 
     word_widths();
     get_cmos_memsize();
+    pci_init();
     fs_init();
 
     printf("Type ctrl-a x to exit\r\n");

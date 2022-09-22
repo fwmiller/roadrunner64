@@ -1,10 +1,6 @@
 #include <stdio.h>
 #include <sys/sys.h>
 
-uint64_t
-get_stack_ptr() {
-}
-
 void
 word_widths() {
     if (sizeof(uint8_t) != 1) {
