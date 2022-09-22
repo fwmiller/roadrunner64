@@ -219,6 +219,13 @@ p3_table:
 	.skip 4096
 p2_table:
 	.skip 4096
+
+	.globl stack_bottom
 stack_bottom:
-	.skip 4096 * 16
+
+// This value specifies the size of the run-time stack for the single
+// thread of execution
+	.skip 4096 * 128
+
+	.globl stack_top
 stack_top:

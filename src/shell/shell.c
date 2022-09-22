@@ -66,6 +66,9 @@ shell() {
         else if (strcmp(arg, "ft") == 0)
             cmd_ft();
 
+        else if (strcmp(arg, "stack") == 0)
+            cmd_stack();
+
         else if (strcmp(arg, "help") == 0)
             cmd_help();
     }

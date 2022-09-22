@@ -17,13 +17,14 @@ cmd_hexdump(char *pwd, char *cmdline, int *pos) {
     if (strlen(arg) == 0)
         strcpy(arg, pwd);
 
-    else if (strlen(arg) > 0 && arg[0] != '/') {
+    else if (strlen(arg) > 0 && arg[0] != '/')
         path_prepend(pwd, arg, CMD_LINE_LEN);
+
 #if _DEBUG_SHELL
-        printf("cmd_hexdump: path [%s]\r\n", arg);
+    printf("cmd_hexdump: path [%s]\r\n", arg);
 #endif
-        path_eval(arg, CMD_LINE_LEN);
-    }
+    path_eval(arg, CMD_LINE_LEN);
+
     int fd = open(arg, 0);
     if (fd < 0) {
         printf("open file %s failed\r\n", arg);

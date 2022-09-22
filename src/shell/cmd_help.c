@@ -20,5 +20,7 @@ cmd_help() {
     printf("\r\n");
     printf("ft\r\n");
     printf("  Print the open file table\r\n");
+    printf("stack\r\n");
+    printf("  Print execution stack state\r\n");
     printf("\r\n");
 }
