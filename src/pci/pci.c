@@ -58,6 +58,8 @@ pci_scan_bus(int bus, int *pcifunc) {
             pcitab[*pcifunc].dev = dev;
             pcitab[*pcifunc].func = 0;
             pcitab[*pcifunc].vendorid = (uint16_t) vendorid;
+            pcitab[*pcifunc].class = class;
+            pcitab[*pcifunc].subclass = subclass;
             pcitab[*pcifunc].deviceid = deviceid;
             pcitab[*pcifunc].iobase = iobase;
             pcitab[*pcifunc].irq = intrline;
