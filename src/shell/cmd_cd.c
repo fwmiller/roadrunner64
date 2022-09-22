@@ -1,9 +1,8 @@
-#include <fcntl.h>
+#include <dirent.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/path.h>
 #include <sys/shell.h>
-#include <unistd.h>
 
 void
 cmd_cd(char *pwd, int pwdlen, char *cmdline, int *pos) {
@@ -23,13 +22,11 @@ cmd_cd(char *pwd, int pwdlen, char *cmdline, int *pos) {
         path_eval(arg, CMD_LINE_LEN);
     }
     /* Try to open directory */
-#if 0
-    int fd = open(arg, 0);
-    if (fd < 0) {
-        printf("open file %s failed\r\n", arg);
+    DIR *dir = opendir(arg);
+    if (dir == NULL) {
+        printf("open directory %s failed\r\n", arg);
         return;
     }
-#endif
     /* Update the pwd */
     memset(pwd, 0, pwdlen);
     strcpy(pwd, arg);

@@ -22,6 +22,7 @@ opendir(const char *name) {
 #endif
         fd_t f = &(filetab[fd]);
         f->flags |= FD_FLAGS_ISROOTDIR;
+        strcpy(f->path, "/");
         f->size = isofs_get_root_dir_size();
         return (DIR *) f;
     }
