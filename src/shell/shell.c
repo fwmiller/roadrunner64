@@ -69,6 +69,9 @@ shell() {
         else if (strcmp(arg, "stack") == 0)
             cmd_stack();
 
+        else if (strcmp(arg, "pci") == 0)
+            cmd_pci();
+
         else if (strcmp(arg, "help") == 0)
             cmd_help();
     }

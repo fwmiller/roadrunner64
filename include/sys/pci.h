@@ -39,6 +39,7 @@ struct pci_func {
 typedef struct pci_func *pci_func_t;
 
 extern struct pci_func pcitab[];
+extern int pcifuncs;
 
 uint32_t pci_config_read(int bus, int dev, int func, int dword);
 void pci_init();

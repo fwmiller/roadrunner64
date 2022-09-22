@@ -25,4 +25,7 @@ cmd_help() {
     printf("stack\r\n");
     printf("  Print execution stack state\r\n");
     printf("\r\n");
+    printf("pci\r\n");
+    printf("  Print PCI bus devices\r\n");
+    printf("\r\n");
 }
