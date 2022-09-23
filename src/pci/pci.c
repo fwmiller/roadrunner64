@@ -11,7 +11,10 @@ static void
 pci_scan_bus(int bus, int *pcifunc) {
     uint32_t dword, iobase;
     uint16_t vendorid, deviceid;
-    uint8_t class, subclass, intrpin;
+    uint8_t class, subclass;
+#if _DEBUG_PCI
+    uint8_t intrpin;
+#endif
     int dev, intrline, i;
 
     for (dev = 0; dev < PCI_SLOTS; dev++) {
@@ -30,7 +33,7 @@ pci_scan_bus(int bus, int *pcifunc) {
             class = dword >> 24;
             subclass = (dword >> 16) & 0xff;
 #if _DEBUG_PCI
-            printf("class 0x%02x subclass 0x%02x", class, subclass);
+            printf("class 0x%02x sub 0x%02x", class, subclass);
 #endif
             /* Function iobase addresses */
             for (iobase = 0, i = 0; i < 6; i++) {
@@ -45,24 +48,26 @@ pci_scan_bus(int bus, int *pcifunc) {
             }
             /* Function interrupt line */
             dword = pci_config_read(bus, dev, 0, PCI_CONFIG_INTR);
+#if _DEBUG_PCI
             intrpin = (uint8_t)(dword >> 8) & 0xff;
+#endif
             intrline = dword & 0xff;
 #if _DEBUG_PCI
             if (intrpin > 0 && intrpin < 5 && intrline < 32)
                 printf(" irq %d", intrline);
             printf(" \n");
 #endif
-
             /* Fill in pci device table entry */
-            pcitab[*pcifunc].bus = bus;
-            pcitab[*pcifunc].dev = dev;
-            pcitab[*pcifunc].func = 0;
-            pcitab[*pcifunc].vendorid = (uint16_t) vendorid;
-            pcitab[*pcifunc].class = class;
-            pcitab[*pcifunc].subclass = subclass;
-            pcitab[*pcifunc].deviceid = deviceid;
-            pcitab[*pcifunc].iobase = iobase;
-            pcitab[*pcifunc].irq = intrline;
+            pci_func_t f = &(pcitab[*pcifunc]);
+            f->bus = bus;
+            f->dev = dev;
+            f->func = 0;
+            f->vendorid = (uint16_t) vendorid;
+            f->class = class;
+            f->subclass = subclass;
+            f->deviceid = deviceid;
+            f->iobase = iobase;
+            f->irq = intrline;
 
             (*pcifunc)++;
         }

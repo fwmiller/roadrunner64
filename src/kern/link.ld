@@ -48,7 +48,7 @@ SECTIONS {
   }
 
   /* Stack separate */
-  .stack BLOCK(4K) : ALIGN(4K) {
+  .stack BLOCK(16K) : ALIGN(4K) {
     *(.bootstrap_stack)
   }
 
