@@ -102,7 +102,7 @@ all: $(OBJS) $(LINKER_SCRIPT)
 # Execute using QEMU emulator
 #
 run: all
-	@qemu-system-x86_64 -m size=8 -nographic -no-reboot -drive format=raw,file=$(BIN)/iso.img
+	@qemu-system-x86_64 -m size=8 -nographic -no-reboot -net nic,model=virtio -net user -drive format=raw,file=$(BIN)/iso.img
 
 clean:
 	@$(RM) $(BIN)

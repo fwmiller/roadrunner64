@@ -94,8 +94,6 @@ pci_init() {
             *((uint32_t *) (buf + offset)) =
                 pci_config_read(f->bus, f->dev, f->func, offset);
 
-        bufdump(buf, CONFIG_SIZE);
-
         pci_config_t cfg = (pci_config_t) buf;
         printf("vendorid        0x%04x\r\n", cfg->vendorid);
         printf("devid           0x%04x\r\n", cfg->devid);
