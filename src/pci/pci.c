@@ -1,6 +1,5 @@
-#if _DEBUG_PCI
 #include <stdio.h>
-#endif
+#include <stdlib.h>
 #include <sys/io.h>
 #include <sys/pci.h>
 
@@ -55,7 +54,7 @@ pci_scan_bus(int bus, int *pcifunc) {
 #if _DEBUG_PCI
             if (intrpin > 0 && intrpin < 5 && intrline < 32)
                 printf(" irq %d", intrline);
-            printf(" \n");
+            printf("\r\n");
 #endif
             /* Fill in pci device table entry */
             pci_func_t f = &(pcitab[*pcifunc]);
@@ -78,4 +77,10 @@ void
 pci_init() {
     for (int i = 0; i < 4; i++)
         pci_scan_bus(i, &pcifuncs);
+
+    /* Search for Ethernet device */
+    pci_func_t f = pci_lookup(PCI_CLASS_NETWORK, PCI_NETWORK_ETHERNET);
+    if (f != NULL)
+        printf("PCI Ethernet device found iobase 0x%x irq %d\r\n", f->iobase,
+               f->irq);
 }

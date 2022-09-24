@@ -149,5 +149,6 @@ extern int pcifuncs;
 
 uint32_t pci_config_read(int bus, int dev, int func, int dword);
 void pci_init();
+pci_func_t pci_lookup(uint8_t class, uint8_t subclass);
 
 #endif

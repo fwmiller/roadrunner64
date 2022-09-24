@@ -24,7 +24,7 @@ CFLAGS		:= -c -Wall -m64 -Og -nostdinc -ffreestanding
 
 # Debug options
 #CFLAGS		+= -D_DEBUG
-#CFLAGS		+= -D_DEBUG_PCI
+CFLAGS		+= -D_DEBUG_PCI
 #CFLAGS		+= -D_DEBUG_ATA
 #CFLAGS		+= -D_DEBUG_ISOFS
 CFLAGS		+= -D_DEBUG_SHELL
