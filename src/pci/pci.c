@@ -95,5 +95,25 @@ pci_init() {
                 pci_config_read(f->bus, f->dev, f->func, offset);
 
         bufdump(buf, CONFIG_SIZE);
+
+        pci_config_t cfg = (pci_config_t) buf;
+        printf("vendorid        0x%04x\r\n", cfg->vendorid);
+        printf("devid           0x%04x\r\n", cfg->devid);
+        printf("cmd             0x%04x\r\n", cfg->cmd);
+        printf("stat            0x%04x\r\n", cfg->stat);
+        printf("class           0x%02x\r\n", cfg->class);
+        printf("subclass        0x%02x\r\n", cfg->subclass);
+        printf("progif          0x%02x\r\n", cfg->progif);
+        printf("rev             0x%02x\r\n", cfg->rev);
+        printf("bist            0x%02x\r\n", cfg->bist);
+        printf("hdrtype         0x%02x\r\n", cfg->hdrtype);
+        printf("latency         0x%02x\r\n", cfg->latency);
+        printf("cachelinesize   0x%02x\r\n", cfg->cachelinesize);
+        printf("base addr reg 0 0x%08x\r\n", cfg->bar0);
+        printf("base addr reg 1 0x%08x\r\n", cfg->bar1);
+        printf("base addr reg 2 0x%08x\r\n", cfg->bar2);
+        printf("base addr reg 3 0x%08x\r\n", cfg->bar3);
+        printf("base addr reg 4 0x%08x\r\n", cfg->bar4);
+        printf("base addr reg 5 0x%08x\r\n", cfg->bar5);
     }
 }
