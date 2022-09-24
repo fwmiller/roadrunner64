@@ -99,19 +99,19 @@ pci_init() {
         printf("devid           0x%04x\r\n", cfg->devid);
         printf("cmd             0x%04x\r\n", cfg->cmd);
         printf("stat            0x%04x\r\n", cfg->stat);
-        printf("class           0x%02x\r\n", cfg->class);
-        printf("subclass        0x%02x\r\n", cfg->subclass);
-        printf("progif          0x%02x\r\n", cfg->progif);
         printf("rev             0x%02x\r\n", cfg->rev);
-        printf("bist            0x%02x\r\n", cfg->bist);
-        printf("hdrtype         0x%02x\r\n", cfg->hdrtype);
-        printf("latency         0x%02x\r\n", cfg->latency);
+        printf("progif          0x%02x\r\n", cfg->progif);
+        printf("subclass        0x%02x\r\n", cfg->subclass);
+        printf("class           0x%02x\r\n", cfg->class);
         printf("cachelinesize   0x%02x\r\n", cfg->cachelinesize);
-        printf("base addr reg 0 0x%08x\r\n", cfg->bar0);
-        printf("base addr reg 1 0x%08x\r\n", cfg->bar1);
-        printf("base addr reg 2 0x%08x\r\n", cfg->bar2);
-        printf("base addr reg 3 0x%08x\r\n", cfg->bar3);
-        printf("base addr reg 4 0x%08x\r\n", cfg->bar4);
-        printf("base addr reg 5 0x%08x\r\n", cfg->bar5);
+        printf("latency         0x%02x\r\n", cfg->latency);
+        printf("hdrtype         0x%02x\r\n", cfg->hdrtype);
+        printf("bist            0x%02x\r\n", cfg->bist);
+        printf("base addr reg 0 0x%08x\r\n", cfg->bar0 & 0xfffffff0);
+        printf("base addr reg 1 0x%08x\r\n", cfg->bar1 & 0xfffffff0);
+        printf("base addr reg 2 0x%08x\r\n", cfg->bar2 & 0xfffffff0);
+        printf("base addr reg 3 0x%08x\r\n", cfg->bar3 & 0xfffffff0);
+        printf("base addr reg 4 0x%08x\r\n", cfg->bar4 & 0xfffffff0);
+        printf("base addr reg 5 0x%08x\r\n", cfg->bar5 & 0xfffffff0);
     }
 }
