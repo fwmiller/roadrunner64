@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/io.h>
 #include <sys/pci.h>
 
@@ -25,7 +26,7 @@ pci_scan_bus(int bus, int *pcifunc) {
         if (vendorid != 0xffff) {
 #if _DEBUG_PCI
             printf("bus %d dev %d ", bus, dev);
-            printf("vendorid 0x%08x ", vendorid);
+            printf("vendorid 0x%04x ", vendorid);
 #endif
             /* Function class code */
             dword = pci_config_read(bus, dev, 0, PCI_CONFIG_CLASS_REV);
@@ -73,6 +74,8 @@ pci_scan_bus(int bus, int *pcifunc) {
     }
 }
 
+#define CONFIG_SIZE 64
+
 void
 pci_init() {
     for (int i = 0; i < 4; i++)
@@ -80,7 +83,17 @@ pci_init() {
 
     /* Search for Ethernet device */
     pci_func_t f = pci_lookup(PCI_CLASS_NETWORK, PCI_NETWORK_ETHERNET);
-    if (f != NULL)
+    if (f != NULL) {
         printf("PCI Ethernet device found iobase 0x%x irq %d\r\n", f->iobase,
                f->irq);
+
+        uint8_t buf[CONFIG_SIZE];
+        memset(buf, 0, CONFIG_SIZE);
+
+        for (int offset = 0; offset < CONFIG_SIZE; offset += 4)
+            *((uint32_t *) (buf + offset)) =
+                pci_config_read(f->bus, f->dev, f->func, offset);
+
+        bufdump(buf, CONFIG_SIZE);
+    }
 }
