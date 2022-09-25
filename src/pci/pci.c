@@ -107,11 +107,35 @@ pci_init() {
         printf("latency         0x%02x\r\n", cfg->latency);
         printf("hdrtype         0x%02x\r\n", cfg->hdrtype);
         printf("bist            0x%02x\r\n", cfg->bist);
-        printf("base addr reg 0 0x%08x\r\n", cfg->bar0 & 0xfffffff0);
-        printf("base addr reg 1 0x%08x\r\n", cfg->bar1 & 0xfffffff0);
-        printf("base addr reg 2 0x%08x\r\n", cfg->bar2 & 0xfffffff0);
-        printf("base addr reg 3 0x%08x\r\n", cfg->bar3 & 0xfffffff0);
-        printf("base addr reg 4 0x%08x\r\n", cfg->bar4 & 0xfffffff0);
-        printf("base addr reg 5 0x%08x\r\n", cfg->bar5 & 0xfffffff0);
+        printf("base addr reg 0 0x%08x ", cfg->bar0 & 0xfffffff0);
+        if (cfg->bar0 & 0x01)
+            printf("(I/O)\r\n");
+        else
+            printf("(Memory)\r\n");
+        printf("base addr reg 1 0x%08x ", cfg->bar1 & 0xfffffff0);
+        if (cfg->bar1 & 0x01)
+            printf("(I/O)\r\n");
+        else
+            printf("(Memory)\r\n");
+        printf("base addr reg 2 0x%08x ", cfg->bar2 & 0xfffffff0);
+        if (cfg->bar2 & 0x01)
+            printf("(I/O)\r\n");
+        else
+            printf("(Memory)\r\n");
+        printf("base addr reg 3 0x%08x ", cfg->bar3 & 0xfffffff0);
+        if (cfg->bar3 & 0x01)
+            printf("(I/O)\r\n");
+        else
+            printf("(Memory)\r\n");
+        printf("base addr reg 4 0x%08x ", cfg->bar4 & 0xfffffff0);
+        if (cfg->bar4 & 0x01)
+            printf("(I/O)\r\n");
+        else
+            printf("(Memory)\r\n");
+        printf("base addr reg 5 0x%08x ", cfg->bar5 & 0xfffffff0);
+        if (cfg->bar5 & 0x01)
+            printf("(I/O)\r\n");
+        else
+            printf("(Memory)\r\n");
     }
 }
