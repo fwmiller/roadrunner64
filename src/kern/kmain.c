@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/fs.h>
 #include <sys/io.h>
 #include <sys/mc146818.h>
@@ -7,6 +8,8 @@
 
 void word_widths();
 void shell();
+
+void rtl8139_init(pci_func_t f);
 
 static unsigned
 get_cmos_memsize() {
@@ -34,6 +37,13 @@ kmain() {
     pci_init();
     fs_init();
 
+    /* Ethernet device */
+    pci_func_t f = pci_lookup(PCI_CLASS_NETWORK, PCI_NETWORK_ETHERNET);
+    if (f != NULL) {
+        printf("PCI Ethernet device found iobase 0x%x irq %d\r\n", f->iobase,
+               f->irq);
+        rtl8139_init(f);
+    }
     printf("Type ctrl-a x to exit\r\n");
     shell();
 }

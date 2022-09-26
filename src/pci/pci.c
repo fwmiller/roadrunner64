@@ -74,68 +74,8 @@ pci_scan_bus(int bus, int *pcifunc) {
     }
 }
 
-#define CONFIG_SIZE 64
-
 void
 pci_init() {
     for (int i = 0; i < 4; i++)
         pci_scan_bus(i, &pcifuncs);
-
-    /* Search for Ethernet device */
-    pci_func_t f = pci_lookup(PCI_CLASS_NETWORK, PCI_NETWORK_ETHERNET);
-    if (f != NULL) {
-        printf("PCI Ethernet device found iobase 0x%x irq %d\r\n", f->iobase,
-               f->irq);
-
-        uint8_t buf[CONFIG_SIZE];
-        memset(buf, 0, CONFIG_SIZE);
-
-        for (int offset = 0; offset < CONFIG_SIZE; offset += 4)
-            *((uint32_t *) (buf + offset)) =
-                pci_config_read(f->bus, f->dev, f->func, offset);
-
-        pci_config_t cfg = (pci_config_t) buf;
-        printf("vendorid        0x%04x\r\n", cfg->vendorid);
-        printf("devid           0x%04x\r\n", cfg->devid);
-        printf("cmd             0x%04x\r\n", cfg->cmd);
-        printf("stat            0x%04x\r\n", cfg->stat);
-        printf("rev             0x%02x\r\n", cfg->rev);
-        printf("progif          0x%02x\r\n", cfg->progif);
-        printf("subclass        0x%02x\r\n", cfg->subclass);
-        printf("class           0x%02x\r\n", cfg->class);
-        printf("cachelinesize   0x%02x\r\n", cfg->cachelinesize);
-        printf("latency         0x%02x\r\n", cfg->latency);
-        printf("hdrtype         0x%02x\r\n", cfg->hdrtype);
-        printf("bist            0x%02x\r\n", cfg->bist);
-        printf("base addr reg 0 0x%08x ", cfg->bar0 & 0xfffffff0);
-        if (cfg->bar0 & 0x01)
-            printf("(I/O)\r\n");
-        else
-            printf("(Memory)\r\n");
-        printf("base addr reg 1 0x%08x ", cfg->bar1 & 0xfffffff0);
-        if (cfg->bar1 & 0x01)
-            printf("(I/O)\r\n");
-        else
-            printf("(Memory)\r\n");
-        printf("base addr reg 2 0x%08x ", cfg->bar2 & 0xfffffff0);
-        if (cfg->bar2 & 0x01)
-            printf("(I/O)\r\n");
-        else
-            printf("(Memory)\r\n");
-        printf("base addr reg 3 0x%08x ", cfg->bar3 & 0xfffffff0);
-        if (cfg->bar3 & 0x01)
-            printf("(I/O)\r\n");
-        else
-            printf("(Memory)\r\n");
-        printf("base addr reg 4 0x%08x ", cfg->bar4 & 0xfffffff0);
-        if (cfg->bar4 & 0x01)
-            printf("(I/O)\r\n");
-        else
-            printf("(Memory)\r\n");
-        printf("base addr reg 5 0x%08x ", cfg->bar5 & 0xfffffff0);
-        if (cfg->bar5 & 0x01)
-            printf("(I/O)\r\n");
-        else
-            printf("(Memory)\r\n");
-    }
 }

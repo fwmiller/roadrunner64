@@ -16,6 +16,9 @@ dump_pci_vendorid(uint32_t vendorid) {
     case PCI_VENDOR_NVIDIA:
         printf("Nvidia    ");
         break;
+    case PCI_VENDOR_REALTEK:
+        printf("Realtek   ");
+        break;
     case PCI_VENDOR_QEMU:
         printf("QEMU      ");
         break;

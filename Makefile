@@ -24,7 +24,7 @@ CFLAGS		:= -c -Wall -m64 -Og -nostdinc -ffreestanding
 
 # Debug options
 #CFLAGS		+= -D_DEBUG
-CFLAGS		+= -D_DEBUG_PCI
+#CFLAGS		+= -D_DEBUG_PCI
 #CFLAGS		+= -D_DEBUG_ATA
 #CFLAGS		+= -D_DEBUG_ISOFS
 CFLAGS		+= -D_DEBUG_SHELL
@@ -102,7 +102,7 @@ all: $(OBJS) $(LINKER_SCRIPT)
 # Execute using QEMU emulator
 #
 run: all
-	@qemu-system-x86_64 -m size=8 -nographic -no-reboot -net nic,model=virtio -net user -drive format=raw,file=$(BIN)/iso.img
+	@qemu-system-x86_64 -m size=8 -nographic -no-reboot -net nic,model=rtl8139 -net user -drive format=raw,file=$(BIN)/iso.img
 
 clean:
 	@$(RM) $(BIN)
