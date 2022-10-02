@@ -26,7 +26,7 @@ To run Roadrunner64 you will need to have xorriso and QEMU installed on
 your Linux distro.  For Ubuntu you can do this:
 
 ```
-$ sudo apt-get install xorriso qemu
+$ sudo apt-get install xorriso qemu-system
 ```
 
 One you have these installed you can type:
