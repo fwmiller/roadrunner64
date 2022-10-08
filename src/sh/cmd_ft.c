@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <sys/fs.h>
-#include <sys/shell.h>
+#include <sys/sh.h>
 
 void
 cmd_ft() {

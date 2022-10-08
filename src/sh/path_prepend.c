@@ -1,6 +1,6 @@
 #include <string.h>
 #include <sys/path.h>
-#include <sys/shell.h>
+#include <sys/sh.h>
 
 char *
 path_prepend(char *pre, char *path, int pathbufsize) {

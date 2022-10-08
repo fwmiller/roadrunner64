@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/path.h>
-#include <sys/shell.h>
+#include <sys/sh.h>
 #include <sys/sys.h>
 #include <unistd.h>
 

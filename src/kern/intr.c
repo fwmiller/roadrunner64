@@ -1,85 +1,11 @@
 #include <errno.h>
-#include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <sys/i8259.h>
 #include <sys/intr.h>
 #include <sys/io.h>
-#include <unistd.h>
 
 #define INTR_STR_LEN 32
-
-#if 0
-char intrstr[INTRS][INTR_STR_LEN] = {"divide error",
-                                     "debug exception",
-                                     "non-maskable interrupt",
-                                     "breakpoint",
-                                     "overflow",
-                                     "bounds check",
-                                     "invalid opcode",
-                                     "coprocessor not available",
-                                     "double fault",
-                                     "(reserved)",
-
-                                     "invalid task state segment",
-                                     "segment not present",
-                                     "stack exception",
-                                     "general protection fault",
-                                     "page fault",
-                                     "(reserved)",
-                                     "coprocessor error",
-                                     "(reserved)",
-                                     "(reserved)",
-                                     "(reserved)",
-
-                                     "(reserved)",
-                                     "(reserved)",
-                                     "(reserved)",
-                                     "(reserved)",
-                                     "(reserved)",
-                                     "(reserved)",
-                                     "(reserved)",
-                                     "(reserved)",
-                                     "(reserved)",
-                                     "(reserved)",
-
-                                     "(reserved)",
-                                     "(reserved)",
-                                     "timer",
-                                     "keyboard",
-                                     "(unused)",
-                                     "alternate serial port",
-                                     "primary serial port",
-                                     "(unused)",
-                                     "floppy disk",
-                                     "parallel port",
-
-                                     "real-time clock",
-                                     "(unused)",
-                                     "(unused)",
-                                     "(unused)",
-                                     "auxillary",
-                                     "math coprocessor",
-                                     "hard disk",
-                                     "(unused)",
-                                     "system call",
-                                     "(unused)",
-
-                                     "(unused)",
-                                     "(unused)",
-                                     "(unused)",
-                                     "(unused)",
-                                     "(unused)",
-                                     "(unused)",
-                                     "(unused)",
-                                     "(unused)",
-                                     "(unused)",
-                                     "(unused)",
-
-                                     "(unused)",
-                                     "(unused)",
-                                     "(unused)",
-                                     "(unused)"};
-#endif
 
 /*
  * This table holds isr function pointers that can be chained together
@@ -170,48 +96,11 @@ fatal(int intr) {
 
 void
 handl(int intr) {
-    isr_t isr;
-
-    if (intr == INTR_PGFLT) {
-#if 0
-		kprintf("handl: pid %d %s at %08x\n",
-			current->slot, intrstr[intr],
-			(u_int) vm_pgfault_addr());
-#endif
-    } else if (intr < INTR_TMR || intr == INTR_HD) {
-#if 0
-        printf("handl: %s\n", intrstr[intr]);
-#endif
-    }
-    for (isr = isrtab[intr]; isr != NULL; isr = isr->next)
+    for (isr_t isr = isrtab[intr]; isr != NULL; isr = isr->next)
         (*(isr->f))(isr->params);
 
-    switch (intr) {
-    case INTR_TMR:
-        break;
-    case INTR_KBD:
-        break;
-    case INTR_SERALT:
-        break;
-    case INTR_SERPRI:
-        break;
-    case INTR_FD:
-        break;
-    case INTR_PARA:
-        break;
-    case INTR_RTC:
-        break;
-    case INTR_AUX:
-        break;
-    case INTR_MATHCOPRERR:
-        break;
-    case INTR_HD:
-        break;
-    default:
-        break;
-    }
     if (fatal(intr))
-        //		halt();
+        // TODO halt();
         for (;;)
             ;
 }

@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/path.h>
-#include <sys/shell.h>
+#include <sys/sh.h>
 
 void
 cmd_ls(char *pwd, char *cmdline, int *pos) {

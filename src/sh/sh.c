@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include <sys/shell.h>
+#include <sys/sh.h>
 
 static char pwd[CMD_LINE_LEN];
 
@@ -11,7 +11,7 @@ set_color(char *color) {
 }
 
 void
-shell() {
+sh() {
     char cmdline[CMD_LINE_LEN];
     char arg[CMD_LINE_LEN];
     int pos;
@@ -72,7 +72,7 @@ shell() {
         else if (strcmp(arg, "pci") == 0)
             cmd_pci();
 
-        else if (strcmp(arg, "help") == 0)
+        else if (strcmp(arg, "help") == 0 || strcmp(arg, "?") == 0)
             cmd_help();
     }
 }

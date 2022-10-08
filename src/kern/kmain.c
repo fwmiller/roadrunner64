@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/fs.h>
+#include <sys/intr.h>
 #include <sys/io.h>
 #include <sys/mc146818.h>
 #include <sys/pci.h>
 #include <sys/sys.h>
 
 void word_widths();
-void shell();
+void sh();
 
 void rtl8139_init(pci_func_t f);
 
@@ -34,6 +35,8 @@ kmain() {
 
     word_widths();
     get_cmos_memsize();
+    isrtab_init();
+    intr_init();
     pci_init();
     fs_init();
 
@@ -47,5 +50,5 @@ kmain() {
         rtl8139_init(f);
     }
     printf("Type ctrl-a x to exit\r\n");
-    shell();
+    sh();
 }

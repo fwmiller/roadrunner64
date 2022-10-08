@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <sys/pci.h>
-#include <sys/shell.h>
+#include <sys/sh.h>
 
 #define PCI_HDR "bus dev vendor     class      iobase     irq"
 

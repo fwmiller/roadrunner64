@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <sys/fs.h>
-#include <sys/shell.h>
+#include <sys/sh.h>
 
 extern uint64_t stack_bottom, stack_top;
 

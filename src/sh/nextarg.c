@@ -1,6 +1,6 @@
 #include <ctype.h>
 #include <string.h>
-#include <sys/shell.h>
+#include <sys/sh.h>
 
 static int
 issep(char *sep, char ch) {

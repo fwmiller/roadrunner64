@@ -3,7 +3,7 @@
 #endif
 #include <stdlib.h>
 #include <string.h>
-#include <sys/shell.h>
+#include <sys/sh.h>
 
 #define PATH_ELEMENTS 32
 #define PATH_ELEMENT_LEN 64
