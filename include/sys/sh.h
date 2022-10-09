@@ -25,6 +25,7 @@ void cmd_cd(char *pwd, int pwdlen, char *cmdline, int *pos);
 void cmd_ft();
 void cmd_stack();
 void cmd_pci();
+void cmd_time();
 
 void set_color(char *color);
 

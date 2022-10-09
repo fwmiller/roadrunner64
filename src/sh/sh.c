@@ -72,6 +72,9 @@ sh() {
         else if (strcmp(arg, "pci") == 0)
             cmd_pci();
 
+        else if (strcmp(arg, "time") == 0)
+            cmd_time();
+
         else if (strcmp(arg, "help") == 0 || strcmp(arg, "?") == 0)
             cmd_help();
     }

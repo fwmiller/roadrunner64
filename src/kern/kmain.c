@@ -6,6 +6,7 @@
 #include <sys/mc146818.h>
 #include <sys/pci.h>
 #include <sys/sys.h>
+#include <sys/tmr.h>
 
 void word_widths();
 void sh();
@@ -37,6 +38,7 @@ kmain() {
     get_cmos_memsize();
     isrtab_init();
     intr_init();
+    tmrstart(tmrcount(0));
     pci_init();
     fs_init();
 
