@@ -48,13 +48,13 @@ loadbyte(uint8_t *ptr) {
 
 uint16_t
 loadword(uint8_t *ptr) {
-    return (short) *ptr | (uint16_t)(*(ptr + 1) << 8);
+    return (short) *ptr | (uint16_t) (*(ptr + 1) << 8);
 }
 
 uint32_t
 loaddword(uint8_t *ptr) {
-    return (uint32_t) *ptr | (uint32_t)(*(ptr + 1) << 8) |
-           (uint32_t)(*(ptr + 2) << 16) | (uint32_t)(*(ptr + 3) << 24);
+    return (uint32_t) *ptr | (uint32_t) (*(ptr + 1) << 8) |
+           (uint32_t) (*(ptr + 2) << 16) | (uint32_t) (*(ptr + 3) << 24);
 }
 
 void
@@ -65,13 +65,13 @@ storebyte(uint8_t val, uint8_t *ptr) {
 void
 storeword(uint32_t val, uint8_t *ptr) {
     *ptr = (uint8_t) val & 0xff;
-    *(ptr + 1) = (uint8_t)(val >> 8) & 0xff;
+    *(ptr + 1) = (uint8_t) (val >> 8) & 0xff;
 }
 
 void
 storedword(uint32_t val, uint8_t *ptr) {
     *ptr = (uint8_t) val & 0xff;
-    *(ptr + 1) = (uint8_t)(val >> 8) & 0xff;
-    *(ptr + 2) = (uint8_t)(val >> 16) & 0xff;
-    *(ptr + 3) = (uint8_t)(val >> 24) & 0xff;
+    *(ptr + 1) = (uint8_t) (val >> 8) & 0xff;
+    *(ptr + 2) = (uint8_t) (val >> 16) & 0xff;
+    *(ptr + 3) = (uint8_t) (val >> 24) & 0xff;
 }

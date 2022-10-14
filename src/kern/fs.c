@@ -14,6 +14,7 @@ file_desc_clear(fd_t f) {
     f->lba = 0;
     f->size = 0;
     f->pos = 0;
+    f->curr_lba = 0;
     memset(f->buf, 0, ATAPI_SECTOR_SIZE);
 }
 

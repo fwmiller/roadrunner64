@@ -49,7 +49,7 @@ pci_scan_bus(int bus, int *pcifunc) {
             /* Function interrupt line */
             dword = pci_config_read(bus, dev, 0, PCI_CONFIG_INTR);
 #if _DEBUG_PCI
-            intrpin = (uint8_t)(dword >> 8) & 0xff;
+            intrpin = (uint8_t) (dword >> 8) & 0xff;
 #endif
             intrline = dword & 0xff;
 #if _DEBUG_PCI

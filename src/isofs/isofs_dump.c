@@ -123,7 +123,7 @@ isofs_dump_path_table(primary_volume_descriptor_t pri, uint8_t *buf) {
     printf("parent_dirno path\r\n");
 
     for (int pos = 0; pos < pri->path_table_size_le;) {
-        path_table_record_t rec = (path_table_record_t)(buf + pos);
+        path_table_record_t rec = (path_table_record_t) (buf + pos);
         isofs_dump_path_table_record(rec);
 
         unsigned reclen = sizeof(struct path_table_record) + rec->dir_id_len;
@@ -138,7 +138,7 @@ isofs_dump_directory(uint8_t *buf, int size) {
     directory_record_t rec;
 
     for (int pos = 0; pos < size;) {
-        rec = (directory_record_t)(buf + pos);
+        rec = (directory_record_t) (buf + pos);
         if (rec->dir_rec_len == 0)
             break;
 

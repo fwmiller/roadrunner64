@@ -19,14 +19,10 @@ read(int fd, void *buf, size_t count) {
         return EBADF;
 
     f = &(filetab[fd]);
-#if _DEBUG
-    printf("\r\nread: f->pos %d f->size %d f->lba %u\r\n", f->pos, f->size,
-           f->lba);
-#endif
     for (n = 0, nleft = count; f->pos < f->size && nleft > 0;) {
 #if _DEBUG
-        printf("\r\nread: f->pos %d f->size %d f->lba %u\r\n", f->pos,
-               f->size, f->lba);
+        printf("\r\nread: f->pos %d f->size %d f->lba %u f->curr_lba %u\r\n",
+               f->pos, f->size, f->lba, f->curr_lba);
         printf("read: n %d nleft %d\r\n", n, nleft);
 #endif
         /* Read the block containing the file position */
@@ -43,13 +39,16 @@ read(int fd, void *buf, size_t count) {
         } else {
             /* Not root directory */
             lba_t lba = f->lba + (f->pos / ATAPI_SECTOR_SIZE);
-            int result =
-                isofs_read_blk(ata_get_primary_partition(), lba, f->buf);
-            if (result < 0) {
+            if (lba != f->curr_lba) {
+                int result =
+                    isofs_read_blk(ata_get_primary_partition(), lba, f->buf);
+                if (result < 0) {
 #if _DEBUG
-                printf("read: isofs_read_blk() lba %u failed\r\n", lba);
+                    printf("read: isofs_read_blk() lba %u failed\r\n", lba);
 #endif
-                return result;
+                    return result;
+                }
+                f->curr_lba = lba;
             }
         }
         /* Copy data from file buffer */

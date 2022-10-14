@@ -17,7 +17,7 @@ isofs_search_dir(char *s, uint8_t *dir, int dirsize, int *isdir,
 #endif
     /* Loop over directory entries */
     for (int pos = 0; pos < dirsize; pos += rec->dir_rec_len) {
-        rec = (directory_record_t)(dir + pos);
+        rec = (directory_record_t) (dir + pos);
         if (rec->dir_rec_len == 0)
             break;
 

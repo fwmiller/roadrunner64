@@ -18,8 +18,8 @@ isofs_get_root_dir() {
 int
 isofs_get_root_dir_size() {
     primary_volume_descriptor_t pri;
-    pri = (primary_volume_descriptor_t)(pri_vol_desc +
-                                        sizeof(struct volume_descriptor));
+    pri = (primary_volume_descriptor_t) (pri_vol_desc +
+                                         sizeof(struct volume_descriptor));
     directory_record_t dr;
     dr = (directory_record_t) pri->root_dir_entry;
     return dr->size_le;
@@ -71,8 +71,8 @@ isofs_init() {
         printf("ISO9660 primary volume not found\r\n");
         halt();
     }
-    pri = (primary_volume_descriptor_t)(pri_vol_desc +
-                                        sizeof(struct volume_descriptor));
+    pri = (primary_volume_descriptor_t) (pri_vol_desc +
+                                         sizeof(struct volume_descriptor));
 #if _DEBUG_ISOFS
     isofs_dump_primary_volume(pri);
 #endif

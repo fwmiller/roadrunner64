@@ -42,16 +42,16 @@ write_parttab(part_t parttab, uint8_t *mbr) {
         storebyte((uint8_t) p->active, mbr + partent + PART_OFF_BOOT);
         storebyte((uint8_t) p->sh, mbr + partent + PART_OFF_START);
         storebyte(
-            ((uint8_t)((p->st & 0x300) >> 2)) | ((uint8_t)(p->ss & 0x3f)),
+            ((uint8_t) ((p->st & 0x300) >> 2)) | ((uint8_t) (p->ss & 0x3f)),
             mbr + partent + PART_OFF_START + 1);
-        storebyte((uint8_t)(p->st & 0xff),
+        storebyte((uint8_t) (p->st & 0xff),
                   mbr + partent + PART_OFF_START + 2);
         storebyte((uint8_t) p->sys, mbr + partent + PART_OFF_SYS);
         storebyte((uint8_t) p->eh, mbr + partent + PART_OFF_END);
         storebyte(
-            ((uint8_t)((p->et & 0x300) >> 2)) | ((uint8_t)(p->es & 0x3f)),
+            ((uint8_t) ((p->et & 0x300) >> 2)) | ((uint8_t) (p->es & 0x3f)),
             mbr + partent + PART_OFF_END + 1);
-        storebyte((uint8_t)(p->et & 0xff), mbr + partent + PART_OFF_END + 2);
+        storebyte((uint8_t) (p->et & 0xff), mbr + partent + PART_OFF_END + 2);
         storedword(p->off, mbr + partent + PART_OFF_OFF);
         storedword(p->size, mbr + partent + PART_OFF_SIZE);
     }

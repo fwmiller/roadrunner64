@@ -18,6 +18,7 @@ struct file_desc {
     lba_t lba;
     unsigned size;
     int pos;
+    lba_t curr_lba;
     uint8_t buf[ATAPI_SECTOR_SIZE];
 };
 
