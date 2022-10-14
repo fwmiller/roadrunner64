@@ -28,4 +28,7 @@ cmd_help() {
     printf("pci\r\n");
     printf("  Print PCI bus devices\r\n");
     printf("\r\n");
+    printf("time\r\n");
+    printf("  Print time\r\n");
+    printf("\r\n");
 }

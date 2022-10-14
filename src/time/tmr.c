@@ -27,11 +27,6 @@ tmrstart(unsigned count) {
 
 unsigned
 tmrread() {
-    unsigned count = 0;
-
     outb(I8254_CTRL, I8254_CNTR_0_LATCH);
-    count = inb(I8254_CNTR_0);
-    count <<= 8;
-    count = inb(I8254_CNTR_0);
-    return count;
+    return ((inb(I8254_CNTR_0) << 8)) | inb(I8254_CNTR_0);
 }
