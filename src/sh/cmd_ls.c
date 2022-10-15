@@ -35,12 +35,12 @@ cmd_ls(char *pwd, char *cmdline, int *pos) {
             strcmp((char *) de->d_name, "..") == 0)
             continue;
 
+        printf("%8u  ", de->d_size);
         if (de->d_type == DT_DIR)
             set_color(CYAN);
         printf("%s", de->d_name);
         if (de->d_type == DT_DIR)
             set_color(NC);
-        printf(" ");
+        printf("\r\n");
     }
-    printf("\r\n");
 }
