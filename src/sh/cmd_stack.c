@@ -2,10 +2,7 @@
 #include <stdio.h>
 #include <sys/sh.h>
 
-uint64_t
-getrsp() {
-    __asm__("movq %rsp, %rax");
-}
+uint64_t getrsp();
 
 void
 cmd_stack() {
