@@ -19,7 +19,7 @@
  * http://nongnu.askapache.com/grub/phcoder/multiboot.pdf
  */
 
-	.set		MAGIC, 0xE85250D6	/* Mulitboot 2 magic number */
+	.set		MAGIC, 0xe85250d6	/* Mulitboot 2 magic number */
 	.set		FLAGS, 0		/* 0 is i386 protected mode */
 	.set		CHECKSUM, -(MAGIC + FLAGS + (mbh_end - mbh_start))
 

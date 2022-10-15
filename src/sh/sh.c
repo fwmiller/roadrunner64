@@ -2,8 +2,6 @@
 #include <string.h>
 #include <sys/sh.h>
 
-static char pwd[CMD_LINE_LEN];
-
 void
 set_color(char *color) {
     if (color != NULL)
@@ -12,6 +10,7 @@ set_color(char *color) {
 
 void
 sh() {
+    char pwd[CMD_LINE_LEN];
     char cmdline[CMD_LINE_LEN];
     char arg[CMD_LINE_LEN];
     int pos;
@@ -26,24 +25,7 @@ sh() {
         get_cmdline(cmdline, CMD_LINE_LEN);
         if (strlen(cmdline) == 0)
             continue;
-#if 0
-        if (cmdline[0] == '/') {
-            /*
-             * A full path has been specified as the first
-             * argument.   Try to load and run the named
-             * executable
-             */
-            int fd = open(cmdline, 0);
 
-            for (char ch = 0;;) {
-                int len = read(fd, &ch, 1);
-                if (len <= 0)
-                    break;
-
-                printf("%c", ch);
-            }
-        }
-#endif
         pos = 0;
         memset(arg, 0, CMD_LINE_LEN);
         nextarg(cmdline, &pos, " ", arg);

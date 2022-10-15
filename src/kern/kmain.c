@@ -7,6 +7,8 @@
 #include <sys/sys.h>
 #include <sys/tmr.h>
 
+char test[3][8] = {"one    ", "two    ", "three  "};
+
 void word_widths();
 void sh();
 
@@ -17,13 +19,13 @@ get_cmos_memsize() {
     unsigned short total;
     unsigned char lowmem, highmem;
 
-    outb(MC146818_ADDR, MC146818_EXT_MEM_LO);
-    lowmem = inb(MC146818_DATA);
     outb(MC146818_ADDR, MC146818_EXT_MEM_HI);
     highmem = inb(MC146818_DATA);
+    outb(MC146818_ADDR, MC146818_EXT_MEM_LO);
+    lowmem = inb(MC146818_DATA);
 
-    total = lowmem | (highmem << 8);
-#if _DEBUG
+    total = (highmem << 8) | lowmem;
+#if 1
     printf("Available memory %u MB\r\n", total / 1024);
 #endif
     return total;
