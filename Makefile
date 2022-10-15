@@ -4,8 +4,9 @@
 #
 INC		:= include
 SRC		:= src
-BIN		:= build
-ISOFILES	:= $(BIN)/isofiles
+BUILD		:= build
+BIN		:= $(BUILD)/obj
+ISOFILES	:= $(BUILD)/isofiles
 
 #
 # Tools
@@ -63,13 +64,13 @@ OBJS	:= $(sort $(OBJS))
 #
 # Kernel file
 #
-KERNEL	:= $(BIN)/kmain.elf
+KERNEL	:= $(BUILD)/kmain.elf
 
 ##############################################################################
 #
 # Boot image file
 #
-BOOT_IMG := $(BIN)/iso.img
+BOOT_IMG := $(BUILD)/iso.img
 
 ##############################################################################
 #
@@ -103,10 +104,10 @@ all: $(OBJS) $(LINKER_SCRIPT)
 # Execute using QEMU emulator
 #
 run: all
-	@qemu-system-x86_64 -m size=8 -nographic -no-reboot -net nic,model=rtl8139 -net user -drive format=raw,file=$(BIN)/iso.img
+	@qemu-system-x86_64 -m size=8 -nographic -no-reboot -net nic,model=rtl8139 -net user -drive format=raw,file=$(BUILD)/iso.img
 
 clean:
-	@$(RM) $(BIN)
+	@$(RM) $(BUILD)
 
 #
 # Indent pass of the include and src directories
@@ -130,6 +131,7 @@ debug:
 # Assembly source file compilation
 #
 $(BIN)/%.o: $(SRC)/asm/%.S
+	@$(MKDIR) $(BUILD)
 	@$(MKDIR) $(BIN)
 	@printf "Assembling ${CYAN}$<${NC}\r\n"
 	@$(CC) $(CFLAGS) -I$(INC) -o $@ $<
@@ -138,11 +140,13 @@ $(BIN)/%.o: $(SRC)/asm/%.S
 # C source file compilation
 #
 $(BIN)/%.o: $(SRC)/*/%.c
+	@$(MKDIR) $(BUILD)
 	@$(MKDIR) $(BIN)
 	@printf "Compiling  ${CYAN}$<${NC}\r\n"
 	@$(CC) $(CFLAGS) -I$(INC) -o $@ $<
 
 $(BIN)/%.o: $(SRC)/%.c
+	@$(MKDIR) $(BUILD)
 	@$(MKDIR) $(BIN)
 	@printf "Compiling ${CYAN}$<${NC}\r\n"
 	@$(CC) $(CFLAGS) -I$(INC) -o $@ $<
