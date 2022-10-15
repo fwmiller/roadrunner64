@@ -27,6 +27,5 @@ word_widths() {
 
 void
 halt() {
-    for (;;)
-        ;
+    __asm__("hlt");
 }

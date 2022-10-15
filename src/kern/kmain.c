@@ -7,8 +7,6 @@
 #include <sys/sys.h>
 #include <sys/tmr.h>
 
-char test[3][8] = {"one    ", "two    ", "three  "};
-
 void word_widths();
 void sh();
 
