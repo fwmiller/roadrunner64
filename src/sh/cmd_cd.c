@@ -28,6 +28,8 @@ cmd_cd(char *pwd, int pwdlen, char *cmdline, int *pos) {
         printf("open directory %s failed\r\n", arg);
         return;
     }
+    closedir(dir);
+
     /* Update the pwd */
     memset(pwd, 0, pwdlen);
     strcpy(pwd, arg);

@@ -43,4 +43,5 @@ cmd_ls(char *pwd, char *cmdline, int *pos) {
             set_color(NC);
         printf("\r\n");
     }
+    closedir(dir);
 }

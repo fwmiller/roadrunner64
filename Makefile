@@ -118,7 +118,7 @@ indent: clean
 	@clang-format -i $(C_SRCS)
 
 wc: clean
-	@wc -l $(INC)/*.h $(INC)/sys/*.h $(SRC)/asm/*.S $(SRC)/ata/*.c $(SRC)/cli/*.c $(SRC)/isofs/*.c $(SRC)/kern/*.c
+	@wc -l $(INC)/*.h $(INC)/sys/*.h $(SRC)/asm/*.S $(SRC)/ata/*.c $(SRC)/sh/*.c $(SRC)/isofs/*.c $(SRC)/kern/*.c
 
 debug:
 	@for f in $(C_SRCS); do echo $$f; done
