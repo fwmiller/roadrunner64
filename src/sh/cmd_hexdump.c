@@ -39,4 +39,5 @@ cmd_hexdump(char *pwd, char *cmdline, int *pos) {
         printf("%08x  ", i);
         bufdump(buf, 16);
     }
+    close(fd);
 }

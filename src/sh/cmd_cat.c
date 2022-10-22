@@ -35,4 +35,5 @@ cmd_cat(char *pwd, char *cmdline, int *pos) {
             break;
         printf("%c", ch);
     }
+    close(fd);
 }
