@@ -19,8 +19,8 @@
  * from nasm to gas (gnu assembler).
  */
 
-	// Global Descriptor Table
 	.section .rodata
+	// Global Descriptor Table
 	.align	4
 gdt64:
 	.quad	0 // zero entry
@@ -69,6 +69,10 @@ _start:
 	movw	%ax, %ss
 	movw	%ax, %ds
 	movw	%ax, %es
+
+	// Interrupt Descriptor Table
+	.extern idt64
+	lidt	idt64
 
 	// edi = multiboot info
 	ljmp	$gdt64_code_seg, $kmain
@@ -225,7 +229,7 @@ stack_bottom:
 
 // This value specifies the size of the run-time stack for the single
 // thread of execution
-	.skip 4096 * 128
+	.skip 4096 * 32
 
 stack_top:
 	.globl stack_top

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/fs.h>
+#include <sys/intr.h>
 #include <sys/io.h>
 #include <sys/mc146818.h>
 #include <sys/pci.h>
@@ -33,6 +34,7 @@ void
 kmain() {
     printf("\r\nRoadrunner 64-bit\r\n");
 
+    idt_init();
     word_widths();
     get_cmos_memsize();
     tmrstart(tmrcount(0));
