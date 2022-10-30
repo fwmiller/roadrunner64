@@ -13,4 +13,4 @@ idt64_pointer:
 
 	.globl __isr
 __isr:
-	iret
+	iretq

@@ -24,5 +24,5 @@ idt_desc_init(idt_desc_t idt_desc, uint64_t offset) {
 void
 idt_init() {
     /* Setup the timer interrupt descriptor */
-    idt_desc_init((idt_desc_t) (32 * 16), (uint64_t) __isr);
+    idt_desc_init((idt_desc_t) (idt64 + 32 * 16), (uint64_t) __isr);
 }

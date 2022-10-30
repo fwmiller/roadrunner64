@@ -5,7 +5,7 @@
 #include <string.h>
 #include <sys/uart.h>
 
-void
+static void
 uint2str(uint32_t v, char *s, int base) {
     if (v == 0) {
         s[0] = '0';
@@ -38,7 +38,7 @@ put1(char *s, int *pos, int c) {
     uart_putchar(c);
 }
 
-static void
+void
 print(char *string, int *pos, const char *fmt, va_list args) {
     int len;
     char pad;
@@ -154,54 +154,4 @@ printloop:
 printend:
     if (string != NULL)
         put1(string, pos, (int) '\0');
-}
-
-void
-printf(const char *fmt, ...) {
-    va_list args;
-
-    va_start(args, fmt);
-
-    print(NULL, NULL, fmt, args);
-}
-
-int
-sprintf(char *s, const char *fmt, ...) {
-    va_list args;
-    int pos = 0;
-
-    va_start(args, fmt);
-    print(s, &pos, fmt, args);
-    return 0;
-}
-
-#define LEN 16
-
-void
-bufdump(char *buf, int size) {
-    uint8_t *line;
-    int i, j, lines;
-
-    lines = (size + LEN - 1) / LEN;
-    for (i = 0; i < lines; i++) {
-        line = (uint8_t *) buf + i * LEN;
-#if 0
-        printf("%08x  ", (unsigned long long) buf + i * LEN);
-#endif
-        for (j = 0; j < LEN; j++) {
-            printf("%02x ", line[j]);
-            if (j == (LEN / 2) - 1)
-                printf(" ");
-        }
-        printf(" ");
-        for (j = 0; j < LEN; j++) {
-            if (isprint(line[j]) && line[i] >= 0x20)
-                printf("%c", (char) line[j]);
-            else
-                printf(".");
-            if (j == (LEN / 2) - 1)
-                printf(" ");
-        }
-        printf("\r\n");
-    }
 }
