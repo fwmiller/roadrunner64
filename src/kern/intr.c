@@ -1,5 +1,7 @@
 #include <stdint.h>
+#include <sys/i8259.h>
 #include <sys/intr.h>
+#include <sys/io.h>
 
 struct idt_desc {
     uint32_t seg_off;
@@ -25,4 +27,18 @@ void
 idt_init() {
     /* Setup the timer interrupt descriptor */
     idt_desc_init((idt_desc_t) (idt64 + 32 * 16), (uint64_t) __isr);
+}
+
+void
+intr_init() {
+    outb(I8259_MSTR_CTRL, I8259_MSTR_ICW1);
+    outb(I8259_SLV_CTRL, I8259_SLV_ICW1);
+    outb(I8259_MSTR_MASK, I8259_MSTR_ICW2);
+    outb(I8259_SLV_MASK, I8259_SLV_ICW2);
+    outb(I8259_MSTR_MASK, I8259_MSTR_ICW3);
+    outb(I8259_SLV_MASK, I8259_SLV_ICW3);
+    outb(I8259_MSTR_MASK, I8259_MSTR_ICW4);
+    outb(I8259_SLV_MASK, I8259_SLV_ICW4);
+    outb(I8259_MSTR_MASK, I8259_MSTR_DISABLE);
+    outb(I8259_SLV_MASK, I8259_SLV_DISABLE);
 }

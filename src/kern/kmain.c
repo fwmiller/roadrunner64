@@ -35,6 +35,7 @@ kmain() {
     printf("\r\nRoadrunner 64-bit\r\n");
 
     idt_init();
+    intr_init();
     word_widths();
     get_cmos_memsize();
     tmrstart(tmrcount(0));

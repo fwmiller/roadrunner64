@@ -13,4 +13,10 @@ idt64_pointer:
 
 	.globl __isr
 __isr:
+	push	%rdi
+
+	mov	'!', %rdi
+	call	uart_putchar
+
+	pop	%rdi
 	iretq

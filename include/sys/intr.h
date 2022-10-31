@@ -4,5 +4,6 @@
 #include <sys/idt.h>
 
 void idt_init();
+void intr_init();
 
 #endif
