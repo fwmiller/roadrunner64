@@ -36,9 +36,11 @@ kmain() {
 
     idt_init();
     intr_init();
+    tmrstart(tmrcount(0));
+    // enable;
+
     word_widths();
     get_cmos_memsize();
-    tmrstart(tmrcount(0));
     pci_init();
     fs_init();
 
