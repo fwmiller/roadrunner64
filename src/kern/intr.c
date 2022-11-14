@@ -13,7 +13,8 @@ struct idt_desc {
 typedef struct idt_desc *idt_desc_t;
 
 extern idt_desc_t idt64;
-extern void (*__isr)();
+extern void (*__gp_excp)();
+extern void (*__tmr_isr)();
 
 static void
 idt_desc_init(idt_desc_t idt_desc, uint64_t offset) {
@@ -25,8 +26,11 @@ idt_desc_init(idt_desc_t idt_desc, uint64_t offset) {
 
 void
 idt_init() {
+    /* Setup the general protection fault excpetion descriptor */
+    idt_desc_init((idt_desc_t) (idt64 + 13 * 16), (uint64_t) __gp_excp);
+
     /* Setup the timer interrupt descriptor */
-    idt_desc_init((idt_desc_t) (idt64 + 32 * 16), (uint64_t) __isr);
+    idt_desc_init((idt_desc_t) (idt64 + 32 * 16), (uint64_t) __tmr_isr);
 }
 
 void

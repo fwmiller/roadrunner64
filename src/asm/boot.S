@@ -71,8 +71,8 @@ _start:
 	movw	%ax, %es
 
 	// Interrupt Descriptor Table
-	.extern idt64
-	lidt	idt64
+	.extern idt64_pointer
+	lidt	idt64_pointer
 
 	// edi = multiboot info
 	ljmp	$gdt64_code_seg, $kmain
