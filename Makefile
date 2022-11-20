@@ -107,6 +107,9 @@ all: $(OBJS) $(LINKER_SCRIPT)
 run: all
 	@qemu-system-x86_64 -d int -m size=8 -nographic -no-reboot -net nic,model=rtl8139 -net user -drive format=raw,file=$(BUILD)/iso.img
 
+gdb: all
+	@qemu-system-x86_64 -s -S -d int -m size=8 -nographic -no-reboot -net nic,model=rtl8139 -net user -drive format=raw,file=$(BUILD)/iso.img
+
 clean:
 	@$(RM) $(BUILD)
 
