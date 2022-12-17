@@ -23,6 +23,7 @@ RM		:= rm -fr
 # Tool options
 #
 CFLAGS		:= -c -Wall -m64 -Og -nostdinc -ffreestanding
+#CFLAGS		+= -g
 
 # Debug options
 #CFLAGS		+= -D_DEBUG

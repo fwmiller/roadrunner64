@@ -1,4 +1,5 @@
 /*
+ * Portions of this file contain:
  * Copyrigh;t 2015 Philipp Oppermann
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,9 +20,11 @@
  * from nasm to gas (gnu assembler).
  */
 
+#include <sys/idt.h>
+
 	.section .rodata
 	// Global Descriptor Table
-	.align	4
+	.align	8
 gdt64:
 	.quad	0 // zero entry
 
@@ -38,12 +41,21 @@ gdt64_pointer:
 	.word	gdt64_limit
 	.quad	gdt64
 
-	// Entry code
-	.global _start
-	.extern kmain
+        // Interrupt Descriptor Table
+	.align	8
+	.globl	idt64
+idt64:
+	.space	GATES * DESC_SIZE
 
+idt64_pointer:
+	.set	idt64_limit, idt64_pointer - idt64 - 1
+	.word	idt64_limit
+	.quad	idt64
+
+	// Entry code
 	.section .text
 	.code32
+	.global _start
 _start:
 	movl	$stack_top, %esp
 
@@ -71,10 +83,26 @@ _start:
 	movw	%ax, %es
 
 	// Interrupt Descriptor Table
-	.extern idt64_pointer
 	lidt	idt64_pointer
 
+	push	%edi
+
+	// Load the Interrupt Descriptor Table (IDT)
+	lea	idt64, %edi
+
+#define LOAD_INTR_DESC(INTR)		\
+	lea	INTR, %edx;		\
+	movl	$(0x08 << 16), %eax;	\
+	movw	%dx, %ax;		\
+	movw	$0x8f00, %dx;		\
+	movl	%eax, (%edi);		\
+	movl	%edx, 4(%edi);		\
+	addl	$8, %edi
+
 	// edi = multiboot info
+	pop	%edi
+
+	.extern kmain
 	ljmp	$gdt64_code_seg, $kmain
 
 set_up_page_tables:
