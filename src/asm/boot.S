@@ -43,7 +43,6 @@ gdt64_pointer:
 
         // Interrupt Descriptor Table
 	.align	8
-	.globl	idt64
 idt64:
 	.space	GATES * DESC_SIZE
 
@@ -86,7 +85,6 @@ _start:
 	lidt	idt64_pointer
 
 	push	%edi
-
 	// Load the Interrupt Descriptor Table (IDT)
 	lea	idt64, %edi
 
@@ -97,7 +95,63 @@ _start:
 	movw	$0x8f00, %dx;		\
 	movl	%eax, (%edi);		\
 	movl	%edx, 4(%edi);		\
-	addl	$8, %edi
+	xorl	%edx, %edx;		\
+	movl	%edx, 8(%edi);		\
+	movl	%edx, 12(%edi);		\
+	addl	$DESC_SIZE, %edi
+
+	LOAD_INTR_DESC(intr0)
+	LOAD_INTR_DESC(intr1)
+	LOAD_INTR_DESC(intr2)
+	LOAD_INTR_DESC(intr3)
+	LOAD_INTR_DESC(intr4)
+	LOAD_INTR_DESC(intr4)
+	LOAD_INTR_DESC(intr6)
+	LOAD_INTR_DESC(intr7)
+	LOAD_INTR_DESC(intr8)
+	LOAD_INTR_DESC(intr9)
+
+	LOAD_INTR_DESC(intr10)
+	LOAD_INTR_DESC(intr11)
+	LOAD_INTR_DESC(intr12)
+	LOAD_INTR_DESC(intr13)
+	LOAD_INTR_DESC(intr14)
+	LOAD_INTR_DESC(intr14)
+	LOAD_INTR_DESC(intr16)
+	LOAD_INTR_DESC(intr17)
+	LOAD_INTR_DESC(intr18)
+	LOAD_INTR_DESC(intr19)
+
+	LOAD_INTR_DESC(intr20)
+	LOAD_INTR_DESC(intr21)
+	LOAD_INTR_DESC(intr22)
+	LOAD_INTR_DESC(intr23)
+	LOAD_INTR_DESC(intr24)
+	LOAD_INTR_DESC(intr24)
+	LOAD_INTR_DESC(intr26)
+	LOAD_INTR_DESC(intr27)
+	LOAD_INTR_DESC(intr28)
+	LOAD_INTR_DESC(intr29)
+
+	LOAD_INTR_DESC(intr30)
+	LOAD_INTR_DESC(intr31)
+	LOAD_INTR_DESC(intr32)
+	LOAD_INTR_DESC(intr33)
+	LOAD_INTR_DESC(intr34)
+	LOAD_INTR_DESC(intr34)
+	LOAD_INTR_DESC(intr36)
+	LOAD_INTR_DESC(intr37)
+	LOAD_INTR_DESC(intr38)
+	LOAD_INTR_DESC(intr39)
+
+	LOAD_INTR_DESC(intr40)
+	LOAD_INTR_DESC(intr41)
+	LOAD_INTR_DESC(intr42)
+	LOAD_INTR_DESC(intr43)
+	LOAD_INTR_DESC(intr44)
+	LOAD_INTR_DESC(intr44)
+	LOAD_INTR_DESC(intr46)
+	LOAD_INTR_DESC(intr47)
 
 	// edi = multiboot info
 	pop	%edi
@@ -105,6 +159,74 @@ _start:
 	.extern kmain
 	ljmp	$gdt64_code_seg, $kmain
 
+	// Not reached
+	hlt
+
+	.code64
+	.extern __handl
+#define ISR(INTR)			\
+	cli;				\
+	pushq	%rdi;			\
+	movq	$INTR, %rdi;		\
+	call	__handl;		\
+	popq	%rdi;			\
+	sti;				\
+	iretq;
+
+intr0:	ISR(0)
+intr1:	ISR(1)
+intr2:	ISR(2)
+intr3:	ISR(3)
+intr4:	ISR(4)
+intr5:	ISR(5)
+intr6:	ISR(6)
+intr7:	ISR(7)
+intr8:	ISR(8)
+intr9:	ISR(9)
+
+intr10:	ISR(10)
+intr11:	ISR(11)
+intr12:	ISR(12)
+intr13:	ISR(13)
+intr14:	ISR(14)
+intr15:	ISR(15)
+intr16:	ISR(16)
+intr17:	ISR(17)
+intr18:	ISR(18)
+intr19:	ISR(19)
+
+intr20:	ISR(20)
+intr21:	ISR(21)
+intr22:	ISR(22)
+intr23:	ISR(23)
+intr24:	ISR(24)
+intr25:	ISR(25)
+intr26:	ISR(26)
+intr27:	ISR(27)
+intr28:	ISR(28)
+intr29:	ISR(29)
+
+intr30:	ISR(30)
+intr31:	ISR(31)
+intr32:	ISR(32)
+intr33:	ISR(33)
+intr34:	ISR(34)
+intr35:	ISR(35)
+intr36:	ISR(36)
+intr37:	ISR(37)
+intr38:	ISR(38)
+intr39:	ISR(39)
+
+intr40:	ISR(40)
+intr41:	ISR(41)
+intr42:	ISR(42)
+intr43:	ISR(43)
+intr44:	ISR(44)
+intr45:	ISR(45)
+intr46:	ISR(46)
+intr47:	ISR(47)
+
+	.code32
 set_up_page_tables:
 	// Recursive map P4
 	mov	$p4_table, %eax
