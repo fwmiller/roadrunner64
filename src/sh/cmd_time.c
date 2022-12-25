@@ -8,6 +8,7 @@ cmd_time() {
     printf("tmr     %u\r\n", tmrread());
     printf("tick    %u\r\n", tick);
 
-    unsigned uptime = tick * tmrtick();
-    printf("uptime  %u seconds\r\n", uptime / 1000000);
+    uint64_t uptime = tick * tmrtick();
+    printf("uptime  %02u:%02u:%03u\r\n", uptime / (1000000 * 60),
+           (uptime / 1000000) % 60, (uptime / 1000) % 1000);
 }
