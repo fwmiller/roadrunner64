@@ -6,6 +6,25 @@
 
 static uint8_t hwaddr[6];
 
+struct rtl8139_private {
+    /* pci device info */
+    pci_func_t f;
+
+    /* rx status info */
+    unsigned char *rx_ring;
+    unsigned int cur_rx;
+
+    /* tx status info */
+    unsigned int tx_flag;
+    unsigned int cur_tx;
+    unsigned int dirty_tx;
+    unsigned char *tx_buf[NUM_TX_DESC];
+    unsigned char *tx_bufs;
+
+    /* device statistics */
+    //struct net_device_stats stats;
+};
+
 void
 rtl8139_chip_reset(void *ioaddr) {
     int i;
