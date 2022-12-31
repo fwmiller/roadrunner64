@@ -52,7 +52,29 @@
     (RxOK | RxErr | TxOK | TxErr | RxOverFlow | RxUnderrun | RxFIFOOver | \
      CableLen | TimeOut | SysErr)
 
+struct rtl8139_private {
+    /* pci device info */
+    pci_func_t f;
+
+    /* rx status info */
+    unsigned char *rx_ring;
+    unsigned int cur_rx;
+
+    /* tx status info */
+    unsigned int tx_flag;
+    unsigned int cur_tx;
+    unsigned int dirty_tx;
+    unsigned char *tx_buf[NUM_TX_DESC];
+    unsigned char *tx_bufs;
+
+    /* device statistics */
+    // struct net_device_stats stats;
+};
+
+extern struct rtl8139_private *eth_priv;
+
 void rtl8139_chip_reset(void *ioaddr);
 void rtl8139_init(pci_func_t f);
+void rtl8139_isr();
 
 #endif

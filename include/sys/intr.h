@@ -13,7 +13,7 @@
 #define IRQ_MATHCOPRERR 13
 #define IRQ_HD 14
 
-#define IRQ2INTR(IRQ) (32 + IRQ)
+#define IRQ2INTR(IRQ) (32 + (IRQ))
 
 /* x86 exceptions (0 - 31) */
 #define INTR_DIVERR 0

@@ -3,6 +3,7 @@
 #include <sys/i8259.h>
 #include <sys/intr.h>
 #include <sys/io.h>
+#include <sys/rtl8139.h>
 #include <sys/time.h>
 
 void
@@ -11,6 +12,9 @@ __handl(int intr) {
 
     if (intr == INTR_TMR)
         tick++;
+
+    if (intr == IRQ2INTR(eth_priv->f->irq))
+        rtl8139_isr();
 }
 
 void
@@ -30,6 +34,11 @@ intr_init() {
     /* Unmask timer interrupt */
     uint8_t mask = inb(I8259_MSTR_MASK);
     mask &= ~(0x01);
+    outb(I8259_MSTR_MASK, mask);
+
+    /* Unmask Ethernet interrupt */
+    mask = inb(I8259_MSTR_MASK);
+    mask &= ~(0x01 << eth_priv->f->irq);
     outb(I8259_MSTR_MASK, mask);
 }
 
