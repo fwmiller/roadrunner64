@@ -58,6 +58,7 @@ struct rtl8139_private {
 
     /* rx status info */
     unsigned char rx_ring[TOTAL_RX_BUF_SIZE];
+    unsigned char *rx_ring_dma;
     unsigned int cur_rx;
 
     /* tx status info */
@@ -65,6 +66,7 @@ struct rtl8139_private {
     unsigned int cur_tx;
     unsigned int dirty_tx;
     unsigned char *tx_buf[NUM_TX_DESC];
+    unsigned char *tx_bufs_dma;
     unsigned char tx_bufs[TOTAL_TX_BUF_SIZE];
 
     /* device statistics */
