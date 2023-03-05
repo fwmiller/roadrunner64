@@ -6,11 +6,20 @@
 #include <sys/rtl8139.h>
 
 static uint8_t hwaddr[6];
-static struct rtl8139_private rtl8139_priv;
 
-struct rtl8139_private *eth_priv = &rtl8139_priv;
+struct rtl8139_private rtl8139_priv;
 
-void
+static void
+rtl8139_init_ring() {
+    int i;
+
+    rtl8139_priv.cur_tx = 0;
+    rtl8139_priv.dirty_tx = 0;
+    for (i = 0; i < NUM_TX_DESC; i++)
+        rtl8139_priv.tx_buf[i] = &(rtl8139_priv.tx_bufs[i * TX_BUF_SIZE]);
+}
+
+static void
 rtl8139_chip_reset(void *ioaddr) {
     outb(ioaddr + CR, CmdReset);
 
@@ -22,7 +31,7 @@ rtl8139_chip_reset(void *ioaddr) {
 
 void
 rtl8139_init(pci_func_t f) {
-    memset(eth_priv, 0, sizeof(struct rtl8139_private));
+    memset(&rtl8139_priv, 0, sizeof(struct rtl8139_private));
 
     /* Get Ethernet MAC address */
     for (int i = 0; i < 6; i++)
@@ -36,14 +45,10 @@ rtl8139_init(pci_func_t f) {
     }
     printf("\r\n");
 #endif
-
-    /* Register interrupt service routine */
-
-    /* Initalize transmit and receive buffer rings */
+    /* Interrupt service routine registered during bootstrap */
 
     /* Start hardware */
-
-    return;
+    rtl8139_init_ring();
 }
 
 void

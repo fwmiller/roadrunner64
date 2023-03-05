@@ -57,7 +57,7 @@ struct rtl8139_private {
     pci_func_t f;
 
     /* rx status info */
-    unsigned char *rx_ring;
+    unsigned char rx_ring[TOTAL_RX_BUF_SIZE];
     unsigned int cur_rx;
 
     /* tx status info */
@@ -65,15 +65,14 @@ struct rtl8139_private {
     unsigned int cur_tx;
     unsigned int dirty_tx;
     unsigned char *tx_buf[NUM_TX_DESC];
-    unsigned char *tx_bufs;
+    unsigned char tx_bufs[TOTAL_TX_BUF_SIZE];
 
     /* device statistics */
     // struct net_device_stats stats;
 };
 
-extern struct rtl8139_private *eth_priv;
+extern struct rtl8139_private rtl8139_priv;
 
-void rtl8139_chip_reset(void *ioaddr);
 void rtl8139_init(pci_func_t f);
 void rtl8139_isr();
 

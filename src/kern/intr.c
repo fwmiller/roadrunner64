@@ -13,7 +13,7 @@ __handl(int intr) {
     if (intr == INTR_TMR)
         tick++;
 
-    if (intr == IRQ2INTR(eth_priv->f->irq))
+    if (intr == IRQ2INTR(rtl8139_priv.f->irq))
         rtl8139_isr();
 }
 
@@ -38,7 +38,7 @@ intr_init() {
 
     /* Unmask Ethernet interrupt */
     mask = inb(I8259_MSTR_MASK);
-    mask &= ~(0x01 << eth_priv->f->irq);
+    mask &= ~(0x01 << rtl8139_priv.f->irq);
     outb(I8259_MSTR_MASK, mask);
 }
 

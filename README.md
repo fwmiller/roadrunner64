@@ -11,7 +11,7 @@ line interface.
 The kernel includes an ATA driver to access the QEMU virtual machine image as
 the primary hard drive.  The driver is used to enumerate the ATA connected
 devices at boot time.  The first partition on the first device which must be
-a hard drive on the first ATA controller is used at the primary volume.
+a hard drive on the first ATA controller is used as the primary volume.
 
 Access to the ISO9660 file system resident on the ATA volume is provided
 This file system is represented with a traditional path model in the shell.
