@@ -1,3 +1,4 @@
+#include <errno.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <sys/i8259.h>
@@ -17,6 +18,25 @@ __handl(int intr) {
         rtl8139_isr();
 }
 
+int
+intr_unmask(int intr) {
+    uint8_t mask;
+
+    if (intr >= 32 && intr < 40) {
+        mask = inb(I8259_MSTR_MASK);
+        mask &= ~(0x01 << (intr - 32));
+        outb(I8259_MSTR_MASK, mask);
+        return 0;
+
+    } else if (intr >= 40 && intr < 48) {
+        mask = inb(I8259_SLV_MASK);
+        mask &= ~(0x01 << (intr - 40));
+        outb(I8259_SLV_MASK, mask);
+        return 0;
+    }
+    return EINVAL;
+}
+
 void
 intr_init() {
     /* Everything masked */
@@ -32,14 +52,20 @@ intr_init() {
     outb(I8259_SLV_MASK, I8259_SLV_DISABLE);
 
     /* Unmask timer interrupt */
+#if 0
     uint8_t mask = inb(I8259_MSTR_MASK);
     mask &= ~(0x01);
     outb(I8259_MSTR_MASK, mask);
+#endif
+    intr_unmask(INTR_TMR);
 
     /* Unmask Ethernet interrupt */
+#if 0
     mask = inb(I8259_MSTR_MASK);
     mask &= ~(0x01 << rtl8139_priv.f->irq);
     outb(I8259_MSTR_MASK, mask);
+#endif
+    intr_unmask(IRQ2INTR(rtl8139_priv.f->irq));
 }
 
 void
