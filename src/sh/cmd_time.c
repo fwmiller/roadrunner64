@@ -9,6 +9,9 @@ cmd_time() {
     printf("tick    %u\r\n", tick);
 
     uint64_t uptime = tick * tmrtick();
-    printf("uptime  %02u:%02u:%03u\r\n", uptime / (1000000 * 60),
-           (uptime / 1000000) % 60, (uptime / 1000) % 1000);
+
+    uint64_t dur = uptime / 1000;
+
+    printf("uptime  %u days %u hrs %u min %u sec\r\n", dur / (24 * 360000),
+           dur / 360000, (dur / 60000) % 60, (dur / 1000) % 60);
 }

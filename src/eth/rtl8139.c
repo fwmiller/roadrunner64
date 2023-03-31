@@ -10,6 +10,33 @@ static uint8_t hwaddr[6];
 struct rtl8139_private rtl8139_priv;
 
 static void
+rtl8139_dump_reg(uint32_t ioaddr) {
+    uint8_t reg;
+    uint32_t regl;
+
+    reg = inb(ioaddr + CR);
+    printf("cmd: 0x%02x ", reg);
+    if (reg & (1 << 4))
+        printf("RST ");
+    if (reg & (1 << 3))
+        printf("RCVEN ");
+    if (reg & (1 << 2))
+        printf("TXEN ");
+    if (reg & 1)
+        printf("BUFE ");
+    printf("\r\n");
+
+    printf("imr: 0x%04x\r\n", inw(ioaddr + IMR));
+    printf("isr: 0x%04x\r\n", inw(ioaddr + ISR));
+
+    regl = inl(ioaddr + TCR);
+    printf("tcr: 0x%08x\r\n", regl);
+
+    regl = inl(ioaddr + RCR);
+    printf("rcr: 0x%08x\r\n", regl);
+}
+
+static void
 rtl8139_init_ring() {
     int i;
 
@@ -93,6 +120,8 @@ rtl8139_init(pci_func_t f) {
     /* Start hardware */
     rtl8139_init_ring();
     rtl8139_hw_start(f->iobase);
+
+    rtl8139_dump_reg(f->iobase);
 }
 
 void

@@ -40,6 +40,10 @@ INDENT_RULES	:= -nbad -bap -nbc -bbo -hnl -br -brs -c33 -cd33 -ncdb -ce -ci4 -cl
 
 MAX_DEPTH	:= 2
 
+QEMU_DEBUG_OPTIONS := -s -d int
+QEMU_MACH_CONFIG := -m size=4 -nographic -no-reboot -drive format=raw,file=$(BUILD)/iso.img
+QEMU_NET_CONFIG := -net nic,model=rtl8139 -netdev user,id=mynet0,net=192.168.198.0/24,dhcpstart=192.168.198.9
+
 ##############################################################################
 #
 # C file sets
@@ -102,14 +106,40 @@ all: $(OBJS) $(LINKER_SCRIPT)
 	@printf "Create boot image ${CYAN}$(BOOT_IMG)${NC}\r\n"
 	@grub-mkrescue -o $(BOOT_IMG) $(ISOFILES)
 
+ETH0	:= ens33
+
+#
+# Setup for tap0 networking with QEMU
+#
+brup:
+#	ip link add name br0 type bridge
+	ip addr flush dev $(ETH0)
+	ip addr flush dev $(ETH0)
+	ip link set $(ETH0) master br0
+	ip tuntap add tap0 mode tap
+	ip link set tap0 master br0
+	ip link set up dev $(ETH0)
+	ip link set up dev tap0
+	ip link set up dev br0
+	dhclient -v br0
+
+brdown:
+	ip link set tap0 nomaster
+	ip tuntap del tap0
+	ip link set $(ETH0) nomaster
+	ip link set down dev br0
+	ip link del br0
+	ip link set up dev $(ETH0)
+	dhclient -v $(ETH0)
+
 #
 # Execute using QEMU emulator
 #
 run: all
-	@qemu-system-x86_64 -m size=8 -nographic -no-reboot -net nic,model=rtl8139 -drive format=raw,file=$(BUILD)/iso.img
+	@qemu-system-x86_64 $(QEMU_MACH_CONFIG) $(QEMU_NET_CONFIG)
 
 gdb: all
-	@qemu-system-x86_64 -s -S -d int -m size=8 -nographic -no-reboot -net nic,model=rtl8139 -net user -drive format=raw,file=$(BUILD)/iso.img
+	@qemu-system-x86_64 $(QEMU_DEBUG_OPTIONS) $(QEMU_MACH_CONFIG) $(QEMU_NET_CONFIG)
 
 clean:
 	@$(RM) $(BUILD)
