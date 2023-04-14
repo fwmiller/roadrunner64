@@ -163,25 +163,18 @@ debug:
 	@for f in $(OBJS); do echo $$f; done
 
 #
-# Assembly source file compilation
+# Source file compilation
 #
-$(BIN)/%.o: $(SRC)/asm/%.S
-	@$(MKDIR) $(BUILD)
-	@$(MKDIR) $(BIN)
-	@printf "Assembling ${CYAN}$<${NC}\r\n"
-	@$(CC) $(CFLAGS) -I$(INC) -o $@ $<
+VPATH := $(SRC) $(wildcard $(SRC)/*)
 
-#
-# C source file compilation
-#
-$(BIN)/%.o: $(SRC)/*/%.c
+$(BIN)/%.o: %.c
 	@$(MKDIR) $(BUILD)
 	@$(MKDIR) $(BIN)
 	@printf "Compiling  ${CYAN}$<${NC}\r\n"
 	@$(CC) $(CFLAGS) -I$(INC) -o $@ $<
 
-$(BIN)/%.o: $(SRC)/%.c
+$(BIN)/%.o: %.S
 	@$(MKDIR) $(BUILD)
 	@$(MKDIR) $(BIN)
-	@printf "Compiling ${CYAN}$<${NC}\r\n"
+	@printf "Assembling ${CYAN}$<${NC}\r\n"
 	@$(CC) $(CFLAGS) -I$(INC) -o $@ $<
