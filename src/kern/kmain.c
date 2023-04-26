@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/fs.h>
+#include <sys/i8259.h>
 #include <sys/intr.h>
 #include <sys/io.h>
 #include <sys/mc146818.h>
 #include <sys/pci.h>
+#include <sys/rtl8139.h>
 #include <sys/sys.h>
 #include <sys/tmr.h>
 
@@ -51,6 +53,8 @@ kmain() {
                f->irq);
 #endif
         rtl8139_init(f);
+        printf("kmain: unmask irq %d intr %d\r\n", f->irq, IRQ2INTR(f->irq));
+        intr_unmask(IRQ2INTR(rtl8139_priv.f->irq));
     }
     printf("Type ctrl-a x to exit\r\n");
     sh();

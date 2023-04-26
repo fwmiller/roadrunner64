@@ -57,15 +57,9 @@ intr_init() {
     mask &= ~(0x01);
     outb(I8259_MSTR_MASK, mask);
 #endif
-    intr_unmask(INTR_TMR);
+    printf("intr_init: unmask intr %d\r\n", INTR_TMR);
 
-    /* Unmask Ethernet interrupt */
-#if 0
-    mask = inb(I8259_MSTR_MASK);
-    mask &= ~(0x01 << rtl8139_priv.f->irq);
-    outb(I8259_MSTR_MASK, mask);
-#endif
-    intr_unmask(IRQ2INTR(rtl8139_priv.f->irq));
+    intr_unmask(INTR_TMR);
 }
 
 void

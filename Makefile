@@ -42,7 +42,7 @@ MAX_DEPTH	:= 2
 
 QEMU_DEBUG_OPTIONS := -s -d int
 QEMU_MACH_CONFIG := -m size=4 -nographic -no-reboot -drive format=raw,file=$(BUILD)/iso.img
-QEMU_NET_CONFIG := -net nic,model=rtl8139 -netdev user,id=mynet0,net=192.168.198.0/24,dhcpstart=192.168.198.9
+QEMU_NET_CONFIG := -netdev tap,id=mynet0,ifname=tap0,script=no,downscript=no -device rtl8139,netdev=mynet0,mac=26:b2:c8:eb:77:ed
 
 ##############################################################################
 #
@@ -112,8 +112,7 @@ ETH0	:= ens33
 # Setup for tap0 networking with QEMU
 #
 brup:
-#	ip link add name br0 type bridge
-	ip addr flush dev $(ETH0)
+	ip link add name br0 type bridge
 	ip addr flush dev $(ETH0)
 	ip link set $(ETH0) master br0
 	ip tuntap add tap0 mode tap
@@ -136,10 +135,10 @@ brdown:
 # Execute using QEMU emulator
 #
 run: all
-	@qemu-system-x86_64 $(QEMU_MACH_CONFIG) $(QEMU_NET_CONFIG)
+	@sudo qemu-system-x86_64 $(QEMU_MACH_CONFIG) $(QEMU_NET_CONFIG)
 
 gdb: all
-	@qemu-system-x86_64 $(QEMU_DEBUG_OPTIONS) $(QEMU_MACH_CONFIG) $(QEMU_NET_CONFIG)
+	@sudo qemu-system-x86_64 $(QEMU_DEBUG_OPTIONS) $(QEMU_MACH_CONFIG) $(QEMU_NET_CONFIG)
 
 clean:
 	@$(RM) $(BUILD)
