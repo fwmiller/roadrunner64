@@ -112,24 +112,24 @@ ETH0	:= ens33
 # Setup for tap0 networking with QEMU
 #
 brup:
-	ip link add name br0 type bridge
-	ip addr flush dev $(ETH0)
-	ip link set $(ETH0) master br0
-	ip tuntap add tap0 mode tap
-	ip link set tap0 master br0
-	ip link set up dev $(ETH0)
-	ip link set up dev tap0
-	ip link set up dev br0
-	dhclient -v br0
+	sudo ip link add name br0 type bridge
+	sudo ip addr flush dev $(ETH0)
+	sudo ip link set $(ETH0) master br0
+	sudo ip tuntap add tap0 mode tap
+	sudo ip link set tap0 master br0
+	sudo ip link set up dev $(ETH0)
+	sudo ip link set up dev tap0
+	sudo ip link set up dev br0
+	sudo dhclient -v br0
 
 brdown:
-	ip link set tap0 nomaster
-	ip tuntap del tap0
-	ip link set $(ETH0) nomaster
-	ip link set down dev br0
-	ip link del br0
-	ip link set up dev $(ETH0)
-	dhclient -v $(ETH0)
+	sudo ip link set tap0 nomaster
+	sudo ip tuntap del tap0
+	sudo ip link set $(ETH0) nomaster
+	sudo ip link set down dev br0
+	sudo ip link del br0
+	sudo ip link set up dev $(ETH0)
+	sudo dhclient -v $(ETH0)
 
 #
 # Execute using QEMU emulator

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #endif
 #include <string.h>
+#include <sys/intr.h>
 #include <sys/io.h>
 #include <sys/rtl8139.h>
 
@@ -126,7 +127,30 @@ rtl8139_init(pci_func_t f) {
 
 void
 rtl8139_isr() {
+    uint32_t ioaddr = rtl8139_priv.f->iobase;
+
 #if _DEBUG_ETH
     printf("!");
+    rtl8139_dump_reg(ioaddr);
 #endif
+
+    uint16_t isr = inw(ioaddr + ISR);
+
+    /* Clear all interrupts */
+    outw(ioaddr + ISR, 0xffff);
+#if _DEBUG_ETH
+    rtl8139_dump_reg(ioaddr);
+#endif
+
+    if ((isr & TxOK) || (isr & TxErr)) {
+        printf("tx interrupt\r\n");
+    }
+    if (isr & RxErr) {
+        printf("rx error interrupt\r\n");
+    }
+    if (isr & RxOK) {
+        printf("rx interrupt\r\n");
+    }
+    // Issue End-of-Interrupt to controller
+    intr_eoi(IRQ2INTR(rtl8139_priv.f->irq));
 }
