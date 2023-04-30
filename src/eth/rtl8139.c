@@ -128,29 +128,31 @@ rtl8139_init(pci_func_t f) {
 void
 rtl8139_isr() {
     uint32_t ioaddr = rtl8139_priv.f->iobase;
-
 #if _DEBUG_ETH
-    printf("!");
-    rtl8139_dump_reg(ioaddr);
+    printf("rtl8139_isr: ioaddr 0x%08x\r\n", ioaddr);
 #endif
-
     uint16_t isr = inw(ioaddr + ISR);
+    printf("rtl8139_isr: isr 0x%04x\r\n", isr);
 
     /* Clear all interrupts */
     outw(ioaddr + ISR, 0xffff);
-#if _DEBUG_ETH
-    rtl8139_dump_reg(ioaddr);
-#endif
 
     if ((isr & TxOK) || (isr & TxErr)) {
-        printf("tx interrupt\r\n");
+#if _DEBUG_ETH
+        printf("rtl8139_isr: tx interrupt\r\n");
+#endif
     }
     if (isr & RxErr) {
-        printf("rx error interrupt\r\n");
+#if _DEBUG_ETH
+        printf("rtl8139_isr: rx error interrupt\r\n");
+#endif
     }
     if (isr & RxOK) {
-        printf("rx interrupt\r\n");
+#if _DEBUG_ETH
+        printf("rtl8139_isr: rx interrupt\r\n");
+#endif
     }
+
     // Issue End-of-Interrupt to controller
     intr_eoi(IRQ2INTR(rtl8139_priv.f->irq));
 }

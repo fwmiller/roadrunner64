@@ -48,6 +48,7 @@
 #define enable __asm__ __volatile__("sti");
 
 void intr_init();
+int intr_unmask(int intr);
 void intr_eoi(int intr);
 
 #endif
