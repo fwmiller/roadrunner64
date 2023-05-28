@@ -10,13 +10,14 @@ static uint8_t hwaddr[6];
 
 struct rtl8139_private rtl8139_priv;
 
+void bufdump(char *buf, int size);
+
 static void
 rtl8139_dump_reg(uint32_t ioaddr) {
     uint8_t reg;
-    uint32_t regl;
 
     reg = inb(ioaddr + CR);
-    printf("cmd: 0x%02x ", reg);
+    printf("cmd    : 0x%02x (", reg);
     if (reg & (1 << 4))
         printf("RST ");
     if (reg & (1 << 3))
@@ -25,16 +26,15 @@ rtl8139_dump_reg(uint32_t ioaddr) {
         printf("TXEN ");
     if (reg & 1)
         printf("BUFE ");
-    printf("\r\n");
+    printf("\b)\r\n");
 
-    printf("imr: 0x%04x\r\n", inw(ioaddr + IMR));
-    printf("isr: 0x%04x\r\n", inw(ioaddr + ISR));
-
-    regl = inl(ioaddr + TCR);
-    printf("tcr: 0x%08x\r\n", regl);
-
-    regl = inl(ioaddr + RCR);
-    printf("rcr: 0x%08x\r\n", regl);
+    printf("isr    : 0x%04x\r\n", inw(ioaddr + ISR));
+    printf("imr    : 0x%04x\r\n", inw(ioaddr + IMR));
+    printf("tcr    : 0x%08x\r\n", inl(ioaddr + TCR));
+    printf("rcr    : 0x%08x\r\n", inl(ioaddr + RCR));
+    printf("rbstart: 0x%08x\r\n", inl(ioaddr + RBSTART));
+    printf("capr   : 0x%04x\r\n", inw(ioaddr + CAPR));
+    printf("cbr    : 0x%04x\r\n", inw(ioaddr + CBR));
 }
 
 static void
@@ -59,8 +59,6 @@ rtl8139_chip_reset(uint32_t ioaddr) {
 
 static void
 rtl8139_hw_start(uint32_t ioaddr) {
-    unsigned int i;
-
     rtl8139_chip_reset(ioaddr);
     outb(ioaddr + CR, CmdTxEnb | CmdRxEnb);  // enable tx and rx
 
@@ -78,7 +76,7 @@ rtl8139_hw_start(uint32_t ioaddr) {
          ((1 << 12) | (6 << 8) | (1 << 7) | (1 << 3) | (1 << 2) | (1 << 1)));
 
     /* set tx descriptor buffer DMA addresses */
-    for (i = 0; i < NUM_TX_DESC; i++)
+    for (unsigned i = 0; i < NUM_TX_DESC; i++)
         outl(ioaddr + TSAD0 + (i * 4),
              rtl8139_priv.tx_bufs_dma +
                  (rtl8139_priv.tx_buf[i] - rtl8139_priv.tx_bufs));
@@ -103,6 +101,14 @@ rtl8139_init(pci_func_t f) {
 
     rtl8139_priv.tx_bufs_dma = rtl8139_priv.tx_bufs;
     rtl8139_priv.rx_ring_dma = rtl8139_priv.rx_ring;
+#if _DEBUG_ETH
+    printf("rtl8139: tx_bufs 0x%08x  tx_bufs_dma 0x%08x\r\n",
+           rtl8139_priv.tx_bufs, rtl8139_priv.tx_bufs_dma);
+    printf("rtl8139: rx_ring 0x%08x  rx_ring_dma 0x%08x\r\n",
+           rtl8139_priv.rx_ring, rtl8139_priv.rx_ring_dma);
+    printf("rtl8139: capr 0x%04x cbr 0x%04x\r\n", inw(f->iobase + CAPR),
+           inw(f->iobase + CBR));
+#endif
 
     /* Get Ethernet MAC address */
     for (int i = 0; i < 6; i++)
@@ -120,19 +126,24 @@ rtl8139_init(pci_func_t f) {
 
     /* Start hardware */
     rtl8139_init_ring();
-    rtl8139_hw_start(f->iobase);
 
+    /* Enable PCI Bus Mastering */
+    uint32_t pcr =
+        pci_config_read(f->bus, f->dev, f->func, PCI_CONFIG_CMD_STAT);
+    if (!(pcr & (1 << 2))) {
+        pcr |= (1 << 2);
+        pci_config_writel(f->bus, f->dev, f->func, PCI_CONFIG_CMD_STAT, pcr);
+    }
+    rtl8139_hw_start(f->iobase);
+#if _DEBUG_ETH
     rtl8139_dump_reg(f->iobase);
+#endif
 }
 
 void
 rtl8139_isr() {
     uint32_t ioaddr = rtl8139_priv.f->iobase;
-#if _DEBUG_ETH
-    printf("rtl8139_isr: ioaddr 0x%08x\r\n", ioaddr);
-#endif
     uint16_t isr = inw(ioaddr + ISR);
-    printf("rtl8139_isr: isr 0x%04x\r\n", isr);
 
     /* Clear all interrupts */
     outw(ioaddr + ISR, 0xffff);
@@ -148,11 +159,35 @@ rtl8139_isr() {
 #endif
     }
     if (isr & RxOK) {
-#if _DEBUG_ETH
-        printf("rtl8139_isr: rx interrupt\r\n");
-#endif
-    }
+        uint32_t rx_status;
+        uint16_t rx_size;
+        uint16_t pkt_size;
 
-    // Issue End-of-Interrupt to controller
+        while ((inb(ioaddr + CR) & RxBufEmpty) == 0) {
+            if (rtl8139_priv.cur_rx > RX_BUF_LEN)
+                rtl8139_priv.cur_rx = rtl8139_priv.cur_rx % RX_BUF_LEN;
+
+            rx_status =
+                *((uint32_t *) (rtl8139_priv.rx_ring + rtl8139_priv.cur_rx));
+            rx_size = rx_status >> 16;
+            pkt_size = rx_size - 4;
+#if _DEBUG_ETH
+            printf("rtl8139_isr: ");
+            printf("rx_status 0x%08x rx_size %u\r\n", rx_status, rx_size);
+            rtl8139_dump_reg(ioaddr);
+            bufdump(rtl8139_priv.rx_ring + rtl8139_priv.cur_rx, rx_size);
+#endif
+            rtl8139_priv.cur_rx =
+                (rtl8139_priv.cur_rx + rx_size + 4 + 3) & ~3;
+            outw(ioaddr + CAPR, rtl8139_priv.cur_rx - 16);
+#if _DEBUG_ETH
+            printf("rtl8139_isr: capr 0x%04x\r\n", inw(ioaddr + CAPR));
+#endif
+        }
+    }
+    // Issue End-of-Interrupt
     intr_eoi(IRQ2INTR(rtl8139_priv.f->irq));
+#if _DEBUG_ETH
+    rtl8139_dump_reg(ioaddr);
+#endif
 }

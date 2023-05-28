@@ -21,6 +21,7 @@
 #define RBSTART 0x30
 #define CR 0x37
 #define CAPR 0x38
+#define CBR 0x3A
 #define IMR 0x3C
 #define ISR 0x3E
 #define TCR 0x40

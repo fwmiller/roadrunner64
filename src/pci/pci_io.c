@@ -7,3 +7,10 @@ pci_config_read(int bus, int dev, int func, int dword) {
                            (func << 8) | (dword << 2)));
     return inl(PCI_CONFIG_DATA);
 }
+
+void
+pci_config_writel(int bus, int dev, int func, int dword, uint32_t val) {
+    outl(PCI_CONFIG_ADDR, ((uint32_t) 0x80000000 | (bus << 16) | (dev << 11) |
+                           (func << 8) | (dword << 2)));
+    outl(PCI_CONFIG_DATA, val);
+}
