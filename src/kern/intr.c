@@ -57,8 +57,6 @@ intr_init() {
     mask &= ~(0x01);
     outb(I8259_MSTR_MASK, mask);
 #endif
-    printf("intr_init: unmask intr %d\r\n", INTR_TMR);
-
     intr_unmask(INTR_TMR);
 }
 
@@ -67,7 +65,7 @@ intr_eoi(int intr) {
     if (intr < 32 || intr > 47)
         return;
 
-    if (intr >= 32 || intr < 40)
+    if (intr >= 32 && intr < 40)
         outb(I8259_MSTR_CTRL, (intr - 32) + I8259_EOI_TMR);
     else {
         outb(I8259_SLV_CTRL, (intr - 40) + I8259_EOI_TMR);

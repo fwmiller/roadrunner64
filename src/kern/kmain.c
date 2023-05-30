@@ -53,7 +53,9 @@ kmain() {
                f->irq);
 #endif
         rtl8139_init(f);
+#if _DEBUG_PCI
         printf("kmain: unmask irq %d intr %d\r\n", f->irq, IRQ2INTR(f->irq));
+#endif
         intr_unmask(IRQ2INTR(rtl8139_priv.f->irq));
     }
     printf("Type ctrl-a x to exit\r\n");

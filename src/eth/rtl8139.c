@@ -2,6 +2,7 @@
 #include <stdio.h>
 #endif
 #include <string.h>
+#include <sys/i8259.h>
 #include <sys/intr.h>
 #include <sys/io.h>
 #include <sys/rtl8139.h>
@@ -36,6 +37,34 @@ rtl8139_dump_reg(uint32_t ioaddr) {
     printf("capr   : 0x%04x\r\n", inw(ioaddr + CAPR));
     printf("cbr    : 0x%04x\r\n", inw(ioaddr + CBR));
 }
+
+#if 0
+static void
+rtl8139_dump_rx_status(uint16_t rx_status) {
+    printf("rx_status 0x%04x (", rx_status);
+    if (rx_status & SysErr)
+        printf("SysErr ");
+    if (rx_status & TimeOut)
+        printf("TimeOut ");
+    if (rx_status & CableLen)
+        printf("CableLen ");
+    if (rx_status & RxFIFOOver)
+        printf("RxFIFOOver ");
+    if (rx_status & RxUnderrun)
+        printf("RxUnderrun ");
+    if (rx_status & RxOverFlow)
+        printf("RxOverFlow ");
+    if (rx_status & TxErr)
+        printf("TxErr ");
+    if (rx_status & TxOK)
+        printf("TxOK ");
+    if (rx_status & RxErr)
+        printf("RxErr ");
+    if (rx_status & RxOK)
+        printf("RxOK ");
+    printf("\b)");
+}
+#endif
 
 static void
 rtl8139_init_ring() {
@@ -101,7 +130,7 @@ rtl8139_init(pci_func_t f) {
 
     rtl8139_priv.tx_bufs_dma = rtl8139_priv.tx_bufs;
     rtl8139_priv.rx_ring_dma = rtl8139_priv.rx_ring;
-#if _DEBUG_ETH
+#if 0
     printf("rtl8139: tx_bufs 0x%08x  tx_bufs_dma 0x%08x\r\n",
            rtl8139_priv.tx_bufs, rtl8139_priv.tx_bufs_dma);
     printf("rtl8139: rx_ring 0x%08x  rx_ring_dma 0x%08x\r\n",
@@ -145,9 +174,6 @@ rtl8139_isr() {
     uint32_t ioaddr = rtl8139_priv.f->iobase;
     uint16_t isr = inw(ioaddr + ISR);
 
-    /* Clear all interrupts */
-    outw(ioaddr + ISR, 0xffff);
-
     if ((isr & TxOK) || (isr & TxErr)) {
 #if _DEBUG_ETH
         printf("rtl8139_isr: tx interrupt\r\n");
@@ -159,35 +185,44 @@ rtl8139_isr() {
 #endif
     }
     if (isr & RxOK) {
-        uint32_t rx_status;
+#if 0
+        uint16_t rx_status;
+#endif
         uint16_t rx_size;
+#if 0
         uint16_t pkt_size;
+#endif
 
         while ((inb(ioaddr + CR) & RxBufEmpty) == 0) {
-            if (rtl8139_priv.cur_rx > RX_BUF_LEN)
-                rtl8139_priv.cur_rx = rtl8139_priv.cur_rx % RX_BUF_LEN;
-
+#if 0
             rx_status =
-                *((uint32_t *) (rtl8139_priv.rx_ring + rtl8139_priv.cur_rx));
-            rx_size = rx_status >> 16;
+                *((uint16_t *) (rtl8139_priv.rx_ring + rtl8139_priv.cur_rx));
+#endif
+            rx_size = *((uint16_t *) (rtl8139_priv.rx_ring +
+                                      rtl8139_priv.cur_rx + 2));
+#if 0
             pkt_size = rx_size - 4;
-#if _DEBUG_ETH
+
             printf("rtl8139_isr: ");
-            printf("rx_status 0x%08x rx_size %u\r\n", rx_status, rx_size);
+            rtl8139_dump_rx_status(rx_status);
+            printf(" rx_size %u\r\n", rx_size);
             rtl8139_dump_reg(ioaddr);
-            bufdump(rtl8139_priv.rx_ring + rtl8139_priv.cur_rx, rx_size);
+#endif
+#if _DEBUG_ETH
+            bufdump((char *) rtl8139_priv.rx_ring + rtl8139_priv.cur_rx,
+                    rx_size);
 #endif
             rtl8139_priv.cur_rx =
                 (rtl8139_priv.cur_rx + rx_size + 4 + 3) & ~3;
+            rtl8139_priv.cur_rx = rtl8139_priv.cur_rx % RX_BUF_LEN;
+
             outw(ioaddr + CAPR, rtl8139_priv.cur_rx - 16);
-#if _DEBUG_ETH
-            printf("rtl8139_isr: capr 0x%04x\r\n", inw(ioaddr + CAPR));
+#if 0
+            printf("rtl8139_isr: cur_rx 0x%04x capr 0x%04x\r\n",
+                   rtl8139_priv.cur_rx, inw(ioaddr + CAPR));
 #endif
         }
     }
-    // Issue End-of-Interrupt
-    intr_eoi(IRQ2INTR(rtl8139_priv.f->irq));
-#if _DEBUG_ETH
-    rtl8139_dump_reg(ioaddr);
-#endif
+    /* Clear all interrupts */
+    outw(ioaddr + ISR, 0xffff);
 }
