@@ -13,7 +13,7 @@ the primary hard drive.  The driver is used to enumerate the ATA connected
 devices at boot time.  The first partition on the first device which must be
 a hard drive on the first ATA controller is used as the primary volume.
 
-Access to the ISO9660 file system resident on the ATA volume is provided
+Access to the ISO9660 file system resident on the ATA volume is provided.
 This file system is represented with a traditional path model in the shell.
 It is also available through a standard POSIX open/close/read/write interface.
 

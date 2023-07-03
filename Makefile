@@ -96,8 +96,10 @@ WHITE	:= \033[0;37m
 .PHONY: run clean indent wc debug
 
 all: $(OBJS) $(LINKER_SCRIPT)
+	@printf "Copying LWIP library\r\n"
+	@cp ../lwip/build/liblwip.a build
 	@printf "Linking ${CYAN}$(KERNEL)${NC}\r\n"
-	@$(LD) $(LDFLAGS) -o $(KERNEL) $(OBJS)
+	@$(LD) $(LDFLAGS) -o $(KERNEL) build/liblwip.a $(OBJS)
 	@printf "Setup target file system ${CYAN}$(ISOFILES)${NC}\r\n"
 	@$(MKDIR) $(ISOFILES)/boot/grub
 	@$(CP) $(KERNEL) $(ISOFILES)/boot

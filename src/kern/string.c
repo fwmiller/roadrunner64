@@ -86,7 +86,7 @@ memset(void *b, int c, size_t n) {
 }
 
 void *
-memcpy(void *dest, void *src, size_t n) {
+memcpy(void *dest, const void *src, size_t n) {
     int i;
 
     if (dest == NULL || src == NULL)
@@ -95,5 +95,16 @@ memcpy(void *dest, void *src, size_t n) {
     for (i = 0; i < (int) n; i++)
         ((char *) dest)[i] = ((char *) src)[i];
 
+    return dest;
+}
+
+void *
+memmove(void *dest, const void *src, size_t n) {
+    /*
+     * XXX This implementation is not correct.  The src buffer needs
+     * to be copied to a third buffer then back to the destination
+     * buffer.
+     */
+    memcpy(dest, src, n);
     return dest;
 }
