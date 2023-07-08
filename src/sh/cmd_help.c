@@ -30,5 +30,7 @@ cmd_help() {
     printf("\r\n");
     printf("time\r\n");
     printf("  Print time\r\n");
+    printf("tsc\r\n");
+    printf("  Print current Pentium timestamp counter value\r\n");
     printf("\r\n");
 }

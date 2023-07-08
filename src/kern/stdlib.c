@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <sys/tsc.h>
 
 int
 atoi(const char *nptr) {
@@ -17,6 +18,5 @@ atoll(const char *nptr) {
 
 int
 rand(void) {
-    /* XXX Fixme */
-    return 0;
+    return tscread();
 }
