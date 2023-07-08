@@ -97,9 +97,9 @@ WHITE	:= \033[0;37m
 
 all: $(OBJS) $(LINKER_SCRIPT)
 	@printf "Copying LWIP library\r\n"
-	@cp ../lwip/build/liblwip.a build
+	@cp ../roadrunner64-lwip/build/liblwip.a build
 	@printf "Linking ${CYAN}$(KERNEL)${NC}\r\n"
-	@$(LD) $(LDFLAGS) -o $(KERNEL) build/liblwip.a $(OBJS)
+	@$(LD) $(LDFLAGS) -o $(KERNEL) $(OBJS) build/liblwip.a
 	@printf "Setup target file system ${CYAN}$(ISOFILES)${NC}\r\n"
 	@$(MKDIR) $(ISOFILES)/boot/grub
 	@$(CP) $(KERNEL) $(ISOFILES)/boot

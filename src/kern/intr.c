@@ -51,12 +51,6 @@ intr_init() {
     outb(I8259_MSTR_MASK, I8259_MSTR_DISABLE);
     outb(I8259_SLV_MASK, I8259_SLV_DISABLE);
 
-    /* Unmask timer interrupt */
-#if 0
-    uint8_t mask = inb(I8259_MSTR_MASK);
-    mask &= ~(0x01);
-    outb(I8259_MSTR_MASK, mask);
-#endif
     intr_unmask(INTR_TMR);
 }
 

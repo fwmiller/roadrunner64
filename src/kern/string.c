@@ -108,3 +108,15 @@ memmove(void *dest, const void *src, size_t n) {
     memcpy(dest, src, n);
     return dest;
 }
+
+int
+memcmp(const void *s1, const void *s2, size_t n) {
+    register const unsigned char *p1 = (const unsigned char *) s1;
+    register const unsigned char *p2 = (const unsigned char *) s2;
+
+    while (n-- > 0) {
+        if (*p1++ != *p2++)
+            return p1[-1] < p2[-1] ? -1 : 1;
+    }
+    return 0;
+}

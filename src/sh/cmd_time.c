@@ -13,5 +13,5 @@ cmd_time() {
     uint64_t dur = uptime / 1000;
 
     printf("uptime  %u days %u hrs %u min %u sec\r\n", dur / (24 * 360000),
-           dur / 360000, (dur / 60000) % 60, (dur / 1000) % 60);
+           (dur / 360000) % 24, (dur / 60000) % 60, (dur / 1000) % 60);
 }

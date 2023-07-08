@@ -14,6 +14,7 @@ void word_widths();
 void sh();
 
 void rtl8139_init(pci_func_t f);
+void lwip_init(void);
 
 static unsigned
 get_cmos_memsize() {
@@ -58,6 +59,8 @@ kmain() {
 #endif
         intr_unmask(IRQ2INTR(rtl8139_priv.f->irq));
     }
+    lwip_init();
+
     printf("Type ctrl-a x to exit\r\n");
     sh();
 }

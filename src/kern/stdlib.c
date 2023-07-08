@@ -14,3 +14,9 @@ long long
 atoll(const char *nptr) {
     return 0;
 }
+
+int
+rand(void) {
+    /* XXX Fixme */
+    return 0;
+}

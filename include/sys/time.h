@@ -5,4 +5,6 @@
 
 extern uint64_t tick;
 
+uint32_t sys_now(void);
+
 #endif
