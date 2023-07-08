@@ -37,16 +37,25 @@ void
 kmain() {
     printf("\r\nRoadrunner 64-bit\r\n");
 
+    /* Initialize the i8259 interrupt controllers */
     intr_init();
+
+    /* Initialize the i8254 real-time clock to generate a tick */
     tmrstart(tmrcount(0));
+
+    /* Enable interrupts */
     enable;
 
     word_widths();
     get_cmos_memsize();
+
+    /* Iniitialize access to the PCI busses */
     pci_init();
+
+    /* Initialize file system access */
     fs_init();
 
-    /* Ethernet device */
+    /* Initialize Ethernet device */
     pci_func_t f = pci_lookup(PCI_CLASS_NETWORK, PCI_NETWORK_ETHERNET);
     if (f != NULL) {
 #if _DEBUG_PCI
@@ -59,8 +68,10 @@ kmain() {
 #endif
         intr_unmask(IRQ2INTR(rtl8139_priv.f->irq));
     }
+    /* Initialize LWIP Internet procotols stack */
     lwip_init();
 
+    /* Start shell */
     printf("Type ctrl-a x to exit\r\n");
     sh();
 }

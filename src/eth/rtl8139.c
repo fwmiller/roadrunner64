@@ -164,7 +164,7 @@ rtl8139_init(pci_func_t f) {
         pci_config_writel(f->bus, f->dev, f->func, PCI_CONFIG_CMD_STAT, pcr);
     }
     rtl8139_hw_start(f->iobase);
-#if _DEBUG_ETH
+#if 0
     rtl8139_dump_reg(f->iobase);
 #endif
 }
