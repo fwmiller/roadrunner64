@@ -33,6 +33,8 @@ CFLAGS		:= -c -Wall -m64 -Og -nostdinc -ffreestanding
 CFLAGS		+= -D_DEBUG_ETH
 #CFLAGS		+= -D_DEBUG_SHELL
 
+INCLUDES	:= -I$(INC) -I$${HOME}/roadrunner64-lwip/src/include
+
 LINKER_SCRIPT	:= $(SRC)/kern/link.ld
 LDFLAGS		:= -nostdlib -Wl,-n,-T,$(LINKER_SCRIPT) -no-pie
 
@@ -172,10 +174,10 @@ $(BIN)/%.o: %.c
 	@$(MKDIR) $(BUILD)
 	@$(MKDIR) $(BIN)
 	@printf "Compiling  ${CYAN}$<${NC}\r\n"
-	@$(CC) $(CFLAGS) -I$(INC) -o $@ $<
+	@$(CC) $(CFLAGS) $(INCLUDES) -o $@ $<
 
 $(BIN)/%.o: %.S
 	@$(MKDIR) $(BUILD)
 	@$(MKDIR) $(BIN)
 	@printf "Assembling ${CYAN}$<${NC}\r\n"
-	@$(CC) $(CFLAGS) -I$(INC) -o $@ $<
+	@$(CC) $(CFLAGS) $(INCLUDES) -o $@ $<

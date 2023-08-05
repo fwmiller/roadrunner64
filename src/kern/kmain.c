@@ -10,6 +10,9 @@
 #include <sys/sys.h>
 #include <sys/tmr.h>
 
+#include <lwip/ip.h>
+#include <lwip/tcpip.h>
+
 void word_widths();
 void sh();
 
@@ -69,6 +72,16 @@ kmain() {
         intr_unmask(IRQ2INTR(rtl8139_priv.f->irq));
     }
     /* Initialize LWIP Internet procotols stack */
+    struct netif netif;
+    struct ip_addr ip;
+    struct ip_addr nm;
+    struct ip_addr gw;
+
+    memset(&netif, 0, sizeof(struct netif));
+    memset(&ip, 0, sizeof(struct ip_addr));
+    memset(&nm, 0, sizeof(struct ip_addr));
+    memset(&gw, 0, sizeof(struct ip_addr));
+
     lwip_init();
 
     /* Start shell */
