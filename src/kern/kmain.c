@@ -73,16 +73,24 @@ kmain() {
     }
     /* Initialize LWIP Internet procotols stack */
     struct netif netif;
+    struct ip_addr gw;
     struct ip_addr ip;
     struct ip_addr nm;
-    struct ip_addr gw;
 
     memset(&netif, 0, sizeof(struct netif));
+    memset(&gw, 0, sizeof(struct ip_addr));
     memset(&ip, 0, sizeof(struct ip_addr));
     memset(&nm, 0, sizeof(struct ip_addr));
-    memset(&gw, 0, sizeof(struct ip_addr));
 
     lwip_init();
+
+    IP4_ADDR(&gw, 192,168,198.1);
+    IP4_ADDR(&ip, 192,168,198.192);
+    IP4_ADDR(&nm, 255,255,255.0);
+
+    netif_add(&netif, &ip, &nm, &gw, NULL, , );
+    netif_set_default(&netif);
+    netif_set_up(&netif);
 
     /* Start shell */
     printf("Type ctrl-a x to exit\r\n");
