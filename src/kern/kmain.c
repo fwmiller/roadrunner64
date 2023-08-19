@@ -19,6 +19,13 @@ void sh();
 void rtl8139_init(pci_func_t f);
 void lwip_init(void);
 
+err_t
+ethernet_init(struct netif *netif) {
+    return ERR_VAL;
+}
+
+err_t ethernet_input(struct pbuf *p, struct netif *netif);
+
 static unsigned
 get_cmos_memsize() {
     unsigned short total;
@@ -84,11 +91,11 @@ kmain() {
 
     lwip_init();
 
-    IP4_ADDR(&gw, 192,168,198.1);
-    IP4_ADDR(&ip, 192,168,198.192);
-    IP4_ADDR(&nm, 255,255,255.0);
+    IP_ADDR4(&gw, 192, 168, 198, 1);
+    IP_ADDR4(&ip, 192, 168, 198, 192);
+    IP_ADDR4(&nm, 255, 255, 255, 0);
 
-    netif_add(&netif, &ip, &nm, &gw, NULL, , );
+    netif_add(&netif, &ip, &nm, &gw, NULL, ethernet_init, ethernet_input);
     netif_set_default(&netif);
     netif_set_up(&netif);
 
