@@ -7,6 +7,7 @@ SRC		:= src
 BUILD		:= build
 BIN		:= $(BUILD)/obj
 ISOFILES	:= $(BUILD)/isofiles
+LWIP		:= $${HOME}/roadrunner64-lwip
 
 ##############################################################################
 #
@@ -33,7 +34,8 @@ CFLAGS		:= -c -Wall -m64 -Og -nostdinc -ffreestanding
 CFLAGS		+= -D_DEBUG_ETH
 #CFLAGS		+= -D_DEBUG_SHELL
 
-INCLUDES	:= -I$(INC) -I$${HOME}/roadrunner64-lwip/src/include
+LWIP_INCLUDE	:= $(LWIP)/src/include
+INCLUDES	:= -I$(INC) -I$(LWIP_INCLUDE)
 
 LINKER_SCRIPT	:= $(SRC)/kern/link.ld
 LDFLAGS		:= -nostdlib -Wl,-n,-T,$(LINKER_SCRIPT) -no-pie
