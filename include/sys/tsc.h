@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+extern "C" {
 int32_t tscread(void);
+}
 
 #endif

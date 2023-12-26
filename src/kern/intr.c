@@ -7,8 +7,9 @@
 #include <sys/rtl8139.h>
 #include <sys/time.h>
 
+extern "C" {
 void
-__handl(int intr) {
+handl(int intr) {
     intr_eoi(intr);
 
     if (intr == INTR_TMR)
@@ -16,6 +17,7 @@ __handl(int intr) {
 
     if (intr == IRQ2INTR(rtl8139_priv.f->irq))
         rtl8139_isr();
+}
 }
 
 int

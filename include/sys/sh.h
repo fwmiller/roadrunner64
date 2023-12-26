@@ -23,7 +23,9 @@ void cmd_hexdump(char *pwd, char *cmdline, int *pos);
 void cmd_ls(char *pwd, char *cmdline, int *pos);
 void cmd_cd(char *pwd, int pwdlen, char *cmdline, int *pos);
 void cmd_ft();
+extern "C" {
 void cmd_stack();
+}
 void cmd_pci();
 void cmd_time();
 void cmd_tsc();

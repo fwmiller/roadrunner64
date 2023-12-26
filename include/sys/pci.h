@@ -8,7 +8,7 @@ struct pci_func {
     int bus, dev, func; /* Function logical address */
     uint16_t vendorid;  /* Vendor id */
     uint16_t deviceid;  /* Device id */
-    uint8_t class;      /* Device class */
+    uint8_t devclass;   /* Device class */
     uint8_t subclass;   /* Device subclass */
     uint32_t iobase;    /* I/O registers base addr */
     int irq;            /* Interrupt number */
@@ -22,7 +22,7 @@ struct pci_config {
     uint8_t rev;
     uint8_t progif;
     uint8_t subclass;
-    uint8_t class;
+    uint8_t devclass;
     uint8_t cachelinesize;
     uint8_t latency;
     uint8_t hdrtype;
@@ -44,6 +44,6 @@ extern int pcifuncs;
 uint32_t pci_config_read(int bus, int dev, int func, int dword);
 void pci_config_writel(int bus, int dev, int func, int dword, uint32_t val);
 void pci_init();
-pci_func_t pci_lookup(uint8_t class, uint8_t subclass);
+pci_func_t pci_lookup(uint8_t devclass, uint8_t subclass);
 
 #endif

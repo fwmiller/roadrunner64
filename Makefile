@@ -7,15 +7,14 @@ SRC		:= src
 BUILD		:= build
 BIN		:= $(BUILD)/obj
 ISOFILES	:= $(BUILD)/isofiles
-LWIP		:= $${HOME}/roadrunner64-lwip
 
 ##############################################################################
 #
 # Tools
 #
 MKDIR		:= mkdir -p
-CC		:= gcc
-LD		:= gcc
+CC		:= g++
+LD		:= g++
 CP		:= cp
 RM		:= rm -fr
 
@@ -24,6 +23,8 @@ RM		:= rm -fr
 # Tool options
 #
 CFLAGS		:= -c -Wall -m64 -Og -nostdinc -ffreestanding
+CFLAGS		+= -std=c++11
+CFLAGS		+= -fpermissive -Wno-write-strings
 #CFLAGS		+= -g
 
 # Debug options
@@ -34,8 +35,7 @@ CFLAGS		:= -c -Wall -m64 -Og -nostdinc -ffreestanding
 CFLAGS		+= -D_DEBUG_ETH
 #CFLAGS		+= -D_DEBUG_SHELL
 
-LWIP_INCLUDE	:= $(LWIP)/src/include
-INCLUDES	:= -I$(INC) -I$(LWIP_INCLUDE)
+INCLUDES	:= -I$(INC)
 
 LINKER_SCRIPT	:= $(SRC)/kern/link.ld
 LDFLAGS		:= -nostdlib -Wl,-n,-T,$(LINKER_SCRIPT) -no-pie
@@ -100,10 +100,8 @@ WHITE	:= \033[0;37m
 .PHONY: run clean indent wc debug
 
 all: $(OBJS) $(LINKER_SCRIPT)
-	@printf "Copying LWIP library\r\n"
-	@cp ../roadrunner64-lwip/build/liblwip.a build
 	@printf "Linking ${CYAN}$(KERNEL)${NC}\r\n"
-	@$(LD) $(LDFLAGS) -o $(KERNEL) $(OBJS) build/liblwip.a
+	@$(LD) $(LDFLAGS) -o $(KERNEL) $(OBJS)
 	@printf "Setup target file system ${CYAN}$(ISOFILES)${NC}\r\n"
 	@$(MKDIR) $(ISOFILES)/boot/grub
 	@$(CP) $(KERNEL) $(ISOFILES)/boot

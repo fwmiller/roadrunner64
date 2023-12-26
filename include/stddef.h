@@ -7,7 +7,9 @@
 #define offsetof(st, m) __builtin_offsetof(st, m)
 
 typedef int64_t ptrdiff_t;
+#if 0
 typedef uint16_t wchar_t;
+#endif
 typedef uint64_t size_t;
 
 #endif

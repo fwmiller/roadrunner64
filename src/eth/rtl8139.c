@@ -212,11 +212,18 @@ rtl8139_isr() {
             bufdump((char *) rtl8139_priv.rx_ring + rtl8139_priv.cur_rx,
                     rx_size);
 #endif
+            /* Get a pbuf */
+
+            /* Copy packet data into pbuf */
+
+            /* Reuse the ring buffer */
             rtl8139_priv.cur_rx =
                 (rtl8139_priv.cur_rx + rx_size + 4 + 3) & ~3;
             rtl8139_priv.cur_rx = rtl8139_priv.cur_rx % RX_BUF_LEN;
-
             outw(ioaddr + CAPR, rtl8139_priv.cur_rx - 16);
+
+            /* Pass pbuf up the LWIP stack */
+
 #if 0
             printf("rtl8139_isr: cur_rx 0x%04x capr 0x%04x\r\n",
                    rtl8139_priv.cur_rx, inw(ioaddr + CAPR));

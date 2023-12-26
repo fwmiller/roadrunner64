@@ -10,21 +10,10 @@
 #include <sys/sys.h>
 #include <sys/tmr.h>
 
-#include <lwip/ip.h>
-#include <lwip/tcpip.h>
-
 void word_widths();
 void sh();
 
 void rtl8139_init(pci_func_t f);
-void lwip_init(void);
-
-err_t
-ethernet_init(struct netif *netif) {
-    return ERR_VAL;
-}
-
-err_t ethernet_input(struct pbuf *p, struct netif *netif);
 
 static unsigned
 get_cmos_memsize() {
@@ -43,6 +32,7 @@ get_cmos_memsize() {
     return total;
 }
 
+extern "C" {
 void
 kmain() {
     printf("\r\nRoadrunner 64-bit\r\n");
@@ -78,28 +68,9 @@ kmain() {
 #endif
         intr_unmask(IRQ2INTR(rtl8139_priv.f->irq));
     }
-    /* Initialize LWIP Internet procotols stack */
-    struct netif netif;
-    struct ip_addr gw;
-    struct ip_addr ip;
-    struct ip_addr nm;
-
-    memset(&netif, 0, sizeof(struct netif));
-    memset(&gw, 0, sizeof(struct ip_addr));
-    memset(&ip, 0, sizeof(struct ip_addr));
-    memset(&nm, 0, sizeof(struct ip_addr));
-
-    lwip_init();
-
-    IP_ADDR4(&gw, 192, 168, 198, 1);
-    IP_ADDR4(&ip, 192, 168, 198, 192);
-    IP_ADDR4(&nm, 255, 255, 255, 0);
-
-    netif_add(&netif, &ip, &nm, &gw, NULL, ethernet_init, ethernet_input);
-    netif_set_default(&netif);
-    netif_set_up(&netif);
 
     /* Start shell */
     printf("Type ctrl-a x to exit\r\n");
     sh();
+}
 }

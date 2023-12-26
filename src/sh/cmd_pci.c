@@ -5,7 +5,7 @@
 #define PCI_HDR "bus dev vendor     class      iobase     irq"
 
 void dump_pci_vendorid(uint32_t vendorid);
-void dump_pci_class(uint8_t class);
+void dump_pci_class(uint8_t devclass);
 
 void
 cmd_pci() {
@@ -16,7 +16,7 @@ cmd_pci() {
         printf("%3d %3d ", f->bus, f->dev);
         dump_pci_vendorid(f->vendorid);
         printf(" ");
-        dump_pci_class(f->class);
+        dump_pci_class(f->devclass);
 
         if (f->iobase > 0)
             printf(" 0x%08x", f->iobase);

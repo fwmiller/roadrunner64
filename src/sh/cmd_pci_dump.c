@@ -37,8 +37,8 @@ dump_pci_vendorid(uint32_t vendorid) {
 }
 
 void
-dump_pci_class(uint8_t class) {
-    switch (class) {
+dump_pci_class(uint8_t devclass) {
+    switch (devclass) {
     case PCI_CLASS_PRE:
         printf("Pre       ");
         break;

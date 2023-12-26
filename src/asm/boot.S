@@ -300,12 +300,12 @@ no_SSE:
 	jmp	error
 
 	.code64
-	.extern __handl
+	.extern handl
 #define ISR(INTR)			\
 	cli;				\
 	pushq	%rdi;			\
 	movq	$INTR, %rdi;		\
-	call	__handl;		\
+	call	handl;			\
 	popq	%rdi;			\
 	sti;				\
 	iretq;

@@ -11,7 +11,7 @@ static void
 pci_scan_bus(int bus, int *pcifunc) {
     uint32_t dword, iobase;
     uint16_t vendorid, deviceid;
-    uint8_t class, subclass;
+    uint8_t devclass, subclass;
 #if _DEBUG_PCI
     uint8_t intrpin;
 #endif
@@ -30,10 +30,10 @@ pci_scan_bus(int bus, int *pcifunc) {
 #endif
             /* Function class code */
             dword = pci_config_read(bus, dev, 0, PCI_CONFIG_CLASS_REV);
-            class = dword >> 24;
+            devclass = dword >> 24;
             subclass = (dword >> 16) & 0xff;
 #if _DEBUG_PCI
-            printf("class 0x%02x sub 0x%02x", class, subclass);
+            printf("class 0x%02x sub 0x%02x", devclass, subclass);
 #endif
             /* Function iobase addresses */
             for (iobase = 0, i = 0; i < 6; i++) {
@@ -63,7 +63,7 @@ pci_scan_bus(int bus, int *pcifunc) {
             f->dev = dev;
             f->func = 0;
             f->vendorid = (uint16_t) vendorid;
-            f->class = class;
+            f->devclass = devclass;
             f->subclass = subclass;
             f->deviceid = deviceid;
             f->iobase = iobase;
