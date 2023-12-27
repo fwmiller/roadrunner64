@@ -27,7 +27,7 @@ atapi_identify(atad_t atad, char *drvstr) {
     ata_wait(atad->atac, ATA_CMD_READ, ATA_STAT_DRQ);
 
     /* Read parameter data */
-    insw(atad->atac->iobase + ATA_DATA, (void *) &(atad->param),
+    insw(atad->atac->iobase + ATA_DATA, (uint16_t *) &(atad->param),
          SECTOR_SIZE / 2);
 #if _DEBUG_ATA
     ata_convert_string(atad->param.model, 20);

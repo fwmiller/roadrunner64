@@ -10,7 +10,8 @@
 ssize_t
 read(int fd, void *buf, size_t count) {
     fd_t f;
-    int n, nleft, bufpos, len;
+    int nleft, bufpos, len;
+    unsigned n;
 
     if (buf == NULL)
         return EFAIL;
@@ -19,7 +20,7 @@ read(int fd, void *buf, size_t count) {
         return EBADF;
 
     f = &(filetab[fd]);
-    for (n = 0, nleft = count; f->pos < f->size && nleft > 0;) {
+    for (n = 0, nleft = count; (unsigned) f->pos < f->size && nleft > 0;) {
 #if _DEBUG
         printf("\r\nread: f->pos %d f->size %d f->lba %u f->curr_lba %u\r\n",
                f->pos, f->size, f->lba, f->curr_lba);
@@ -59,7 +60,7 @@ read(int fd, void *buf, size_t count) {
 #if _DEBUG
         printf("read: bufpos %d len %d\r\n", bufpos, len);
 #endif
-        memcpy(buf + n, f->buf + bufpos, len);
+        memcpy((void *) ((unsigned long) buf + n), f->buf + bufpos, len);
 
         /* Update various state variables */
         f->pos += len;

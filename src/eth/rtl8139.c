@@ -13,6 +13,7 @@ struct rtl8139_private rtl8139_priv;
 
 void bufdump(char *buf, int size);
 
+#if 0
 static void
 rtl8139_dump_reg(uint32_t ioaddr) {
     uint8_t reg;
@@ -38,7 +39,6 @@ rtl8139_dump_reg(uint32_t ioaddr) {
     printf("cbr    : 0x%04x\r\n", inw(ioaddr + CBR));
 }
 
-#if 0
 static void
 rtl8139_dump_rx_status(uint16_t rx_status) {
     printf("rx_status 0x%04x (", rx_status);

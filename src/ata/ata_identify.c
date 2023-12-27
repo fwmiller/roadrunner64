@@ -35,7 +35,7 @@ ata_identify(atad_t atad, char *drvstr) {
         ;
 
     /* Read parameter data */
-    insw(atad->atac->iobase + ATA_DATA, (void *) &(atad->param),
+    insw(atad->atac->iobase + ATA_DATA, (uint16_t *) &(atad->param),
          SECTOR_SIZE / 2);
 
     /* Check for ATA device */
