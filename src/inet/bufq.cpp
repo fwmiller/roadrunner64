@@ -11,20 +11,16 @@
 //
 
 bufq::bufq(int entries, int bufsize) {
-#if 0
     int size = entries * sizeof(void *);
-#endif
-    this->q = NULL;
-#if 0
+
     this->q = (buf_t *) malloc(size);
     memset(this->q, 0, size);
-#endif
     this->len = NULL;
-#if 0
+
     size = entries * sizeof(int);
     this->len = (int *) malloc(size);
     memset(this->len, 0, size);
-#endif
+
     this->entries = entries;
     this->bufsize = bufsize;
     this->h = 0;

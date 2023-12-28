@@ -5,12 +5,10 @@
 class udptab udptab;
 
 udptab::udptab() {
-#if 0
     for (int i = 0; i < UDPTAB_ENTRIES; i++) {
         this->port[i] = 0;
         this->table[i] = new bufq(16, 64);
     }
-#endif
 }
 
 void

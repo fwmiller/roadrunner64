@@ -13,4 +13,7 @@ int rand(void);
 
 void *malloc(size_t size);
 
+void *operator new(size_t size);
+void operator delete(void *ptr);
+
 #endif

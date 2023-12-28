@@ -4,11 +4,9 @@
 #include "inet/buf.h"
 
 bufpool::bufpool(int nbufs, int bufsize) {
-    buf_t pool = NULL;
-#if 0
     buf_t pool = (buf_t) malloc(nbufs * bufsize);
     memset(pool, 0, nbufs * bufsize);
-#endif
+
     this->pool = pool;
     this->nbufs = nbufs;
     this->bufsize = bufsize;

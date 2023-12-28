@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <sys/mem.h>
 #include <sys/tsc.h>
@@ -24,5 +25,23 @@ rand(void) {
 
 void *
 malloc(size_t size) {
-    return (void *) mem_alloc(size);
+    void *ptr = (void *) mem_alloc(size);
+#if 1
+    printf("malloc: ptr = 0x%016x\r\n", (unsigned long) ptr);
+#endif
+    return ptr;
+}
+
+// These are required to be able to link g++
+void *__gxx_personality_v0 = 0;
+void *_Unwind_Resume = 0;
+
+void *
+operator new(size_t size) {
+    return malloc(size);
+}
+
+void
+operator delete(void *ptr) {
+    return;
 }

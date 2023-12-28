@@ -17,5 +17,5 @@ reverse_byte_order_long(uint32_t x) {
 
 void
 cppip_init() {
-    // bp = new bufpool(32, 1518);
+    bp = new bufpool(32, 1518);
 }
