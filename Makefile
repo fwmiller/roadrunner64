@@ -50,6 +50,13 @@ QEMU_NET_CONFIG := -netdev tap,id=mynet0,ifname=tap0,script=no,downscript=no -de
 
 ##############################################################################
 #
+# C++ file sets
+#
+CPP_SRCS	:= $(shell find $(SRC)/ -maxdepth $(MAX_DEPTH) -type f -regex ".*\.cpp")
+CPP_FILES	:= $(sort $(notdir $(CPP_SRCS)))
+
+##############################################################################
+#
 # C file sets
 #
 C_SRCS	:= $(shell find $(SRC)/ -maxdepth $(MAX_DEPTH) -type f -regex ".*\.c")
@@ -66,7 +73,8 @@ S_FILES	:= $(sort $(notdir $(S_SRCS)))
 #
 # Object files
 #
-OBJS	:= $(foreach f,$(C_FILES),$(addprefix $(BIN)/,$(subst .c,.o,$(f))))
+OBJS	:= $(foreach f,$(CPP_FILES),$(addprefix $(BIN)/,$(subst .cpp,.o,$(f))))
+OBJS	+= $(foreach f,$(C_FILES),$(addprefix $(BIN)/,$(subst .c,.o,$(f))))
 OBJS	+= $(foreach f,$(S_FILES),$(addprefix $(BIN)/,$(subst .S,.o,$(f))))
 OBJS	:= $(sort $(OBJS))
 
@@ -153,12 +161,15 @@ clean:
 indent: clean
 	@cd $(INC);clang-format -i *.h
 	@cd $(INC)/sys;clang-format -i *.h
+	@clang-format -i $(CPP_SRCS)
 	@clang-format -i $(C_SRCS)
 
 wc: clean
-	@wc -l $(INC)/*.h $(INC)/sys/*.h $(SRC)/asm/*.S $(SRC)/ata/*.c $(SRC)/sh/*.c $(SRC)/isofs/*.c $(SRC)/kern/*.c
+	@wc -l $(INC)/*.h $(INC)/*/*.h $(SRC)/*/*.S $(SRC)/*/*.c $(SRC)/*/*.cpp
 
 debug:
+	@for f in $(CPP_SRCS); do echo $$f; done
+	@echo
 	@for f in $(C_SRCS); do echo $$f; done
 	@echo
 	@for f in $(S_SRCS); do echo $$f; done
@@ -169,6 +180,12 @@ debug:
 # Source file compilation
 #
 VPATH := $(SRC) $(wildcard $(SRC)/*)
+
+$(BIN)/%.o: %.cpp
+	@$(MKDIR) $(BUILD)
+	@$(MKDIR) $(BIN)
+	@printf "Compiling  ${CYAN}$<${NC}\r\n"
+	@$(CC) $(CFLAGS) $(INCLUDES) -o $@ $<
 
 $(BIN)/%.o: %.c
 	@$(MKDIR) $(BUILD)

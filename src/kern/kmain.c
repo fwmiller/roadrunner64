@@ -5,6 +5,7 @@
 #include <sys/intr.h>
 #include <sys/io.h>
 #include <sys/mc146818.h>
+#include <sys/mem.h>
 #include <sys/pci.h>
 #include <sys/rtl8139.h>
 #include <sys/sys.h>
@@ -36,6 +37,9 @@ extern "C" {
 void
 kmain() {
     printf("\r\nRoadrunner 64-bit\r\n");
+
+    /* Initialize the heap */
+    mem_init();
 
     /* Initialize the i8259 interrupt controllers */
     intr_init();

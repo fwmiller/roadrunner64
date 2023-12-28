@@ -11,4 +11,6 @@ long long atoll(const char *nptr);
 
 int rand(void);
 
+void *malloc(size_t size);
+
 #endif

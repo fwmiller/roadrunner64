@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <sys/mem.h>
 #include <sys/tsc.h>
 
 int
@@ -19,4 +20,9 @@ atoll(const char *nptr) {
 int
 rand(void) {
     return tscread();
+}
+
+void *
+malloc(size_t size) {
+    return (void *) mem_alloc(size);
 }
