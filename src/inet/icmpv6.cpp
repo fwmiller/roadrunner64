@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "inet/cppip.h"
+#include "inet/inet.h"
 
 icmpv6::icmpv6() {
     this->buf = NULL;

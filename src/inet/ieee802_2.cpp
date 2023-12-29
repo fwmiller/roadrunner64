@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "inet/cppip.h"
+#include "inet/inet.h"
 
 ieee802_2::ieee802_2() {
     this->hdr = NULL;

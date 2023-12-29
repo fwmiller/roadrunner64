@@ -1,7 +1,7 @@
 #ifndef __ETHERNET_H
 #define __ETHERNET_H
 
-#include "cppip.h"
+#include "inet/inet.h"
 
 static const unsigned ETH_MTU_SIZE = 1536;
 

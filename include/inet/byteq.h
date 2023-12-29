@@ -1,7 +1,7 @@
 #ifndef __BYTEQ_H
 #define __BYTEQ_H
 
-#include "cppip.h"
+#include "inet/inet.h"
 
 // static const int MAX_BYTEQ_SIZE = 2048;  // 2 KB
 static const int MAX_BYTEQ_SIZE = 64;  // 64 bytes

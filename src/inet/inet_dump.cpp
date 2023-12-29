@@ -1,7 +1,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
-#include "inet/cppip.h"
+#include "inet/inet.h"
 
 static const int LEN = 16;
 

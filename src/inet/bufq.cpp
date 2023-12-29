@@ -12,10 +12,8 @@
 
 bufq::bufq(int entries, int bufsize) {
     int size = entries * sizeof(void *);
-
     this->q = (buf_t *) malloc(size);
     memset(this->q, 0, size);
-    this->len = NULL;
 
     size = entries * sizeof(int);
     this->len = (int *) malloc(size);
@@ -47,8 +45,7 @@ bufq::get_nbufs() {
 
 int
 bufq::get_bufsize() {
-    int bufsize = this->bufsize;
-    return bufsize;
+    return this->bufsize;
 }
 
 //
@@ -107,9 +104,9 @@ bufq::remove(int *len) {
 
 void
 bufq::dump() {
-    if (!(this->full) && this->h == this->t) {
+    if (!(this->full) && this->h == this->t)
         return;
-    }
+
     printf("<");
     for (int i = this->h;;) {
         printf("%d", this->len[i]);

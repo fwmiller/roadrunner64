@@ -2,7 +2,7 @@
 #define __IPV4_H
 
 #include <stdint.h>
-#include "cppip.h"
+#include "inet/inet.h"
 
 //
 // IPv4 header overlay

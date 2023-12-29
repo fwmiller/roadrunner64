@@ -19,21 +19,19 @@ bufpool::bufpool(int nbufs, int bufsize) {
 
 int
 bufpool::get_nbufs() {
-    int nbufs = this->nbufs;
-    return nbufs;
+    return this->nbufs;
 }
 
 int
 bufpool::get_bufsize() {
-    int bufsize = this->bufsize;
-    return bufsize;
+    return this->bufsize;
 }
 
 buf_t
 bufpool::pop() {
-    if (this->stack == NULL) {
+    if (this->stack == NULL)
         return NULL;
-    }
+
     buf_t buf = this->stack;
     this->stack = *((buf_t *) this->stack);
     return buf;
@@ -41,9 +39,9 @@ bufpool::pop() {
 
 void
 bufpool::push(buf_t buf) {
-    if (buf == NULL) {
+    if (buf == NULL)
         return;
-    }
+
     *((buf_t *) buf) = this->stack;
     this->stack = buf;
 }

@@ -1,4 +1,4 @@
-#include "inet/cppip.h"
+#include "inet/inet.h"
 #include "inet/stats.h"
 
 void

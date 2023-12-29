@@ -10,22 +10,22 @@ typedef uint8_t *buf_t;
 
 extern bool dump_enabled;
 
-#include "arp.h"
-#include "buf.h"
-#include "eth.h"
-#include "ethertype.h"
-#include "icmp.h"
-#include "icmpv6.h"
-#include "ieee802_2.h"
-#include "ipproto.h"
-#include "ipv4.h"
-#include "ipv6.h"
-#include "udp.h"
+#include "inet/arp.h"
+#include "inet/buf.h"
+#include "inet/eth.h"
+#include "inet/ethertype.h"
+#include "inet/icmp.h"
+#include "inet/icmpv6.h"
+#include "inet/ieee802_2.h"
+#include "inet/ipproto.h"
+#include "inet/ipv4.h"
+#include "inet/ipv6.h"
+#include "inet/udp.h"
 
 extern char intf_name[];
 extern bufpool_t bp;
 
-void cppip_init();
+void inet_init();
 
 //
 // Utilities

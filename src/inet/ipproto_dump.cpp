@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "inet/cppip.h"
+#include "inet/inet.h"
 
 void
 dump_ipproto(uint8_t proto) {

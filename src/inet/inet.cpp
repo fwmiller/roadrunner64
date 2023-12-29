@@ -1,4 +1,4 @@
-#include "inet/cppip.h"
+#include "inet/inet.h"
 #include <stdlib.h>
 
 // The buffer pool
@@ -16,6 +16,6 @@ reverse_byte_order_long(uint32_t x) {
 }
 
 void
-cppip_init() {
+inet_init() {
     bp = new bufpool(32, 1518);
 }

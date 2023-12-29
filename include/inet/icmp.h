@@ -2,7 +2,7 @@
 #define __ICMP_H
 
 #include <stdint.h>
-#include "cppip.h"
+#include "inet/inet.h"
 
 static const uint8_t ICMPTYPE_ECHO_REPLY = 0;
 static const uint8_t ICMPTYPE_DEST_UNREACH = 3;

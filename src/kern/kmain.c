@@ -1,3 +1,4 @@
+#include <inet/inet.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/fs.h>
@@ -72,6 +73,8 @@ kmain() {
 #endif
         intr_unmask(IRQ2INTR(rtl8139_priv.f->irq));
     }
+    /* Initialize Internet protocol stack */
+    inet_init();
 
     /* Start shell */
     printf("Type ctrl-a x to exit\r\n");

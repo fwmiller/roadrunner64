@@ -2,7 +2,7 @@
 #define __ICMPV6_H
 
 #include <stdint.h>
-#include "cppip.h"
+#include "inet/inet.h"
 
 static const uint8_t ICMP_TYPE_DEST_UNRCH = 1;
 static const uint8_t ICMP_TYPE_PKT_TOO_BIG = 2;

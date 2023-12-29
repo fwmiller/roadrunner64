@@ -1,7 +1,7 @@
 #ifndef __DNS_H
 #define __DNS_H
 
-#include "cppip.h"
+#include "inet/inet.h"
 
 struct dns_hdr {
     uint16_t id;

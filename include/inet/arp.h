@@ -1,7 +1,7 @@
 #ifndef __ARP_H
 #define __ARP_H
 
-#include "cppip.h"
+#include "inet/inet.h"
 
 const static uint16_t ARP_HW_ETH = 0x0001;
 const static uint16_t ARP_HW_802 = 0x0006;

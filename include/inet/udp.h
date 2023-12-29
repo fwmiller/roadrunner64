@@ -2,7 +2,7 @@
 #define __UDP_H
 
 #include <stdint.h>
-#include "cppip.h"
+#include "inet/inet.h"
 
 //
 // UDP header overlay

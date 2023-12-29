@@ -2,7 +2,7 @@
 #define __ARPTAB_H
 
 #include <stdint.h>
-#include "cppip.h"
+#include "inet/inet.h"
 
 static const int ARPTAB_ENTRIES = 16;
 

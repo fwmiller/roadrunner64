@@ -27,7 +27,7 @@ void *
 malloc(size_t size) {
     void *ptr = (void *) mem_alloc(size);
 #if 1
-    printf("malloc: ptr = 0x%016x\r\n", (unsigned long) ptr);
+    printf("malloc: ptr = 0x%08x\r\n", (unsigned long) ptr);
 #endif
     return ptr;
 }

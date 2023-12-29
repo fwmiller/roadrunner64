@@ -2,7 +2,7 @@
 #define __IPV6_H
 
 #include <stdint.h>
-#include "cppip.h"
+#include "inet/inet.h"
 
 //
 // IPv6 header overlay

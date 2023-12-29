@@ -2,7 +2,7 @@
 #define __IEEE_802_3_H
 
 #include <stdint.h>
-#include "cppip.h"
+#include "inet/inet.h"
 
 //
 // IEEE 802.2 header overlay

@@ -1,7 +1,7 @@
 #ifndef __CPPIP_STATS
 #define __CPPIP_STATS
 
-class cppip_stats {
+class inet_stats {
 private:
     unsigned frame_count;
     unsigned eth_count;
@@ -15,7 +15,7 @@ private:
     unsigned tcp_count;
 
 public:
-    cppip_stats();
+    inet_stats();
     unsigned get_frame_count();
     void set_frame_count(unsigned frame_count);
     void inc_frame_count();
@@ -48,6 +48,6 @@ public:
     void inc_tcp_count();
 };
 
-extern class cppip_stats stats;
+extern class inet_stats stats;
 
 #endif
