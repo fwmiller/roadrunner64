@@ -51,11 +51,14 @@ typedef struct icmp_hdr *icmp_hdr_t;
 class icmp {
 private:
     buf_t buf;
+    uint8_t *hdr;
 
 public:
     icmp();
     buf_t get_buf();
     void set_buf(buf_t buf);
+    uint8_t *get_hdr();
+    void set_hdr(uint8_t *hdr);
     void receive();
     void dump();
 };

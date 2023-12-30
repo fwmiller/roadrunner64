@@ -52,11 +52,14 @@ typedef struct icmpv6_hdr *icmpv6_hdr_t;
 class icmpv6 {
 private:
     buf_t buf;
+    uint8_t *hdr;
 
 public:
     icmpv6();
     buf_t get_buf();
     void set_buf(buf_t buf);
+    uint8_t *get_hdr();
+    void set_hdr(uint8_t *hdr);
     void receive();
     void dump();
 };

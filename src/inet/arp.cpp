@@ -3,16 +3,27 @@
 #include <string.h>
 
 arp::arp() {
+    this->buf = NULL;
     this->hdr = NULL;
 }
 
 buf_t
+arp::get_buf() {
+    return this->buf;
+}
+
+void
+arp::set_buf(buf_t buf) {
+    this->buf = buf;
+}
+
+uint8_t *
 arp::get_hdr() {
     return this->hdr;
 }
 
 void
-arp::set_hdr(buf_t hdr) {
+arp::set_hdr(uint8_t *hdr) {
     this->hdr = hdr;
 }
 

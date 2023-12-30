@@ -60,6 +60,9 @@ sh() {
         else if (strcmp(arg, "tsc") == 0)
             cmd_tsc();
 
+        else if (strcmp(arg, "bp") == 0)
+            cmd_bp();
+
         else if (strcmp(arg, "help") == 0 || strcmp(arg, "?") == 0)
             cmd_help();
     }

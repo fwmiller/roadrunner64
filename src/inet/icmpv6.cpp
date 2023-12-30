@@ -4,6 +4,7 @@
 
 icmpv6::icmpv6() {
     this->buf = NULL;
+    this->hdr = NULL;
 }
 
 buf_t
@@ -14,6 +15,16 @@ icmpv6::get_buf() {
 void
 icmpv6::set_buf(buf_t buf) {
     this->buf = buf;
+}
+
+uint8_t*
+icmpv6::get_hdr() {
+    return this->hdr;
+}
+
+void
+icmpv6::set_hdr(uint8_t* hdr) {
+    this->hdr = hdr;
 }
 
 void

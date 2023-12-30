@@ -32,7 +32,7 @@ CFLAGS		+= -fpermissive -Wno-write-strings -Wno-maybe-uninitialized
 #CFLAGS		+= -D_DEBUG_ATA
 #CFLAGS		+= -D_DEBUG_ISOFS
 #CFLAGS		+= -D_DEBUG_PCI
-CFLAGS		+= -D_DEBUG_ETH
+#CFLAGS		+= -D_DEBUG_ETH
 CFLAGS		+= -D_DEBUG_INET
 #CFLAGS		+= -D_DEBUG_SHELL
 

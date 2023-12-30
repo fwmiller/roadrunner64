@@ -21,14 +21,17 @@ typedef struct eth_hdr *eth_hdr_t;
 //
 class eth {
 private:
-    buf_t frame;
+    buf_t buf;
+    uint8_t *frame;
     unsigned framelen;
     uint16_t get_ethertype();
 
 public:
     eth();
-    buf_t get_frame();
-    void set_frame(buf_t buf);
+    buf_t get_buf();
+    void set_buf(buf_t buf);
+    uint8_t *get_frame();
+    void set_frame(uint8_t *frame);
     unsigned get_framelen();
     void set_framelen(unsigned framelen);
     void receive();

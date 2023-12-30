@@ -17,12 +17,22 @@ eth::get_ethertype() {
 }
 
 buf_t
+eth::get_buf() {
+    return this->buf;
+}
+
+void
+eth::set_buf(buf_t buf) {
+    this->buf = buf;
+}
+
+uint8_t*
 eth::get_frame() {
     return this->frame;
 }
 
 void
-eth::set_frame(buf_t frame) {
+eth::set_frame(uint8_t* frame) {
     this->frame = frame;
 }
 

@@ -5,15 +5,26 @@
 
 ipv4::ipv4() {
     this->hdr = NULL;
+    this->buf = NULL;
 }
 
 buf_t
+ipv4::get_buf() {
+    return this->buf;
+}
+
+void
+ipv4::set_buf(buf_t buf) {
+    this->buf = buf;
+}
+
+uint8_t *
 ipv4::get_hdr() {
     return this->hdr;
 }
 
 void
-ipv4::set_hdr(buf_t hdr) {
+ipv4::set_hdr(uint8_t *hdr) {
     this->hdr = hdr;
 }
 

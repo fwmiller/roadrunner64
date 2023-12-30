@@ -233,6 +233,7 @@ rtl8139_isr() {
             /* Pass packet buffer up the Internet stack */
             if (buf != NULL) {
                 class eth eth;
+                eth.set_buf(buf);
                 eth.set_frame((uint8_t *) buf);
                 eth.set_framelen(pkt_size);
                 if (dump_enabled)

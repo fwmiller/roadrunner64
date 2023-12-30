@@ -4,15 +4,26 @@
 
 ieee802_2::ieee802_2() {
     this->hdr = NULL;
+    this->buf = NULL;
 }
 
 buf_t
+ieee802_2::get_buf() {
+    return this->buf;
+}
+
+void
+ieee802_2::set_buf(buf_t buf) {
+    this->buf = buf;
+}
+
+uint8_t *
 ieee802_2::get_hdr() {
     return this->hdr;
 }
 
 void
-ieee802_2::set_hdr(buf_t hdr) {
+ieee802_2::set_hdr(uint8_t *hdr) {
     this->hdr = hdr;
 }
 

@@ -29,6 +29,7 @@ void cmd_stack();
 void cmd_pci();
 void cmd_time();
 void cmd_tsc();
+void cmd_bp();
 
 void set_color(char *color);
 

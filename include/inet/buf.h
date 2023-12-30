@@ -21,6 +21,7 @@ private:
 public:
     bufpool(int nbufs, int bufsize);
     int get_nbufs();
+    int get_nfree();
     int get_bufsize();
     buf_t pop();
     void push(buf_t buf);

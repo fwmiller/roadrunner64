@@ -23,6 +23,15 @@ bufpool::get_nbufs() {
 }
 
 int
+bufpool::get_nfree() {
+    buf_t buf;
+    int n;
+    for (n = 0, buf = this->stack; buf != NULL; n++, buf = *((buf_t *) buf))
+        ;
+    return n;
+}
+
+int
 bufpool::get_bufsize() {
     return this->bufsize;
 }
