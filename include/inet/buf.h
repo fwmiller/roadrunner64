@@ -54,4 +54,8 @@ public:
 
 typedef class bufq *bufq_t;
 
+// The global buffer pool
+extern bufpool_t bp;
+
+
 #endif

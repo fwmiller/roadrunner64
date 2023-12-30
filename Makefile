@@ -24,7 +24,7 @@ RM		:= rm -fr
 #
 CFLAGS		:= -c -Wall -m64 -Og -nostdinc -ffreestanding
 CFLAGS		+= -std=c++11
-CFLAGS		+= -fpermissive -Wno-write-strings
+CFLAGS		+= -fpermissive -Wno-write-strings -Wno-maybe-uninitialized
 #CFLAGS		+= -g
 
 # Debug options
@@ -33,6 +33,7 @@ CFLAGS		+= -fpermissive -Wno-write-strings
 #CFLAGS		+= -D_DEBUG_ISOFS
 #CFLAGS		+= -D_DEBUG_PCI
 CFLAGS		+= -D_DEBUG_ETH
+CFLAGS		+= -D_DEBUG_INET
 #CFLAGS		+= -D_DEBUG_SHELL
 
 INCLUDES	:= -I$(INC)

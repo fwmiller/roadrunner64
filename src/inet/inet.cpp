@@ -1,7 +1,7 @@
 #include "inet/inet.h"
 #include <stdlib.h>
 
-// The buffer pool
+// The global buffer pool
 bufpool_t bp = NULL;
 
 uint16_t

@@ -17,7 +17,7 @@ icmp::set_buf(buf_t buf) {
 
 void
 icmp::receive() {
-#if _DEBUG
+#if _DEBUG_INET
     this->dump();
 #endif
 }

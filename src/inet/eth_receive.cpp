@@ -51,5 +51,8 @@ eth::receive() {
             ipv6.dump();
         ipv6.receive();
     } break;
+    default: {
+        bp->push((buf_t) this->frame);
+    } break;
     }
 }

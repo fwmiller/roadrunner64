@@ -23,7 +23,6 @@ extern bool dump_enabled;
 #include "inet/udp.h"
 
 extern char intf_name[];
-extern bufpool_t bp;
 
 void inet_init();
 

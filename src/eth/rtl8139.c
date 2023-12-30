@@ -1,3 +1,5 @@
+#include <inet/buf.h>
+#include <inet/inet.h>
 #if _DEBUG_ETH
 #include <stdio.h>
 #endif
@@ -13,7 +15,7 @@ struct rtl8139_private rtl8139_priv;
 
 void bufdump(char *buf, int size);
 
-#if 0
+#if _DEBUG_ETH
 static void
 rtl8139_dump_reg(uint32_t ioaddr) {
     uint8_t reg;
@@ -130,7 +132,7 @@ rtl8139_init(pci_func_t f) {
 
     rtl8139_priv.tx_bufs_dma = rtl8139_priv.tx_bufs;
     rtl8139_priv.rx_ring_dma = rtl8139_priv.rx_ring;
-#if 0
+#if _DEBUG_ETH
     printf("rtl8139: tx_bufs 0x%08x  tx_bufs_dma 0x%08x\r\n",
            rtl8139_priv.tx_bufs, rtl8139_priv.tx_bufs_dma);
     printf("rtl8139: rx_ring 0x%08x  rx_ring_dma 0x%08x\r\n",
@@ -164,7 +166,7 @@ rtl8139_init(pci_func_t f) {
         pci_config_writel(f->bus, f->dev, f->func, PCI_CONFIG_CMD_STAT, pcr);
     }
     rtl8139_hw_start(f->iobase);
-#if 0
+#if _DEBUG_ETH
     rtl8139_dump_reg(f->iobase);
 #endif
 }
@@ -185,36 +187,42 @@ rtl8139_isr() {
 #endif
     }
     if (isr & RxOK) {
-#if 0
+#if _DEBUG_ETH
         uint16_t rx_status;
 #endif
         uint16_t rx_size;
-#if 0
         uint16_t pkt_size;
-#endif
 
         while ((inb(ioaddr + CR) & RxBufEmpty) == 0) {
-#if 0
-            rx_status =
-                *((uint16_t *) (rtl8139_priv.rx_ring + rtl8139_priv.cur_rx));
+            uint8_t *pkt =
+                (uint8_t *) rtl8139_priv.rx_ring + rtl8139_priv.cur_rx;
+#if _DEBUG_ETH
+            rx_status = *((uint16_t *) pkt);
 #endif
-            rx_size = *((uint16_t *) (rtl8139_priv.rx_ring +
-                                      rtl8139_priv.cur_rx + 2));
-#if 0
+            rx_size = *((uint16_t *) (pkt + 2));
             pkt_size = rx_size - 4;
-
+#if _DEBUG_ETH
             printf("rtl8139_isr: ");
             rtl8139_dump_rx_status(rx_status);
             printf(" rx_size %u\r\n", rx_size);
             rtl8139_dump_reg(ioaddr);
 #endif
 #if _DEBUG_ETH
-            bufdump((char *) rtl8139_priv.rx_ring + rtl8139_priv.cur_rx,
-                    rx_size);
+            bufdump((char *) pkt, rx_size);
 #endif
-            /* Get a pbuf */
-
-            /* Copy packet data into pbuf */
+            /* Get a packet buffer */
+            buf_t buf = bp->pop();
+            if (buf == NULL) {
+#if _DEBUG_ETH
+                printf("rtl8139_isr: get packet buffer failed\r\n");
+#endif
+            } else {
+                /*
+                 * Copy packet data into packet buffer without the 4 bytes
+                 * used by the hardware ring buffer
+                 */
+                memcpy(buf, pkt + 4, pkt_size);
+            }
 
             /* Reuse the ring buffer */
             rtl8139_priv.cur_rx =
@@ -222,9 +230,16 @@ rtl8139_isr() {
             rtl8139_priv.cur_rx = rtl8139_priv.cur_rx % RX_BUF_LEN;
             outw(ioaddr + CAPR, rtl8139_priv.cur_rx - 16);
 
-            /* Pass pbuf up the LWIP stack */
-
-#if 0
+            /* Pass packet buffer up the Internet stack */
+            if (buf != NULL) {
+                class eth eth;
+                eth.set_frame((uint8_t *) buf);
+                eth.set_framelen(pkt_size);
+                if (dump_enabled)
+                    eth.dump();
+                eth.receive();
+            }
+#if _DEBUG_ETH
             printf("rtl8139_isr: cur_rx 0x%04x capr 0x%04x\r\n",
                    rtl8139_priv.cur_rx, inw(ioaddr + CAPR));
 #endif
