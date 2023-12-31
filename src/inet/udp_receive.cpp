@@ -5,10 +5,8 @@
 
 void
 udp::receive() {
-    if (this->buf == NULL)
-        return;
+    udp_hdr_t uh = (udp_hdr_t) this->get_hdr();
 
-    udp_hdr_t uh = (udp_hdr_t) this->buf;
     uint16_t port = reverse_byte_order_short(uh->dst);
 
     class bufq *q = udptab.find_port(port);

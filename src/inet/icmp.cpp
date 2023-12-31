@@ -30,4 +30,5 @@ icmp::receive() {
 #if _DEBUG_INET
     this->dump();
 #endif
+    bp->push((buf_t) this->get_buf());
 }

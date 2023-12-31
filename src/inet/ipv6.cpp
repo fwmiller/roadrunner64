@@ -29,9 +29,6 @@ ipv6::set_hdr(uint8_t* hdr) {
 
 void
 ipv6::receive() {
-    if (this->hdr == NULL)
-        return;
-
     ipv6_hdr_t ih = (ipv6_hdr_t) this->hdr;
 
     switch (ih->next) {
@@ -41,6 +38,9 @@ ipv6::receive() {
         if (dump_enabled)
             ic.dump();
         ic.receive();
+    } break;
+    default: {
+        bp->push((buf_t) this->get_buf());
     } break;
     }
 }

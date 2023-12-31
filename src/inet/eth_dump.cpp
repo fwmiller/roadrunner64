@@ -4,10 +4,7 @@
 
 void
 eth::dump() {
-    if (this->frame == NULL)
-        return;
-
-    eth_hdr_t eh = (eth_hdr_t) this->frame;
+    eth_hdr_t eh = (eth_hdr_t) this->get_frame();
 
     printf("ethernet dst ");
     dump_ethaddr(eh->dst);

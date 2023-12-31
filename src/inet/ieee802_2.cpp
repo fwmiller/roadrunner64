@@ -29,7 +29,7 @@ ieee802_2::set_hdr(uint8_t *hdr) {
 
 void
 ieee802_2::receive() {
-    return;
+    bp->push((buf_t) this->get_buf());
 }
 
 void

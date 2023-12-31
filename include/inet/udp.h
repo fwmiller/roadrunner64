@@ -22,11 +22,14 @@ typedef struct udp_hdr *udp_hdr_t;
 class udp {
 private:
     buf_t buf;
+    uint8_t *hdr;
 
 public:
     udp();
     buf_t get_buf();
     void set_buf(buf_t buf);
+    uint8_t *get_hdr();
+    void set_hdr(uint8_t *hdr);
     void receive();
     void dump();
 };

@@ -29,7 +29,7 @@ icmpv6::set_hdr(uint8_t* hdr) {
 
 void
 icmpv6::receive() {
-    return;
+    bp->push((buf_t) this->get_buf());
 }
 
 void

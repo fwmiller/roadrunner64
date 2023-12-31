@@ -4,10 +4,7 @@
 
 void
 icmp::dump() {
-    if (this->buf == NULL)
-        return;
-
-    icmp_hdr_t ih = (icmp_hdr_t) this->buf;
+    icmp_hdr_t ih = (icmp_hdr_t) this->get_hdr();
 
     printf("icmp type 0x%02x (", ih->type);
     dump_icmp_type(ih->type);

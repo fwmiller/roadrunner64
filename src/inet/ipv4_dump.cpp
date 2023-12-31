@@ -4,10 +4,7 @@
 
 void
 ipv4::dump() {
-    if (this->hdr == NULL)
-        return;
-
-    ipv4_hdr_t ih = (ipv4_hdr_t) this->hdr;
+    ipv4_hdr_t ih = (ipv4_hdr_t) this->get_hdr();
 
     printf("ipv4 ver %u hdr len %u tos 0x%02x", (ih->version >> 4) & 0x0f,
            this->get_hdr_len(), ih->tos);

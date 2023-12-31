@@ -4,10 +4,7 @@
 
 void
 arp::receive() {
-    if (this->hdr == NULL)
-        return;
-
-    arp_hdr_t ah = (arp_hdr_t) this->hdr;
+    arp_hdr_t ah = (arp_hdr_t) this->get_hdr();
 
     switch (reverse_byte_order_short(ah->opcode)) {
     case ARP_OP_REQ:
@@ -20,4 +17,5 @@ arp::receive() {
             arptab.add_entry(ah->spa, ah->sha);
         break;
     }
+    bp->push((buf_t) this->get_buf());
 }

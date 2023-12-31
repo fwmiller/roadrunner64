@@ -4,10 +4,7 @@
 
 void
 ipv6::dump() {
-    if (this->hdr == NULL)
-        return;
-
-    ipv6_hdr_t ih = (ipv6_hdr_t) this->hdr;
+    ipv6_hdr_t ih = (ipv6_hdr_t) this->get_hdr();
 
     printf("ipv6 ver %u", (ih->ver_class >> 4) & 0x0f);
 

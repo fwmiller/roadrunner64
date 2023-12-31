@@ -53,7 +53,8 @@ ipv4::receive() {
         stats.inc_icmp_count();
 
         class icmp icmp;
-        icmp.set_buf(this->hdr + this->get_hdr_len());
+        icmp.set_buf(this->get_buf());
+        icmp.set_hdr(this->get_hdr() + this->get_hdr_len());
         if (dump_enabled)
             icmp.dump();
         icmp.receive();
@@ -62,13 +63,18 @@ ipv4::receive() {
         stats.inc_udp_count();
 
         class udp udp;
-        udp.set_buf(this->hdr + this->get_hdr_len());
+        udp.set_buf(this->get_buf());
+        udp.set_hdr(this->get_hdr() + this->get_hdr_len());
         if (dump_enabled)
             udp.dump();
         udp.receive();
     } break;
     case IP_PROTO_TCP: {
         stats.inc_tcp_count();
+        bp->push((buf_t) this->get_buf());
+    } break;
+    default: {
+        bp->push((buf_t) this->get_buf());
     } break;
     }
 }
