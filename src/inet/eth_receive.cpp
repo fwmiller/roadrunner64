@@ -31,8 +31,10 @@ eth::receive() {
         class arp arp;
         arp.set_buf(this->get_buf());
         arp.set_hdr(hdr);
+#if _DEBUG_ARP
         if (dump_enabled)
             arp.dump();
+#endif
         arp.receive();
     } break;
     case ETHERTYPE_IPV4: {

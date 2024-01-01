@@ -27,8 +27,5 @@ icmp::set_hdr(uint8_t *hdr) {
 
 void
 icmp::receive() {
-#if _DEBUG_INET
-    this->dump();
-#endif
     bp->push((buf_t) this->get_buf());
 }

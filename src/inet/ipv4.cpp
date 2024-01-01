@@ -55,8 +55,10 @@ ipv4::receive() {
         class icmp icmp;
         icmp.set_buf(this->get_buf());
         icmp.set_hdr(this->get_hdr() + this->get_hdr_len());
+#if _DEBUG_INET
         if (dump_enabled)
             icmp.dump();
+#endif
         icmp.receive();
     } break;
     case IP_PROTO_UDP: {
@@ -65,8 +67,10 @@ ipv4::receive() {
         class udp udp;
         udp.set_buf(this->get_buf());
         udp.set_hdr(this->get_hdr() + this->get_hdr_len());
+#if _DEBUG_INET
         if (dump_enabled)
             udp.dump();
+#endif
         udp.receive();
     } break;
     case IP_PROTO_TCP: {

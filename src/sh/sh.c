@@ -1,3 +1,6 @@
+#include <inet/arptab.h>
+#include <inet/stats.h>
+#include <inet/udptab.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/sh.h>
@@ -6,6 +9,20 @@ void
 set_color(char *color) {
     if (color != NULL)
         printf("%s", color);
+}
+
+static void
+cmd_stats() {
+    printf("frames   %u\r\n", stats.get_frame_count());
+    printf("ethernet %u\r\n", stats.get_eth_count());
+    printf("802.2    %u\r\n", stats.get_ieee802_2_count());
+    printf("arp      %u\r\n", stats.get_arp_count());
+    printf("rarp     %u\r\n", stats.get_rarp_count());
+    printf("ipv4     %u\r\n", stats.get_ipv4_count());
+    printf("ipv6     %u\r\n", stats.get_ipv6_count());
+    printf("icmp     %u\r\n", stats.get_icmp_count());
+    printf("udp      %u\r\n", stats.get_udp_count());
+    printf("tcp      %u\r\n", stats.get_tcp_count());
 }
 
 void
@@ -60,8 +77,17 @@ sh() {
         else if (strcmp(arg, "tsc") == 0)
             cmd_tsc();
 
+        else if (strcmp(arg, "st") == 0)
+            cmd_stats();
+
         else if (strcmp(arg, "bp") == 0)
             cmd_bp();
+
+        else if (strcmp(arg, "arp") == 0)
+            arptab.dump();
+
+        else if (strcmp(arg, "udp") == 0)
+            udptab.dump();
 
         else if (strcmp(arg, "help") == 0 || strcmp(arg, "?") == 0)
             cmd_help();
