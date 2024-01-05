@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-class arptab arptab;
+class arptab *at;
 class arptab_entry *my_addr;
 
 arptab::arptab() {

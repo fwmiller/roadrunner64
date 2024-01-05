@@ -2,12 +2,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-class udptab udptab;
+class udptab *ut = NULL;
 
 udptab::udptab() {
     for (int i = 0; i < UDPTAB_ENTRIES; i++) {
         this->port[i] = 0;
         this->table[i] = new bufq(16, 64);
+#if _DEBUG_INET
+        if (this->table[i] == NULL)
+            printf("udptab::udptab: alloc bufq failed\r\n");
+#endif
     }
 }
 
@@ -33,10 +37,20 @@ bufq_t
 udptab::alloc_port(uint16_t port) {
     for (int i = 0; i < UDPTAB_ENTRIES; i++)
         if (this->port[i] == 0) {
+#if _DEBUG_INET
+            printf("udptab::alloc_port: port %u\r\n", port);
+#endif
             bufq_t q = this->table[i];
+#if _DEBUG_INET
+            if (this->table[i] == NULL)
+                printf("udptab::alloc_port: port bufq is null\r\n");
+#endif
             this->port[i] = port;
             return q;
         }
+#if _DEBUG_INET
+    printf("udptab::alloc_port: no ports\r\n");
+#endif
     return NULL;
 }
 

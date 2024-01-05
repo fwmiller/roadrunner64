@@ -13,8 +13,8 @@ arp::receive() {
          * TODO: Check for an update to the Ethernet MAC address if
          * the spa is found
          */
-        if (arptab.find_pa(ah->spa) == NULL)
-            arptab.add_entry(ah->spa, ah->sha);
+        if (at->find_pa(ah->spa) == NULL)
+            at->add_entry(ah->spa, ah->sha);
         break;
     }
     bp->push((buf_t) this->get_buf());

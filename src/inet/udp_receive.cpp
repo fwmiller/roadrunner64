@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "inet/udp.h"
+#include "inet/inet.h"
 #include "inet/udptab.h"
 
 void
@@ -11,17 +11,18 @@ udp::receive() {
 #if _DEBUG_INET
     printf("udp::receive: port %u\r\n", port);
 #endif
-    class bufq *q = udptab.find_port(port);
+    class bufq *q = ut->find_port(port);
     if (q == NULL) {
         // No input queue open drop packet data
 
         // TODO: for fun - just allocating a UDP queue for any incoming
         // UDP packet until the UDP table is filled up...
-        q = udptab.alloc_port(port);
+        q = ut->alloc_port(port);
         if (q == NULL) {
 #if _DEBUG_INET
             printf("udp::receive: allocate port queue failed\r\n");
 #endif
+            bp->push((buf_t) this->get_buf());
             return;
         }
     }

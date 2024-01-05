@@ -13,6 +13,9 @@
 bufq::bufq(int entries, int bufsize) {
     int size = entries * sizeof(void *);
     this->q = (buf_t *) malloc(size);
+#if _DEBUG_INET
+    printf("bufq::bufq: q 0x%08x\r\n", (unsigned long) this->q);
+#endif
     memset(this->q, 0, size);
 
     size = entries * sizeof(int);
@@ -91,6 +94,9 @@ buf_t
 bufq::remove(int *len) {
     if (!(this->full) && this->h == this->t) {
         *len = 0;
+#if _DEBUG_INET
+        printf("bufq::remove: empty queue\r\n");
+#endif
         return NULL;
     }
     buf_t buf = this->q[this->h];
@@ -98,7 +104,9 @@ bufq::remove(int *len) {
     this->h = (this->h + 1) % this->entries;
     if (this->full)
         this->full = false;
-
+#if _DEBUG_INET
+    printf("bufq::remove: buf 0x%08x\r\n", (unsigned long) buf);
+#endif
     return buf;
 }
 

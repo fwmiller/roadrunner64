@@ -1,5 +1,7 @@
 #include "inet/inet.h"
 #include <stdlib.h>
+#include "inet/arptab.h"
+#include "inet/udptab.h"
 
 // The global buffer pool
 bufpool_t bp = NULL;
@@ -18,4 +20,6 @@ reverse_byte_order_long(uint32_t x) {
 void
 inet_init() {
     bp = new bufpool(32, 1518);
+    at = new arptab();
+    ut = new udptab();
 }

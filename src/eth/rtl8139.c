@@ -236,8 +236,10 @@ rtl8139_isr() {
                 eth.set_buf(buf);
                 eth.set_frame((uint8_t *) buf);
                 eth.set_framelen(pkt_size);
+#if _DEBUG_INET
                 if (dump_enabled)
                     eth.dump();
+#endif
                 eth.receive();
             }
 #if _DEBUG_ETH

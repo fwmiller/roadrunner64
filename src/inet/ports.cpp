@@ -11,11 +11,11 @@ int
 port::bind(uint16_t portnum) {
     bufq_t q;
 
-    q = udptab.find_port(portnum);
+    q = ut->find_port(portnum);
     if (q != NULL)
         return (-1);
 
-    q = udptab.alloc_port(portnum);
+    q = ut->alloc_port(portnum);
     if (q == NULL)
         return (-1);
     this->receiveq = q;

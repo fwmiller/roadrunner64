@@ -5,8 +5,6 @@
 
 static const int UDPTAB_ENTRIES = 16;
 
-extern class udptab udptab;
-
 //
 // UDP table
 //
@@ -22,5 +20,7 @@ public:
     bufq_t alloc_port(uint16_t port);
     void free_port(uint16_t port);
 };
+
+extern class udptab *ut;
 
 #endif

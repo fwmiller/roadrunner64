@@ -8,7 +8,7 @@ socket::socket(int type) {
 
 int
 socket::bind(uint16_t port) {
-    bufq_t q = udptab.alloc_port(port);
+    bufq_t q = ut->alloc_port(port);
     if (q == NULL)
         return (-1);
     this->recvq = q;

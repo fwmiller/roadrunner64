@@ -84,10 +84,10 @@ sh() {
             cmd_bp();
 
         else if (strcmp(arg, "arp") == 0)
-            arptab.dump();
+            at->dump();
 
         else if (strcmp(arg, "udp") == 0)
-            udptab.dump();
+            ut->dump();
 
         else if (strcmp(arg, "help") == 0 || strcmp(arg, "?") == 0)
             cmd_help();

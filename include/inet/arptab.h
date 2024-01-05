@@ -39,6 +39,6 @@ public:
     arptab_entry_t find_pa(uint32_t pa);
 };
 
-extern class arptab arptab;
+extern class arptab *at;
 
 #endif
