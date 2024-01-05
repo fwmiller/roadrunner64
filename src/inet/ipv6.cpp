@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include "inet/inet.h"
 
@@ -27,20 +26,8 @@ ipv6::set_hdr(uint8_t* hdr) {
     this->hdr = hdr;
 }
 
-void
-ipv6::receive() {
-    ipv6_hdr_t ih = (ipv6_hdr_t) this->hdr;
-
-    switch (ih->next) {
-    case IP_PROTO_IPV6_ICMP: {
-        class icmpv6 ic;
-        ic.set_buf(this->hdr + sizeof(struct ipv6_hdr));
-        if (dump_enabled)
-            ic.dump();
-        ic.receive();
-    } break;
-    default: {
-        bp->push((buf_t) this->get_buf());
-    } break;
-    }
+uint8_t
+ipv6::get_hdr_len() {
+    // TODO: Fixme
+    return 0;
 }

@@ -27,6 +27,7 @@ class ipv6 {
 private:
     buf_t buf;
     uint8_t *hdr;
+    uint8_t get_hdr_len();
 
 public:
     ipv6();

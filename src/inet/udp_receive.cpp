@@ -27,8 +27,12 @@ udp::receive() {
         }
     }
     int len = reverse_byte_order_short(uh->len);
-    q->append(this->buf + sizeof(struct udp_hdr), len);
-
+    if (q->append(this->buf + sizeof(struct udp_hdr), len) < 0) {
+#if _DEBUG_INET
+        printf("udp::receive: port queue full\r\n");
+#endif
+        bp->push((buf_t) this->get_buf());
+    }
     printf("udp port %u rcvd %d bytes\r\n", port, len);
     // q->dump_contents();
     // printf("\r\n");

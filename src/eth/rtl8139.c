@@ -1,5 +1,6 @@
 #include <inet/buf.h>
 #include <inet/inet.h>
+#include <inet/stats.h>
 #if _DEBUG_ETH
 #include <stdio.h>
 #endif
@@ -230,13 +231,15 @@ rtl8139_isr() {
             rtl8139_priv.cur_rx = rtl8139_priv.cur_rx % RX_BUF_LEN;
             outw(ioaddr + CAPR, rtl8139_priv.cur_rx - 16);
 
+            stats.inc_frame_count();
+
             /* Pass packet buffer up the Internet stack */
             if (buf != NULL) {
                 class eth eth;
                 eth.set_buf(buf);
                 eth.set_frame((uint8_t *) buf);
                 eth.set_framelen(pkt_size);
-#if _DEBUG_INET
+#if _DEBUG_ETH
                 if (dump_enabled)
                     eth.dump();
 #endif
