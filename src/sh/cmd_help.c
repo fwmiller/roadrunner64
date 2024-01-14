@@ -34,4 +34,16 @@ cmd_help() {
     printf("tsc\r\n");
     printf("  Print current Pentium timestamp counter value\r\n");
     printf("\r\n");
+    printf("bp\r\n");
+    printf("  Print Internet stack buffer pool info\r\n");
+    printf("\r\n");
+    printf("st\r\n");
+    printf("  Print Internet stack statistics\r\n");
+    printf("\r\n");
+    printf("arp\r\n");
+    printf("  Print Internet stack ARP cache contents\r\n");
+    printf("\r\n");
+    printf("udp\r\n");
+    printf("  Print Internet stack UDP port info\r\n");
+    printf("\r\n");
 }

@@ -64,8 +64,8 @@ kmain() {
     pci_func_t f = pci_lookup(PCI_CLASS_NETWORK, PCI_NETWORK_ETHERNET);
     if (f != NULL) {
 #if _DEBUG_PCI
-        printf("PCI Ethernet device found iobase 0x%x irq %d\r\n", f->iobase,
-               f->irq);
+        printf("kmain: PCI Ethernet device found iobase 0x%x irq %d\r\n",
+               f->iobase, f->irq);
 #endif
         rtl8139_init(f);
 #if _DEBUG_PCI
